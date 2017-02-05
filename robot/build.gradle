@@ -1,28 +1,19 @@
 plugins {
   id "java"
+  id "eclipse"
   id "idea"
-  id "jaci.openrio.gradle.GradleRIO" version "2017.1.0"
+  id "jaci.openrio.gradle.GradleRIO" version "2017.1.1"
 }
 
 frc {
   team = "2471"
   robotClass = "org.team2471.frc.steamworks.Robot"
-
-  deployTimeout = 2
-  rioIP = "10.24.71.2"
-}
-
-wpi {
-  wpilibVersion = "2017.1.1"
-  ntcoreVersion = "3.1.5"
-  cscoreVersion = "1.0.0"
-
-  talonSrxVersion = "4.4.1.8"
 }
 
 dependencies {
   compile wpilib()
   compile talonSrx()
+  compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 def robotManifest = {
