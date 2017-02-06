@@ -5,6 +5,7 @@ CRGB leds[2][NUM_LEDS];
 
 #define PIN1 6
 #define PIN2 8
+
 void setPixel( int Pixel, byte red, byte green, byte blue, int strip = 0);
 void setAll(byte red, byte green, byte blue, int strip = 0);
 
@@ -17,20 +18,17 @@ void setup()
 }
 
 void loop() { 
-  //loopBlinkOnLED();
+ //loopBlinkOnLED();
  //LoadGear();
  //LoadFuel();
-// setAll(0,0,0,0);
-// setAll(0,0,0,1);
-// delay(250);
-// setAll(0,0xff,0,0);
- //setAll(0,0,0xff,0);
-// showStrip();
-// delay(250);
  //RGBLoop();
  //Aim();
 
   ReadCommands(); 
+}
+
+void Default() {
+    NewKITT(0xff, 0, 0, 8, 10, 50);
 }
 
 void LoadFuel() {
@@ -45,6 +43,9 @@ void Aim(){
   for(int q = 20; q > 0;q-=2){
     CylonBounce(0xff, 0, 0, 4, q, 50);
   }
+}
+
+void Seizure() {
    for(int q = 0; q < 15; q++){
 //  setAll(0x24,0x24,0x24,0);
     setAll(0xFF, 0xFF, 0xFF, 0);
@@ -53,6 +54,20 @@ void Aim(){
     delay(15);
    }
 }
+
+void OnTarget() {
+   Seizure();
+}
+
+void EndGame() {
+  for(int q = 0; q < 15; q++){
+    setAll(0,0,0,0);
+    delay(15);
+    setAll(0xFF, 0, 0, 0);
+    delay(15);
+  }
+}
+
 
 void CylonBounce(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay){
 
@@ -63,7 +78,8 @@ void CylonBounce(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, i
       setPixel(i+j, red, green, blue); 
     }
     setPixel(i+EyeSize+1, red/10, green/10, blue/10);
-    showStrip();
+    if (showStrip())
+      return;
     delay(SpeedDelay);
   }
 
@@ -76,7 +92,8 @@ void CylonBounce(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, i
       setPixel(i+j, red, green, blue); 
     }
     setPixel(i+EyeSize+1, red/10, green/10, blue/10);
-    showStrip();
+    if (showStrip())
+      return;
     delay(SpeedDelay);
   }
   
@@ -99,10 +116,10 @@ void DoubleChase(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, i
                   
     }
     
-    showStrip();
+    if (showStrip())
+      return;
     delay(SpeedDelay);
   }
-
   delay(ReturnDelay);
 }
 
@@ -135,7 +152,9 @@ void RGBLoop(){
         case 1: setAll(0,k,0); break;
         case 2: setAll(0,0,k); break;
       }
-      showStrip();
+      if (showStrip())
+        return;
+
       delay(3);
     }
     // Fade OUT
@@ -146,6 +165,97 @@ void RGBLoop(){
       }
     }
   }
+}
+
+void NewKITT(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay){
+  RightToLeft(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  LeftToRight(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  OutsideToCenter(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  CenterToOutside(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  LeftToRight(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  RightToLeft(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  OutsideToCenter(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  CenterToOutside(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+}
+
+void CenterToOutside(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i =((NUM_LEDS-EyeSize)/2); i>=0; i--) {
+    setAll(0,0,0);
+    
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    
+    setPixel(NUM_LEDS-i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(NUM_LEDS-i-j, red, green, blue); 
+    }
+    setPixel(NUM_LEDS-i-EyeSize-1, red/10, green/10, blue/10);
+    
+    if (showStrip())
+      return;
+      
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+
+void OutsideToCenter(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = 0; i<=((NUM_LEDS-EyeSize)/2); i++) {
+    setAll(0,0,0);
+    
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    
+    setPixel(NUM_LEDS-i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(NUM_LEDS-i-j, red, green, blue); 
+    }
+    setPixel(NUM_LEDS-i-EyeSize-1, red/10, green/10, blue/10);
+    
+    if (showStrip())
+      return;
+    
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+
+void LeftToRight(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = 0; i < NUM_LEDS-EyeSize-2; i++) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    if (showStrip())
+      return;
+      
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+
+void RightToLeft(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = NUM_LEDS-EyeSize-2; i > 0; i--) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    if (showStrip())
+      return;
+      
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
 }
 
 bool showStrip() {
@@ -176,7 +286,8 @@ void setAll(byte red, byte green, byte blue, int strip) {
   for(int i = 0; i < NUM_LEDS; i++ ) {
     setPixel(i, red, green, blue, strip); 
   }
-  showStrip();
+    if (showStrip())
+      return;
 }
 
 const int ledPin =  13; 
@@ -225,11 +336,25 @@ void ReadCommands() {
   }
 
   if (strcmp(command, "LoadFuel") == 0) {
-    LoadFuel();
-    //strcpy( command, "" );
+//    LoadFuel();
+Default();
   }
   else if (strcmp(command, "LoadGear") == 0) {
-    LoadGear();
+//    LoadGear();
+EndGame();
+  }
+  else if (strcmp(command, "Aim") == 0) {
+    Aim();
+  }
+  else if (strcmp(command, "OnTarget") == 0) {
+    OnTarget();
+    strcpy( command, "" );
+  }
+  else if (strcmp(command, "Default") == 0) {
+    Default();
+  }  
+  else if (strcmp(command, "EndGame") == 0) {
+    EndGame();
   }
 }
 
