@@ -6,7 +6,7 @@ import org.team2471.frc.lib.io.ControllerButton;
 
 public class IOMap {
   private static Controller driverController = new Controller(0);
-  private static Controller coPilotController = new Controller(1);
+  private static Controller coDriverController = new Controller(1);
 
   public static final ControllerAxis throttleAxis = driverController.getAxis(1)
       .withDeadband(.2)
@@ -16,7 +16,10 @@ public class IOMap {
       .withDeadband(.2)
       .withExponentialScaling(2);
 
+  public static final ControllerButton shooterButton = coDriverController.getButton(0);
 
+  public static final ControllerAxis shooterRate = coDriverController.getAxis(0)
+      .withInvert();
 
   public static final ControllerButton turnInPlaceButton = driverController.getButton(0);
 }
