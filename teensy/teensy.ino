@@ -7,17 +7,19 @@ CRGB leds[2][NUM_LEDS];
 #define PIN2 8
 void setPixel( int Pixel, byte red, byte green, byte blue, int strip = 0);
 void setAll(byte red, byte green, byte blue, int strip = 0);
+
 void setup()
 {
   setupBlinkOnLED();
   FastLED.addLeds<WS2811, PIN1, GRB>(leds[0], NUM_LEDS).setCorrection( TypicalLEDStrip );
   FastLED.addLeds<WS2811, PIN2, GRB>(leds[1], NUM_LEDS).setCorrection( TypicalLEDStrip );
+  Serial.begin(9600);
 }
 
 void loop() { 
   //loopBlinkOnLED();
  //LoadGear();
-  //LoadFuel();
+ //LoadFuel();
 // setAll(0,0,0,0);
 // setAll(0,0,0,1);
 // delay(250);
@@ -26,15 +28,17 @@ void loop() {
 // showStrip();
 // delay(250);
  //RGBLoop();
- Aim();
+ //Aim();
+
+  ReadCommands(); 
 }
 
 void LoadFuel() {
-    RunningLights(0,0xff,0,50,4,0,0);
+    RunningLights(0x00,0xff,0x00,50,4,0,0);
 }
 
 void LoadGear() {
-    RunningLights(0xff,0xf0,0, 70,11,0,1);
+    RunningLights(0xff,0xf0,0, 70,11,0,0);
 }
 
 void Aim(){
@@ -42,8 +46,8 @@ void Aim(){
     CylonBounce(0xff, 0, 0, 4, q, 50);
   }
    for(int q = 0; q < 15; q++){
-    setAll(0x24,0x24,0x24,0);
-//    setAll(0xFF, 0xFF, 0xFF, 0);
+//  setAll(0x24,0x24,0x24,0);
+    setAll(0xFF, 0xFF, 0xFF, 0);
     delay(15);
     setAll(0,0,0,0);
     delay(15);
@@ -106,7 +110,7 @@ void DoubleChase(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, i
 
 void RunningLights(byte red, byte green, byte blue, int WaveDelay, float ballSize, float verticalOffSet, int strip) {
   
-  for(int Position=0; Position<(NUM_LEDS-ballSize)/2; Position++)
+  for(int Position=0; Position<ballSize*2; Position++)
   {
       setAll(0,0,0,strip);    
       for(int i=0; i<NUM_LEDS; i++) {
@@ -114,10 +118,10 @@ void RunningLights(byte red, byte green, byte blue, int WaveDelay, float ballSiz
         if (value>0) {
           setPixel(i, dim8_raw(dim8_raw(value*red)), dim8_raw(dim8_raw(value*green)), dim8_raw(dim8_raw(value*blue)), strip);
         }
-
       }
       
-      showStrip();
+      if (showStrip())
+        return;
       delay(WaveDelay);
   }
 }
@@ -139,23 +143,20 @@ void RGBLoop(){
       switch(j) { 
         case 0: setAll(k,0,0); break;
         case 1: setAll(0,k,0); break;
-        case 2: setAll(0,0,k); break;
       }
-      showStrip();
-      delay(3);
     }
   }
 }
 
-void showStrip() {
+bool showStrip() {
  #ifdef ADAFRUIT_NEOPIXEL_H 
    // NeoPixel
    strip.show();
- #endif
- #ifndef ADAFRUIT_NEOPIXEL_H
+ #else
    // FastLED
    FastLED.show();
  #endif
+ return Serial.available() > 0;
 }
 
 void setPixel( int Pixel, byte red, byte green, byte blue, int strip) {
@@ -190,7 +191,7 @@ void setupBlinkOnLED() {
 void loopBlinkOnLED()
 {
 
-  unsigned long currentMillis = millis();
+  long currentMillis = millis();
  
   if(currentMillis - previousMillis > interval) {
     // save the last time you blinked the LED 
@@ -204,3 +205,31 @@ void loopBlinkOnLED()
     digitalWrite(ledPin, ledState);
   }
 }
+
+void ReadCommands() {
+  static char command[40];
+  int pos = 0;
+  char letter = '\0';
+
+  if (Serial.available() > 0) {
+    do {
+      if (Serial.available() > 0) {
+        letter = Serial.read();
+        if (letter != ' ' && letter != '\n') {
+          command[pos++] = letter;
+        }
+      }
+    } while (letter != ' ' && letter != '\n');
+    Serial.read();
+    command[pos++] = '\0';  // add null terminator
+  }
+
+  if (strcmp(command, "LoadFuel") == 0) {
+    LoadFuel();
+    //strcpy( command, "" );
+  }
+  else if (strcmp(command, "LoadGear") == 0) {
+    LoadGear();
+  }
+}
+
