@@ -5,50 +5,69 @@ CRGB leds[2][NUM_LEDS];
 
 #define PIN1 6
 #define PIN2 8
+
 void setPixel( int Pixel, byte red, byte green, byte blue, int strip = 0);
 void setAll(byte red, byte green, byte blue, int strip = 0);
+
 void setup()
 {
   setupBlinkOnLED();
   FastLED.addLeds<WS2811, PIN1, GRB>(leds[0], NUM_LEDS).setCorrection( TypicalLEDStrip );
   FastLED.addLeds<WS2811, PIN2, GRB>(leds[1], NUM_LEDS).setCorrection( TypicalLEDStrip );
+  Serial.begin(9600);
 }
 
 void loop() { 
-  //loopBlinkOnLED();
+ //loopBlinkOnLED();
  //LoadGear();
-  //LoadFuel();
-// setAll(0,0,0,0);
-// setAll(0,0,0,1);
-// delay(250);
-// setAll(0,0xff,0,0);
- //setAll(0,0,0xff,0);
-// showStrip();
-// delay(250);
+ //LoadFuel();
  //RGBLoop();
- Aim();
+ //Aim();
+
+  ReadCommands(); 
+}
+
+void Default() {
+    NewKITT(0xff, 0, 0, 8, 10, 50);
 }
 
 void LoadFuel() {
-    RunningLights(0,0xff,0,50,4,0,0);
+    RunningLights(0x00,0xff,0x00,50,4,0,0);
 }
 
 void LoadGear() {
-    RunningLights(0xff,0xf0,0, 70,11,0,1);
+    RunningLights(0xff,0xf0,0, 70,11,0,0);
 }
 
 void Aim(){
   for(int q = 20; q > 0;q-=2){
     CylonBounce(0xff, 0, 0, 4, q, 50);
   }
+}
+
+void Seizure() {
    for(int q = 0; q < 15; q++){
-    setAll(0x24,0x24,0x24,0);
-//    setAll(0xFF, 0xFF, 0xFF, 0);
+//  setAll(0x24,0x24,0x24,0);
+    setAll(0xFF, 0xFF, 0xFF, 0);
     delay(15);
     setAll(0,0,0,0);
     delay(15);
    }
 }
+
+void OnTarget() {
+   Seizure();
+}
+
+void EndGame() {
+  for(int q = 0; q < 15; q++){
+    setAll(0,0,0,0);
+    delay(15);
+    setAll(0xFF, 0, 0, 0);
+    delay(15);
+  }
+}
+
 
 void CylonBounce(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay){
 
@@ -59,7 +78,8 @@ void CylonBounce(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, i
       setPixel(i+j, red, green, blue); 
     }
     setPixel(i+EyeSize+1, red/10, green/10, blue/10);
-    showStrip();
+    if (showStrip())
+      return;
     delay(SpeedDelay);
   }
 
@@ -72,7 +92,8 @@ void CylonBounce(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, i
       setPixel(i+j, red, green, blue); 
     }
     setPixel(i+EyeSize+1, red/10, green/10, blue/10);
-    showStrip();
+    if (showStrip())
+      return;
     delay(SpeedDelay);
   }
   
@@ -95,10 +116,10 @@ void DoubleChase(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, i
                   
     }
     
-    showStrip();
+    if (showStrip())
+      return;
     delay(SpeedDelay);
   }
-
   delay(ReturnDelay);
 }
 
@@ -106,7 +127,7 @@ void DoubleChase(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, i
 
 void RunningLights(byte red, byte green, byte blue, int WaveDelay, float ballSize, float verticalOffSet, int strip) {
   
-  for(int Position=0; Position<(NUM_LEDS-ballSize)/2; Position++)
+  for(int Position=0; Position<ballSize*2; Position++)
   {
       setAll(0,0,0,strip);    
       for(int i=0; i<NUM_LEDS; i++) {
@@ -114,10 +135,10 @@ void RunningLights(byte red, byte green, byte blue, int WaveDelay, float ballSiz
         if (value>0) {
           setPixel(i, dim8_raw(dim8_raw(value*red)), dim8_raw(dim8_raw(value*green)), dim8_raw(dim8_raw(value*blue)), strip);
         }
-
       }
       
-      showStrip();
+      if (showStrip())
+        return;
       delay(WaveDelay);
   }
 }
@@ -131,7 +152,9 @@ void RGBLoop(){
         case 1: setAll(0,k,0); break;
         case 2: setAll(0,0,k); break;
       }
-      showStrip();
+      if (showStrip())
+        return;
+
       delay(3);
     }
     // Fade OUT
@@ -139,23 +162,111 @@ void RGBLoop(){
       switch(j) { 
         case 0: setAll(k,0,0); break;
         case 1: setAll(0,k,0); break;
-        case 2: setAll(0,0,k); break;
       }
-      showStrip();
-      delay(3);
     }
   }
 }
 
-void showStrip() {
+void NewKITT(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay){
+  RightToLeft(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  LeftToRight(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  OutsideToCenter(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  CenterToOutside(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  LeftToRight(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  RightToLeft(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  OutsideToCenter(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  CenterToOutside(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+}
+
+void CenterToOutside(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i =((NUM_LEDS-EyeSize)/2); i>=0; i--) {
+    setAll(0,0,0);
+    
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    
+    setPixel(NUM_LEDS-i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(NUM_LEDS-i-j, red, green, blue); 
+    }
+    setPixel(NUM_LEDS-i-EyeSize-1, red/10, green/10, blue/10);
+    
+    if (showStrip())
+      return;
+      
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+
+void OutsideToCenter(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = 0; i<=((NUM_LEDS-EyeSize)/2); i++) {
+    setAll(0,0,0);
+    
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    
+    setPixel(NUM_LEDS-i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(NUM_LEDS-i-j, red, green, blue); 
+    }
+    setPixel(NUM_LEDS-i-EyeSize-1, red/10, green/10, blue/10);
+    
+    if (showStrip())
+      return;
+    
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+
+void LeftToRight(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = 0; i < NUM_LEDS-EyeSize-2; i++) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    if (showStrip())
+      return;
+      
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+
+void RightToLeft(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = NUM_LEDS-EyeSize-2; i > 0; i--) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    if (showStrip())
+      return;
+      
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+
+bool showStrip() {
  #ifdef ADAFRUIT_NEOPIXEL_H 
    // NeoPixel
    strip.show();
- #endif
- #ifndef ADAFRUIT_NEOPIXEL_H
+ #else
    // FastLED
    FastLED.show();
  #endif
+ return Serial.available() > 0;
 }
 
 void setPixel( int Pixel, byte red, byte green, byte blue, int strip) {
@@ -175,7 +286,8 @@ void setAll(byte red, byte green, byte blue, int strip) {
   for(int i = 0; i < NUM_LEDS; i++ ) {
     setPixel(i, red, green, blue, strip); 
   }
-  showStrip();
+    if (showStrip())
+      return;
 }
 
 const int ledPin =  13; 
@@ -190,7 +302,7 @@ void setupBlinkOnLED() {
 void loopBlinkOnLED()
 {
 
-  unsigned long currentMillis = millis();
+  long currentMillis = millis();
  
   if(currentMillis - previousMillis > interval) {
     // save the last time you blinked the LED 
@@ -204,3 +316,45 @@ void loopBlinkOnLED()
     digitalWrite(ledPin, ledState);
   }
 }
+
+void ReadCommands() {
+  static char command[40];
+  int pos = 0;
+  char letter = '\0';
+
+  if (Serial.available() > 0) {
+    do {
+      if (Serial.available() > 0) {
+        letter = Serial.read();
+        if (letter != ' ' && letter != '\n') {
+          command[pos++] = letter;
+        }
+      }
+    } while (letter != ' ' && letter != '\n');
+    Serial.read();
+    command[pos++] = '\0';  // add null terminator
+  }
+
+  if (strcmp(command, "LoadFuel") == 0) {
+//    LoadFuel();
+Default();
+  }
+  else if (strcmp(command, "LoadGear") == 0) {
+//    LoadGear();
+EndGame();
+  }
+  else if (strcmp(command, "Aim") == 0) {
+    Aim();
+  }
+  else if (strcmp(command, "OnTarget") == 0) {
+    OnTarget();
+    strcpy( command, "" );
+  }
+  else if (strcmp(command, "Default") == 0) {
+    Default();
+  }  
+  else if (strcmp(command, "EndGame") == 0) {
+    EndGame();
+  }
+}
+

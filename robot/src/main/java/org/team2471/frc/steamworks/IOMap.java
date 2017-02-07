@@ -9,7 +9,7 @@ public class IOMap {
 
   public static void init() {
     CommandTrigger userButtonTrigger = new CommandTrigger(Utility::getUserButton);
-    userButtonTrigger.whenActive(new RunCommand(() -> Robot.ledController.sentLn(LEDController.LOAD_GEAR)));
-    userButtonTrigger.whenInactive(new RunCommand(() -> Robot.ledController.sentLn(LEDController.LOAD_FUEL)));
+    userButtonTrigger.whenActive(new RunCommand(() -> Robot.ledController.sendLn(LEDController.LOAD_GEAR)));
+    userButtonTrigger.whenInactive(new RunCommand(() -> Robot.ledController.sendLn(LEDController.LOAD_FUEL)));
   }
 }
