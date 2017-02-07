@@ -5,9 +5,10 @@ import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
 
 public class DriveDefaultCommand extends Command {
-public DriveDefaultCommand(){
-  requires(Robot.drive);
+  public DriveDefaultCommand(){
+    requires(Robot.drive);
 }
+
   @Override
   protected void execute() {
     Robot.drive.drive(IOMap.throttleAxis.get(), IOMap.turnAxis.get());

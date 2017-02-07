@@ -2,14 +2,10 @@ package org.team2471.frc.steamworks.subsystems;
 
 import com.ctre.CANTalon;
 import com.team254.frc2016.CheesyDriveHelper;
-import com.team254.lib.util.DriveSignal;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.jcp.xml.dsig.internal.MacOutputStream;
-import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.defaultcommands.DriveDefaultCommand;
 
-import static org.team2471.frc.steamworks.HardwareMap.Drive.*;
+import static org.team2471.frc.steamworks.HardwareMap.DriveMap.*;
 
 public class Drive extends Subsystem {
 
@@ -17,17 +13,17 @@ public class Drive extends Subsystem {
 
   public Drive(){
     leftMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+    leftMotor1.setInverted(true);
     leftMotor2.changeControlMode(CANTalon.TalonControlMode.Follower);
     leftMotor3.changeControlMode(CANTalon.TalonControlMode.Follower);
-    leftMotor2.set (leftMotor1.getDeviceID());
-    leftMotor3.set (leftMotor1.getDeviceID());
+    leftMotor2.set(leftMotor1.getDeviceID());
+    leftMotor3.set(leftMotor1.getDeviceID());
 
     rightMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-    rightMotor1.setInverted(true);
     rightMotor2.changeControlMode(CANTalon.TalonControlMode.Follower);
     rightMotor3.changeControlMode(CANTalon.TalonControlMode.Follower);
-    rightMotor2.set (rightMotor1.getDeviceID());
-    rightMotor3.set (rightMotor1.getDeviceID());
+    rightMotor2.set(rightMotor1.getDeviceID());
+    rightMotor3.set(rightMotor1.getDeviceID());
 
     leftMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
     leftMotor1.reverseSensor(false);

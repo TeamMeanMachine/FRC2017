@@ -4,7 +4,7 @@ import com.team254.lib.util.DriveSignal;
 import com.team254.lib.util.Util;
 
 /**
- * Helper class to implement "Cheesy Drive". "Cheesy Drive" simply means that
+ * Helper class to implement "Cheesy DriveMap". "Cheesy DriveMap" simply means that
  * the "turning" stick controls the curvature of the robot's path rather than
  * its rate of heading change. This helps make the robot more controllable at
  * high speeds. Also handles the robot's quick turn functionality - "quick turn"
