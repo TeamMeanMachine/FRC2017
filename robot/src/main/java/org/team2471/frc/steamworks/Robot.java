@@ -8,10 +8,13 @@ import org.team2471.frc.steamworks.subsystems.TwinShooter;
 public class Robot extends IterativeRobot {
   public static Drive drive;
   public static TwinShooter twinShooter;
+  public static CoProcessor coProcessor;
+
   @Override
   public void robotInit() {
     drive = new Drive();
     twinShooter = new TwinShooter();
+    coProcessor = new CoProcessor();
   }
 
   @Override
