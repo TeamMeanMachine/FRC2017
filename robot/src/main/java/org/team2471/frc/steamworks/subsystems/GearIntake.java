@@ -1,5 +1,6 @@
 package org.team2471.frc.steamworks.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team2471.frc.steamworks.HardwareMap;
@@ -10,6 +11,7 @@ public class GearIntake extends Subsystem {
   private Solenoid rightFlap = HardwareMap.GearIntake.rightFlap;
   private Solenoid leftTilt = HardwareMap.GearIntake.leftTilt;
   private Solenoid rightTilt = HardwareMap.GearIntake.rightTilt;
+  private DigitalInput gearSensor = HardwareMap.GearIntake.gearSensor;
 
   /**
    * Tilt gear intake forward
@@ -42,11 +44,18 @@ public class GearIntake extends Subsystem {
    * Put flaps back
    */
 
-  public void closeFlaps(){
+  public void closeFlaps() {
     leftFlap.set(false);
     rightFlap.set(false);
   }
 
+  /**
+   * Has the gear
+   */
+
+  public boolean hasGear(){
+    return gearSensor.get();
+  }
 
   @Override
   protected void initDefaultCommand() {

@@ -1,5 +1,6 @@
 package org.team2471.frc.steamworks;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 
 /**
@@ -12,5 +13,6 @@ public class HardwareMap {
     public static final Solenoid rightFlap = new Solenoid(1);
     public static final Solenoid leftTilt = new Solenoid(2);
     public static final Solenoid rightTilt = new Solenoid(3);
+    public static final DigitalInput gearSensor = new DigitalInput(0);
   }
 }
