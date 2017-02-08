@@ -3,15 +3,10 @@ package org.team2471.frc.steamworks.subsystems;
 import com.ctre.CANTalon;
 
 import org.team2471.frc.steamworks.HardwareMap;
-
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
+import org.team2471.frc.steamworks.defaultcommands.TwinShooterDefaultCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class TwinShooter extends Subsystem {
-
-  // 3 TALONs (2 for the actual spinny part and one to feed ball) 2 PID on slave and master
 
   private CANTalon masterLeft = HardwareMap.TwinShooterMap.masterLeft;
   private CANTalon slaveLeft = HardwareMap.TwinShooterMap.slaveLeft;
@@ -31,16 +26,14 @@ public class TwinShooter extends Subsystem {
     }
 
 
-
-
-  /** Enable
+  /** Enable... This really needs no explanation.
    */
   public void enable() {
     masterLeft.enable();
     masterRight.enable();
   }
 
-  /** Disable
+  /** Disable...
    */
   public void disable() {
     masterLeft.disable();
@@ -50,31 +43,26 @@ public class TwinShooter extends Subsystem {
   /**
    * Runs master and slave forward on both
      */
-    public void shooterMotorsForward() {
-      masterLeft.setSetpoint(0);
-      masterRight.setSetpoint(0);
+    public void setRPM(double rpm) {
+      masterLeft.setSetpoint(rpm);
+      masterRight.setSetpoint(rpm);
     }
 
     /**
-     * Runs the ball feeder forward on both
+     * Runs the ball feeder thingymabobber
      */
-
-    public void shooterMotorsBack() {
-      masterLeft.setSetpoint(-0);
-      masterRight.setSetpoint(-0);
+    public void ballFeederOut() {
+      ballFeeder.set(0);
     }
 
-    /**
-     * Runs the ball feeder back on both
-     */
-    public void feedBall() {
+    public void ballFeederIn() {
       ballFeeder.set(0);
     }
 
 
     @Override
     protected void initDefaultCommand() {
-
+    setDefaultCommand(new TwinShooterDefaultCommand());
     }
   }
 
