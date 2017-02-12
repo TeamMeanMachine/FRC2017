@@ -4,6 +4,6 @@ import com.ctre.CANTalon;
 
 public class HardwareMap {
   public static final class CycloneMap{
-    public static final CANTalon cyclonesMotor = new CANTalon(0);
+    public static final CANTalon cyclonesMotor = new CANTalon(12);
   }
 }
