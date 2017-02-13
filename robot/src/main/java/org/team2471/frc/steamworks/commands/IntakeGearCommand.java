@@ -11,15 +11,15 @@ public class IntakeGearCommand extends Command {
   }
 
   @Override
-  protected void initialize() {
-    Robot.gearIntake.closeFlaps();
-    Robot.gearIntake.tiltForward();
+  protected void execute() {
+    Robot.gearIntake.openFlaps();
+    Robot.gearIntake.tiltBack();
   }
-
 
   @Override
   protected void end() {
-    Robot.gearIntake.tiltBack();
+    Robot.gearIntake.closeFlaps();
+    Robot.gearIntake.tiltForward();
   }
 
 
