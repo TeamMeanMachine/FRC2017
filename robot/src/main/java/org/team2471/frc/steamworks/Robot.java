@@ -1,5 +1,7 @@
 package org.team2471.frc.steamworks;
 
+import org.team2471.frc.steamworks.subsystems.TwinShooter;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import org.team2471.frc.steamworks.subsystems.Drive;
@@ -13,8 +15,10 @@ public class Robot extends IterativeRobot {
 
   public static FuelIntake fuelIntake;
 
+  public static TwinShooter twinShooter;
   @Override
   public void robotInit() {
+    twinShooter = new TwinShooter();
     drive = new Drive();
     gearIntake = new GearIntake();
     fuelIntake = new FuelIntake();

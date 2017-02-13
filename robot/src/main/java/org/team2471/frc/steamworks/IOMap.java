@@ -8,8 +8,9 @@ import org.team2471.frc.steamworks.commands.FuelIntakeCommand;
 
 public class IOMap {
   private static Controller driverController = new Controller(0);
-  private static Controller coPilotController = new Controller(1);
+  private static Controller coDriverController = new Controller(1);
 
+  public static ControllerButton shootButton = coDriverController.getButton(1);
   public static final ControllerAxis throttleAxis = driverController.getAxis(1)
       .withDeadband(.2)
       .withExponentialScaling(2);
