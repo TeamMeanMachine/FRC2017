@@ -19,6 +19,9 @@ public class IOMap {
       .withDeadband(.2)
       .withExponentialScaling(2);
 
+  public static final ControllerAxis leftAxis = driverController.getAxis(2);
+  public static final ControllerAxis rightAxis = driverController.getAxis(3);
+
   public static final ControllerButton intakeButton = driverController.getButton(5);
 
 

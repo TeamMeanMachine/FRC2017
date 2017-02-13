@@ -2,6 +2,7 @@ package org.team2471.frc.steamworks.subsystems;
 
 import com.ctre.CANTalon;
 import com.team254.frc2016.CheesyDriveHelper;
+import com.team254.lib.util.DriveSignal;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team2471.frc.steamworks.defaultcommands.DriveDefaultCommand;
 
@@ -55,9 +56,10 @@ public class Drive extends Subsystem {
     setDefaultCommand(new DriveDefaultCommand());
   }
 
-  public void drive(double throttle, double turn){
-    leftMotor1.set(throttle + turn);
-    rightMotor1.set(throttle - turn);
+  public void drive(double throttle, double turn, double turnLeft, double turnRight) {
+    DriveSignal signal = cheesyDriveHelper.cheesyDrive(throttle, turn, false);
+    leftMotor1.set(signal.leftMotor - turnLeft);
+    rightMotor1.set(signal.rightMotor + turnRight);
   }
 
   public double getSpeed() {
