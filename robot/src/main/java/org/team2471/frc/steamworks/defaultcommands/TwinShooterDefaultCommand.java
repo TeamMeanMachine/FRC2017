@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.control.CommandTrigger;
 import org.team2471.frc.lib.io.dashboard.DashboardUtils;
+import org.team2471.frc.steamworks.IOMap;
 
 import static org.team2471.frc.steamworks.Robot.twinShooter;
 
@@ -51,6 +52,10 @@ public class TwinShooterDefaultCommand extends Command{
             SmartDashboard.getNumber("SHOOTER_D", 0),
             SmartDashboard.getNumber("SHOOTER_F", 0)
     );
+
+    if (IOMap.shootButton.get()) {
+      twinShooter.ballFeederIn();
+    }
   }
 
   @Override

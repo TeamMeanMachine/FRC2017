@@ -7,6 +7,8 @@ import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.defaultcommands.TwinShooterDefaultCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import static org.team2471.frc.steamworks.HardwareMap.CycloneMap.cyclonesMotor;
+
 public class TwinShooter extends Subsystem {
 
   private CANTalon masterLeft = HardwareMap.TwinShooterMap.masterLeft;
@@ -60,18 +62,20 @@ public class TwinShooter extends Subsystem {
     /**
      * Runs the ball feeder thingymabobber
      */
-    public void ballFeederOut() {
+    public void ballFeederStop() {
       ballFeeder.set(0);
+      cyclonesMotor.set(0);
     }
 
     public void ballFeederIn() {
-      ballFeeder.set(0);
+      ballFeeder.set(0.6);
+      cyclonesMotor.set(0.8);
     }
 
 
-    @Override
-    protected void initDefaultCommand() {
-    setDefaultCommand(new TwinShooterDefaultCommand());
-    }
+  @Override
+  protected void initDefaultCommand() {
+
   }
+}
 
