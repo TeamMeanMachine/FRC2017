@@ -7,7 +7,7 @@ import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.defaultcommands.TwinShooterDefaultCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-import static org.team2471.frc.steamworks.HardwareMap.CycloneMap.cyclonesMotor;
+import static org.team2471.frc.steamworks.HardwareMap.TwinShooterMap.cyclonesMotor;
 
 public class TwinShooter extends Subsystem {
 
