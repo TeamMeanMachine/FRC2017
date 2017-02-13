@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class FuelIntake extends Subsystem {
 
-  public CANTalon intakeMotor = HardwareMap.FuelIntakeMap.intakeMotor;
-  public CANTalon leftWindshieldMotor = HardwareMap.FuelIntakeMap.leftWindshieldMotor;
-  public CANTalon rightWindshieldMotor = HardwareMap.FuelIntakeMap.rightWindshieldMotor;
-  public Solenoid intakeSolenoid = HardwareMap.FuelIntakeMap.intakeSolenoid;
+  private CANTalon intakeMotor = HardwareMap.FuelIntakeMap.intakeMotor;
+  private CANTalon leftWindshieldMotor = HardwareMap.FuelIntakeMap.leftWindshieldMotor;
+  private CANTalon rightWindshieldMotor = HardwareMap.FuelIntakeMap.rightWindshieldMotor;
+  private Solenoid intakeSolenoid = HardwareMap.FuelIntakeMap.intakeSolenoid;
 
 
   public FuelIntake() {
@@ -40,6 +40,19 @@ public class FuelIntake extends Subsystem {
      **/
     public void rollIn() {
       intakeMotor.set(0.8);
+    }
+
+    public void windShieldsStop(){
+      leftWindshieldMotor.set(0);
+      rightWindshieldMotor.set(0);
+    }
+
+    public void stopRoll(){
+      intakeMotor.set(0);
+    }
+
+    public void rollOut(){
+      intakeMotor.set(-0.8);
     }
 
 
