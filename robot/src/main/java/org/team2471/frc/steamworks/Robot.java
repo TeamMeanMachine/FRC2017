@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class Robot extends IterativeRobot {
-  public static TwinShooter twinshooter;
+  public static TwinShooter twinShooter;
   @Override
   public void robotInit() {
-    twinshooter = new TwinShooter();
+    twinShooter = new TwinShooter();
   }
 
   @Override

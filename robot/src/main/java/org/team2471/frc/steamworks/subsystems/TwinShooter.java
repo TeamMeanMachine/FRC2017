@@ -2,6 +2,7 @@ package org.team2471.frc.steamworks.subsystems;
 
 import com.ctre.CANTalon;
 
+import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.defaultcommands.TwinShooterDefaultCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -17,14 +18,22 @@ public class TwinShooter extends Subsystem {
 
 
     public TwinShooter() {
-
       masterLeft.changeControlMode(CANTalon.TalonControlMode.Speed);
       masterRight.changeControlMode(CANTalon.TalonControlMode.Speed);
       slaveLeft.changeControlMode(CANTalon.TalonControlMode.Follower);
       slaveRight.changeControlMode(CANTalon.TalonControlMode.Follower);
-
     }
 
+  public double getSpeed() {
+    return masterLeft.getSpeed();
+  }
+
+  public void setPIDF(double p, double i, double d, double f) {
+    masterLeft.setPID(p, i, d);
+    masterLeft.setF(f);
+    masterRight.setPID(p, i, d);
+    masterRight.setF(f);
+  }
 
   /** Enable... This really needs no explanation.
    */
