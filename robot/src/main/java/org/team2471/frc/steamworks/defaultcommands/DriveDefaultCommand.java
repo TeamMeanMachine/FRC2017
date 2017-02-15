@@ -11,7 +11,7 @@ public class DriveDefaultCommand extends Command {
 
   @Override
   protected void execute() {
-    Robot.drive.drive(IOMap.throttleAxis.get(), IOMap.turnAxis.get());
+    Robot.drive.drive(IOMap.throttleAxis.get(), IOMap.turnAxis.get(), IOMap.leftAxis.get(), IOMap.rightAxis.get());
   }
 
   @Override
