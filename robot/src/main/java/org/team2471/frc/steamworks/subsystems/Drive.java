@@ -6,21 +6,21 @@ import com.team254.lib.util.DriveSignal;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team2471.frc.steamworks.defaultcommands.DriveDefaultCommand;
 
-import static org.team2471.frc.steamworks.HardwareMap.DriveMap.*;
+import static org.team2471.frc.steamworks.HardwareMap.DriveTrainMap.*;
 
 public class Drive extends Subsystem {
 
   private CheesyDriveHelper cheesyDriveHelper;
 
-  public Drive(){
+  public Drive() {
     leftMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-    leftMotor1.setInverted(true);
     leftMotor2.changeControlMode(CANTalon.TalonControlMode.Follower);
     leftMotor3.changeControlMode(CANTalon.TalonControlMode.Follower);
     leftMotor2.set(leftMotor1.getDeviceID());
     leftMotor3.set(leftMotor1.getDeviceID());
 
     rightMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+    rightMotor1.setInverted(true);
     rightMotor2.changeControlMode(CANTalon.TalonControlMode.Follower);
     rightMotor3.changeControlMode(CANTalon.TalonControlMode.Follower);
     rightMotor2.set(rightMotor1.getDeviceID());
@@ -58,14 +58,24 @@ public class Drive extends Subsystem {
 
   public void drive(double throttle, double turn, double turnLeft, double turnRight) {
     DriveSignal signal = cheesyDriveHelper.cheesyDrive(throttle, turn, false);
-    leftMotor1.set(signal.leftMotor - turnLeft);
-    rightMotor1.set(signal.rightMotor + turnRight);
+    double leftPower = signal.leftMotor - turnLeft + turnRight;
+    double rightPower = signal.rightMotor - turnRight + turnLeft;
+
+    double maxPower = Math.max(Math.abs(leftPower), Math.abs(rightPower));
+    if(maxPower > 1) {
+      leftPower /= maxPower;
+      rightPower /= maxPower;
+    }
+
+    leftMotor1.set(leftPower);
+    rightMotor1.set(rightPower);
   }
 
   public double getSpeed() {
-    return (Math.abs(leftMotor1.getEncVelocity()/0.0) + Math.abs(rightMotor1.getEncVelocity()/0.0)) / 0;
+    return (Math.abs(leftMotor1.getSpeed()) + Math.abs(rightMotor1.getSpeed())) / 2;
   }
-  public void setPID(double p,double i,double d){
+
+  public void setPID(double p, double i, double d) {
     leftMotor1.setPID(p, i, d);
     rightMotor1.setPID(p, i, d);
   }

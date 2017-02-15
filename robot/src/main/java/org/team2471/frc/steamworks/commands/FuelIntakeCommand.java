@@ -4,11 +4,12 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.team2471.frc.steamworks.Robot;
 
-public class FuelIntakeCommand extends Command {
+import java.util.logging.Logger;
 
+public class FuelIntakeCommand extends Command {
   private Timer timer = new Timer();
 
-  public FuelIntakeCommand(){
+  public FuelIntakeCommand() {
     requires(Robot.fuelIntake);
   }
 
@@ -20,7 +21,7 @@ public class FuelIntakeCommand extends Command {
   @Override
   protected void execute() {
     Robot.fuelIntake.extend();
-    if (timer.get() > 0.6) {
+    if (timer.get() > 0.2) {
       Robot.fuelIntake.rollIn();
       Robot.fuelIntake.windshieldsIn();
     }

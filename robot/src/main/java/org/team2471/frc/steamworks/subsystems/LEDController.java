@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class LEDController extends Subsystem {
   private final SerialPort serialPort = new SerialPort(9600, SerialPort.Port.kOnboard);
 
-  public void write(String message){
+  public void write(String message) {
     serialPort.writeString(message + '\n');
   }
 

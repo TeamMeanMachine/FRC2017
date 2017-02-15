@@ -14,6 +14,7 @@ public class DriveSignal {
   public DriveSignal(double left, double right) {
     this(left, right, false);
   }
+
   public DriveSignal(double left, double right, boolean breakMode) {
     this.leftMotor = left;
     this.rightMotor = right;

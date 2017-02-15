@@ -5,9 +5,9 @@ import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
 
 public class DriveDefaultCommand extends Command {
-  public DriveDefaultCommand(){
+  public DriveDefaultCommand() {
     requires(Robot.drive);
-}
+  }
 
   @Override
   protected void execute() {

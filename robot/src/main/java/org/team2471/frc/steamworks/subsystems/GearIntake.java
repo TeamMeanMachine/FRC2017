@@ -4,56 +4,47 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team2471.frc.steamworks.HardwareMap;
+import org.team2471.frc.util.WaitingOnHardware;
 
 public class GearIntake extends Subsystem {
 
-  private Solenoid leftFlap = HardwareMap.GearIntake.leftFlap;
-  private Solenoid rightFlap = HardwareMap.GearIntake.rightFlap;
-  private Solenoid leftTilt = HardwareMap.GearIntake.leftTilt;
-  private Solenoid rightTilt = HardwareMap.GearIntake.rightTilt;
-  private DigitalInput gearSensor = HardwareMap.GearIntake.gearSensor;
+  private Solenoid tiltSolenoid = HardwareMap.GearIntakeMap.tiltSolenoid;
+  private Solenoid flapSolenoid = HardwareMap.GearIntakeMap.flapSolenoid;
+  private DigitalInput gearSensor = HardwareMap.GearIntakeMap.gearSensor;
 
   /**
    * Tilt gear intake forward
    */
-
-  public void tiltForward(){
-    leftTilt.set(true);
-    rightTilt.set(true);
+  public void extend() {
+    tiltSolenoid.set(true);
   }
 
   /**
    * Tilt back gear intake
    */
-
-  public void tiltBack(){
-    leftTilt.set(false);
-    rightTilt.set(false);
+  public void retract() {
+    tiltSolenoid.set(false);
   }
 
   /**
    * Put flaps forward
    */
-
-  public void openFlaps(){
-    leftFlap.set(true);
-    rightFlap.set(true);
+  public void openFlaps() {
+    flapSolenoid.set(true);
   }
 
   /**
    * Put flaps back
    */
-
   public void closeFlaps() {
-    leftFlap.set(false);
-    rightFlap.set(false);
+    flapSolenoid.set(false);
   }
 
   /**
    * Has the gear
    */
-
-  public boolean hasGear(){
+  @WaitingOnHardware
+  public boolean hasGear() {
     return gearSensor.get();
   }
 

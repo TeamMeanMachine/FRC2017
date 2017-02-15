@@ -4,13 +4,13 @@ package org.team2471.frc.steamworks.defaultcommands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team2471.frc.lib.control.CommandTrigger;
 import org.team2471.frc.lib.io.dashboard.DashboardUtils;
+import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.IOMap;
 
 import static org.team2471.frc.steamworks.Robot.twinShooter;
 
-public class TwinShooterDefaultCommand extends Command{
+public class TwinShooterDefaultCommand extends Command {
   public TwinShooterDefaultCommand() {
     requires(twinShooter);
     SmartDashboard.putNumber("SHOOTER_ACCELERATION", 0);
@@ -23,39 +23,47 @@ public class TwinShooterDefaultCommand extends Command{
 
   }
 
-  private double startTime;
-
-  private double previousVelocity = 0;
-  private double previousVelocityTimestamp = Timer.getFPGATimestamp();
-  private double acceleration = 0;
 
   @Override
   protected void initialize() {
-    startTime = Timer.getFPGATimestamp();
+    twinShooter.enable();
   }
 
   @Override
   protected void execute() {
     twinShooter.setRPM(SmartDashboard.getNumber("SHOOTER_SETPOINT", 0));
 
-    double currentVelocity = twinShooter.getSpeed();
-    double currentVelocityTimestamp = Timer.getFPGATimestamp();
     // in rpm/s
-    acceleration = (currentVelocity - previousVelocity) / (currentVelocityTimestamp - previousVelocityTimestamp);
-    SmartDashboard.putNumber("SHOOTER_ACCELERATION", acceleration);
-    previousVelocity = currentVelocity;
-    previousVelocityTimestamp = currentVelocityTimestamp;
+    SmartDashboard.putNumber("SHOOTER_LEFT_SPEED", twinShooter.getLeftSpeed());
+    SmartDashboard.putNumber("SHOOTER_LEFT_ERROR", twinShooter.getLeftError());
+
+    SmartDashboard.putNumber("SHOOTER_RIGHT_SPEED", twinShooter.getRightSpeed());
+    SmartDashboard.putNumber("SHOOTER_RIGHT_ERROR", twinShooter.getRightError());
 
     twinShooter.setPIDF(
-            SmartDashboard.getNumber("SHOOTER_P", 0),
-            SmartDashboard.getNumber("SHOOTER_I", 0),
-            SmartDashboard.getNumber("SHOOTER_D", 0),
-            SmartDashboard.getNumber("SHOOTER_F", 0)
+        SmartDashboard.getNumber("SHOOTER_P", 0),
+        SmartDashboard.getNumber("SHOOTER_I", 0),
+        SmartDashboard.getNumber("SHOOTER_D", 0),
+        SmartDashboard.getNumber("SHOOTER_F", 0)
     );
 
-    if (IOMap.shootButton.get()) {
-      twinShooter.ballFeederIn();
+    double dpadPosition = IOMap.hoodDPad.get();
+    if(dpadPosition == 315 || dpadPosition == 0 || dpadPosition == 45) {
+      twinShooter.extendHood();
+    } else if(dpadPosition >= 135 && dpadPosition <= 225) {
+      twinShooter.retractHood();
     }
+
+    if (IOMap.shootButton.get()) {
+      twinShooter.enableFeed();
+    } else {
+      twinShooter.disableFeed();
+    }
+  }
+
+  @Override
+  protected void end() {
+    twinShooter.disable();
   }
 
   @Override

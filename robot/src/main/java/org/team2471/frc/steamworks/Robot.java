@@ -16,12 +16,13 @@ public class Robot extends IterativeRobot {
   public static FuelIntake fuelIntake;
 
   public static TwinShooter twinShooter;
+
   @Override
   public void robotInit() {
     twinShooter = new TwinShooter();
     drive = new Drive();
     gearIntake = new GearIntake();
-    fuelIntake = new FuelIntake();
+//    fuelIntake = new FuelIntake();
     IOMap.init();
   }
 

@@ -3,9 +3,8 @@ package org.team2471.frc.steamworks.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.team2471.frc.steamworks.Robot;
 
-public class IntakeGearCommand extends Command {
-
-  public IntakeGearCommand() {
+public class FeedGearCommand extends Command {
+  public FeedGearCommand() {
     requires(Robot.gearIntake);
   }
 
@@ -18,12 +17,12 @@ public class IntakeGearCommand extends Command {
   @Override
   protected void end() {
     Robot.gearIntake.closeFlaps();
-    Robot.gearIntake.extend();
   }
 
 
   @Override
   protected boolean isFinished() {
-    return Robot.gearIntake.hasGear();
+    return false;
   }
 }
+
