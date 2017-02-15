@@ -5,6 +5,7 @@ import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Solenoid;
+import org.team2471.frc.lib.control.MeanMotorController;
 import org.team2471.frc.util.control.PDPDrawSensor;
 
 public class HardwareMap {
@@ -20,17 +21,19 @@ public class HardwareMap {
     public static final Solenoid hoodSolenoid = new Solenoid(4);
   }
 
-  public static final class DriveTrainMap {
-    public static final CANTalon leftMotor1 = new CANTalon(0);
-    public static final CANTalon leftMotor2 = new CANTalon(1);
-    public static final CANTalon leftMotor3 = new CANTalon(2);
-
+  public static final class DriveMap {
     public static final CANTalon rightMotor1 = new CANTalon(15);
-    public static final CANTalon rightMotor2 = new CANTalon(14);
+    public static final MeanMotorController rightMotor2 = new MeanMotorController(14);
     public static final CANTalon rightMotor3 = new CANTalon(13);
+
+    public static final CANTalon leftMotor1 = new CANTalon(0);
+    public static final MeanMotorController leftMotor2 = new MeanMotorController(1);
+    public static final CANTalon leftMotor3 = new CANTalon(2);
 
     public static final Solenoid climbPTO = new Solenoid(0);
     public static final Solenoid shiftPTO = new Solenoid(5);
+    public static final Solenoid shiftSolenoid = new Solenoid(5);
+
   }
 
   public static final class FuelIntakeMap {
