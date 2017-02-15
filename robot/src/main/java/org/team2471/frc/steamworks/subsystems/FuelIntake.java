@@ -2,6 +2,8 @@ package org.team2471.frc.steamworks.subsystems;
 
 import com.ctre.CANTalon;
 
+import org.team2471.frc.lib.io.log.LogLevel;
+import org.team2471.frc.lib.io.log.Logger;
 import org.team2471.frc.steamworks.HardwareMap;
 
 import edu.wpi.first.wpilibj.Solenoid;
@@ -10,6 +12,8 @@ import org.team2471.frc.util.control.PDPDrawSensor;
 
 public class FuelIntake extends Subsystem {
   public static final int INTAKE_CURRENT_LIMIT = 30;
+
+  private final Logger logger = new Logger("FuelIntake");
 
   private CANTalon intakeMotor = HardwareMap.FuelIntakeMap.intakeMotor;
   private CANTalon leftWindshieldMotor = HardwareMap.FuelIntakeMap.leftWindshieldMotor;
@@ -20,7 +24,6 @@ public class FuelIntake extends Subsystem {
 
   public FuelIntake() {
     intakeMotor.setInverted(true);
-
     leftWindshieldMotor.setInverted(true);
   }
 
@@ -51,10 +54,13 @@ public class FuelIntake extends Subsystem {
    * Run intake motors in
    **/
   public void rollIn() {
-    if(intakeDrawSensor.getCurrent() < INTAKE_CURRENT_LIMIT) {
+    double current = intakeDrawSensor.getCurrent();
+    logger.debug("Current: " + current, 1);
+    if(current < INTAKE_CURRENT_LIMIT) {
       intakeMotor.set(0.8);
     } else {
       intakeMotor.set(0);
+      logger.warn("Current limit exceeded!", 1);
     }
   }
 

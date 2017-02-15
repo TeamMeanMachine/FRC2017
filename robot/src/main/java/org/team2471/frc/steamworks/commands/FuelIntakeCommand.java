@@ -2,9 +2,9 @@ package org.team2471.frc.steamworks.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import org.team2471.frc.lib.io.log.LogLevel;
+import org.team2471.frc.lib.io.log.Logger;
 import org.team2471.frc.steamworks.Robot;
-
-import java.util.logging.Logger;
 
 public class FuelIntakeCommand extends Command {
   private Timer timer = new Timer();

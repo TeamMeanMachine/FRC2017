@@ -10,13 +10,11 @@ import org.team2471.frc.steamworks.defaultcommands.TwinShooterDefaultCommand;
 import static org.team2471.frc.steamworks.HardwareMap.TwinShooterMap.cycloneMotor;
 
 public class TwinShooter extends Subsystem {
-
   private CANTalon masterLeft = HardwareMap.TwinShooterMap.masterLeft;
   private CANTalon slaveLeft = HardwareMap.TwinShooterMap.slaveLeft;
   private CANTalon masterRight = HardwareMap.TwinShooterMap.masterRight;
   private CANTalon slaveRight = HardwareMap.TwinShooterMap.slaveRight;
   private CANTalon ballFeeder = HardwareMap.TwinShooterMap.ballFeeder;
-
   private Solenoid hood = HardwareMap.TwinShooterMap.hoodSolenoid;
 
 
@@ -44,14 +42,10 @@ public class TwinShooter extends Subsystem {
   }
 
   public double getLeftError() {
-    System.out.println("Master Left: " + masterLeft.getSpeed());
-    System.out.println("Slave Left: " + slaveLeft.getSpeed());
     return masterLeft.getError();
   }
 
   public double getRightSpeed() {
-    System.out.println("Master Right: " + masterRight.getSpeed());
-    System.out.println("Slave Right: " + slaveRight.getSpeed());
     return masterRight.getSpeed();
   }
 

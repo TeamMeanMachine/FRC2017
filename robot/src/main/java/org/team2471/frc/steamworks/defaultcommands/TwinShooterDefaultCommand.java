@@ -47,6 +47,9 @@ public class TwinShooterDefaultCommand extends Command {
         SmartDashboard.getNumber("SHOOTER_F", 0)
     );
 
+    SmartDashboard.putNumber("SHOOTER_LEFT_VOLTAGE", HardwareMap.TwinShooterMap.masterLeft.getOutputVoltage() / 12);
+    SmartDashboard.putNumber("SHOOTER_RIGHT_VOLTAGE", HardwareMap.TwinShooterMap.masterRight.getOutputVoltage() / 12);
+
     double dpadPosition = IOMap.hoodDPad.get();
     if(dpadPosition == 315 || dpadPosition == 0 || dpadPosition == 45) {
       twinShooter.extendHood();
@@ -63,6 +66,7 @@ public class TwinShooterDefaultCommand extends Command {
 
   @Override
   protected void end() {
+    System.out.println("Disable");
     twinShooter.disable();
   }
 

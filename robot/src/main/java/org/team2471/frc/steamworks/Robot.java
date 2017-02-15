@@ -22,7 +22,7 @@ public class Robot extends IterativeRobot {
     twinShooter = new TwinShooter();
     drive = new Drive();
     gearIntake = new GearIntake();
-//    fuelIntake = new FuelIntake();
+    fuelIntake = new FuelIntake();
     IOMap.init();
   }
 
