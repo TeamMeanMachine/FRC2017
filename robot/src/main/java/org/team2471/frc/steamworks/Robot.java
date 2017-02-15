@@ -9,6 +9,8 @@ import org.team2471.frc.steamworks.subsystems.GearIntake;
 import org.team2471.frc.steamworks.subsystems.FuelIntake;
 
 public class Robot extends IterativeRobot {
+  public static CoProcessor coProcessor;
+
   public static Drive drive;
 
   public static GearIntake gearIntake;
@@ -22,6 +24,8 @@ public class Robot extends IterativeRobot {
     drive = new Drive();
     gearIntake = new GearIntake();
     fuelIntake = new FuelIntake();
+
+    coProcessor = new CoProcessor();
     IOMap.init();
   }
 
