@@ -33,24 +33,22 @@ public class Drive extends Subsystem {
     leftMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
     leftMotor1.reverseSensor(false);
     leftMotor1.reverseOutput(false);
-    leftMotor1.configEncoderCodesPerRev(0);
+    leftMotor1.configEncoderCodesPerRev(820 / 4);
     leftMotor1.setProfile(0);
     leftMotor1.setF(0);
-    leftMotor1.setPID(0, 0, 0);
     leftMotor1.setProfile(0);
     leftMotor1.setF(0);
-    leftMotor1.setPID(0, 0, 0);
+    leftMotor1.setPID(2.0, 0, 2.0);
 
     rightMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
     rightMotor1.reverseSensor(true);
     rightMotor1.reverseOutput(true);
-    rightMotor1.configEncoderCodesPerRev(0);
+    rightMotor1.configEncoderCodesPerRev(820 / 4);
     rightMotor1.setProfile(0);
     rightMotor1.setF(0);
-    rightMotor1.setPID(0, 0, 0);
     rightMotor1.setProfile(0);
     rightMotor1.setF(0);
-    rightMotor1.setPID(0, 0, 0);
+    rightMotor1.setPID(2.0, 0, 2.0);
 
     cheesyDriveHelper = new CheesyDriveHelper();
   }
