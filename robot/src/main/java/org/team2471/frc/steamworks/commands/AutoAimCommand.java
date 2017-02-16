@@ -31,10 +31,10 @@ public class AutoAimCommand extends PIDCommand {
   @Override
   public void execute() {
     if (IOMap.shootButton.get()) {
-      Robot.twinShooter.ballFeederIn();
+      Robot.twinShooter.enableFeed();
     }
     else {
-      Robot.twinShooter.ballFeederStop();
+      Robot.twinShooter.disableFeed();
     }
   }
 

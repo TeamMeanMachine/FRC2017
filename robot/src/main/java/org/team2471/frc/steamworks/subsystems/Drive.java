@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.defaultcommands.DriveDefaultCommand;
 
-import static org.team2471.frc.steamworks.HardwareMap.DriveTrainMap.*;
+import static org.team2471.frc.steamworks.HardwareMap.DriveMap.*;
 
 public class Drive extends Subsystem {
 
