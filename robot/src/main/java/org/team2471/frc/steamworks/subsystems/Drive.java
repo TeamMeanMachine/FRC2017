@@ -3,13 +3,23 @@ package org.team2471.frc.steamworks.subsystems;
 import com.ctre.CANTalon;
 import com.team254.frc2016.CheesyDriveHelper;
 import com.team254.lib.util.DriveSignal;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team2471.frc.lib.control.MeanMotorController;
+import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.defaultcommands.DriveDefaultCommand;
 
-import static org.team2471.frc.steamworks.HardwareMap.DriveMap.*;
-
 public class Drive extends Subsystem {
+  private final MeanMotorController leftMotor1 = HardwareMap.DriveMap.leftMotor1;
+  private final CANTalon leftMotor2 = HardwareMap.DriveMap.leftMotor2;
+  private final CANTalon leftMotor3 = HardwareMap.DriveMap.leftMotor3;
+
+  private final MeanMotorController rightMotor1 = HardwareMap.DriveMap.rightMotor1;
+  private final CANTalon rightMotor2 = HardwareMap.DriveMap.rightMotor2;
+  private final CANTalon rightMotor3 = HardwareMap.DriveMap.rightMotor3;
+
+  private final Solenoid shiftSolenoid = HardwareMap.DriveMap.shiftSolenoid;
 
   private CheesyDriveHelper cheesyDriveHelper;
   public static final double HIGH_SHIFTPOINT = 5.0;
@@ -33,7 +43,7 @@ public class Drive extends Subsystem {
     leftMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
     leftMotor1.reverseSensor(false);
     leftMotor1.reverseOutput(false);
-    leftMotor1.configEncoderCodesPerRev(820 / 4);
+    leftMotor1.configEncoderCodesPerRev(212);
     leftMotor1.setProfile(0);
     leftMotor1.setF(0);
     leftMotor1.setProfile(0);
@@ -43,7 +53,7 @@ public class Drive extends Subsystem {
     rightMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
     rightMotor1.reverseSensor(true);
     rightMotor1.reverseOutput(true);
-    rightMotor1.configEncoderCodesPerRev(820 / 4);
+    rightMotor1.configEncoderCodesPerRev(212);
     rightMotor1.setProfile(0);
     rightMotor1.setF(0);
     rightMotor1.setProfile(0);
@@ -85,7 +95,11 @@ public class Drive extends Subsystem {
   }
 
   public double getSpeed() {
-    return (Math.abs(leftMotor1.getEncVelocity()) + Math.abs(rightMotor1.getEncVelocity())) / 2.0;
+    return (Math.abs(leftMotor1.getEncVelocity() / 82) + Math.abs(rightMotor1.getEncVelocity()) / 82) / 2.0;
+  }
+
+  public double getDistance() {
+    return (Math.abs(leftMotor1.getPosition()) + Math.abs(rightMotor1.getPosition())) / 2;
   }
 
   public void setPID(double p,double i,double d){

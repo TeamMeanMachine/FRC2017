@@ -8,10 +8,11 @@ import org.team2471.frc.steamworks.HardwareMap;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.team2471.frc.steamworks.defaultcommands.FuelIntakeDefaultCommand;
 import org.team2471.frc.util.control.PDPDrawSensor;
 
 public class FuelIntake extends Subsystem {
-  public static final int INTAKE_CURRENT_LIMIT = 30;
+  public static final int INTAKE_CURRENT_LIMIT = 50;
 
   private final Logger logger = new Logger("FuelIntake");
 
@@ -80,6 +81,7 @@ public class FuelIntake extends Subsystem {
 
   @Override
   protected void initDefaultCommand() {
+    setDefaultCommand(new FuelIntakeDefaultCommand());
   }
 
 }

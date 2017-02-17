@@ -13,9 +13,10 @@ public class DriveToLeftLift extends FollowPathTankDriveCommand {
 
     Path2D m_path;
 
-    public DriveToLeftLift(double speed){
+    public DriveToLeftLift(double speed) {
       this(speed, false);
     }
+
     public DriveToLeftLift(double speed, boolean mirror){
         requires(drive);
 

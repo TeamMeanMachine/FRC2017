@@ -1,5 +1,10 @@
 package org.team2471.frc.steamworks;
 
+import com.ctre.CANTalon;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team2471.frc.lib.control.MeanMotorController;
+import org.team2471.frc.steamworks.autonomouscommands.DriveToLift;
 import org.team2471.frc.steamworks.subsystems.TwinShooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -31,7 +36,16 @@ public class Robot extends IterativeRobot {
   }
 
   @Override
+  public void autonomousInit() {
+    new DriveToLift(1).start();
+  }
+
+  @Override
   public void robotPeriodic() {
     Scheduler.getInstance().run();
+  }
+
+  @Override
+  public void disabledPeriodic() {
   }
 }

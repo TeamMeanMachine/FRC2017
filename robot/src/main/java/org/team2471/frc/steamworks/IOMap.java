@@ -5,6 +5,8 @@ import org.team2471.frc.lib.io.Controller;
 import org.team2471.frc.lib.io.ControllerAxis;
 import org.team2471.frc.lib.io.ControllerButton;
 import org.team2471.frc.lib.io.ControllerDPad;
+import org.team2471.frc.lib.io.maps.LogitechJoystickMap;
+import org.team2471.frc.lib.io.maps.XboxMap;
 import org.team2471.frc.steamworks.commands.FeedFuelCommand;
 import org.team2471.frc.steamworks.commands.FuelIntakeCommand;
 import org.team2471.frc.steamworks.commands.FeedGearCommand;
@@ -13,32 +15,34 @@ public class IOMap {
   private static Controller driverController = new Controller(0);
   private static Controller coDriverController = new Controller(1);
 
-  public static ControllerButton shootButton = coDriverController.getButton(1);
-  public static final ControllerAxis throttleAxis = driverController.getAxis(1)
+  public static ControllerButton shootButton = coDriverController.getButton(LogitechJoystickMap.Buttons.TRIGGER);
+  public static final ControllerAxis throttleAxis = driverController.getAxis(XboxMap.Axes.LEFT_THUMBSTICK_Y)
       .withDeadband(.2)
       .withInvert()
       .withExponentialScaling(2);
 
-  public static final ControllerAxis turnAxis = driverController.getAxis(4)
+  public static final ControllerAxis turnAxis = driverController.getAxis(XboxMap.Axes.RIGHT_THUMBSTICK_X)
       .withDeadband(.2)
       .withExponentialScaling(2);
 
-  public static final ControllerAxis leftAxis = driverController.getAxis(2);
-  public static final ControllerAxis rightAxis = driverController.getAxis(3);
+  public static final ControllerAxis leftAxis = driverController.getAxis(XboxMap.Axes.LEFT_TRIGGER);
+  public static final ControllerAxis rightAxis = driverController.getAxis(XboxMap.Axes.RIGHT_TRIGGER);
 
 
-  public static final ControllerButton intakeButton = driverController.getButton(5);
+  public static final ControllerButton toggleIntakeButton = driverController.getButton(XboxMap.Buttons.X);
+  public static final ControllerButton useIntakeButton = driverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
+  public static final ControllerButton spitButton = driverController.getButton(XboxMap.Buttons.BACK);
 
-  public static final ControllerButton gearFeedButton = coDriverController.getButton(7);
-  public static final ControllerButton fuelFeedButton = coDriverController.getButton(9);
+  public static final ControllerButton gearFeedButton = coDriverController.getButton(LogitechJoystickMap.Buttons.BASE_UPPER_LEFT);
+  public static final ControllerButton fuelFeedButton = coDriverController.getButton(LogitechJoystickMap.Buttons.BASE_MIDDLE_LEFT);
 
   public static final ControllerDPad hoodDPad = coDriverController.getDPad();
 
   public static void init() {
     // null checks because subsystems may not be initialized when we are testing
     if(Robot.fuelIntake != null) {
-      CommandTrigger fuelIntakeTrigger = new CommandTrigger(intakeButton::get);
-      fuelIntakeTrigger.whileActive(new FuelIntakeCommand());
+      CommandTrigger fuelIntakeTrigger = new CommandTrigger(toggleIntakeButton::get);
+      fuelIntakeTrigger.toggleWhenActive(new FuelIntakeCommand());
     }
 
     if(Robot.gearIntake != null) {
