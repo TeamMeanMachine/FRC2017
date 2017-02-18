@@ -5,7 +5,7 @@ import org.team2471.frc.lib.motion_profiling.FollowPathTankDriveCommand;
 import org.team2471.frc.lib.motion_profiling.Path2D;
 import org.team2471.frc.steamworks.HardwareMap;
 
-import static org.team2471.frc.steamworks.HardwareMap.DriveMap.shiftSolenoid;
+import static org.team2471.frc.steamworks.HardwareMap.DriveMap.shiftPTO;
 import static org.team2471.frc.steamworks.Robot.drive;
 
 public class DriveToFarHopperFromRightLift extends FollowPathTankDriveCommand {
@@ -34,6 +34,6 @@ public class DriveToFarHopperFromRightLift extends FollowPathTankDriveCommand {
   @Override
   protected void initialize() {
     super.initialize();
-    shiftSolenoid.set(true);
+    shiftPTO.set(true);
   }
 }

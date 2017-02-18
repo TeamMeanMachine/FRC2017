@@ -4,6 +4,7 @@ import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.control.MeanMotorController;
+import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.steamworks.autonomouscommands.DriveToLift;
 import org.team2471.frc.steamworks.subsystems.TwinShooter;
 
@@ -15,13 +16,9 @@ import org.team2471.frc.steamworks.subsystems.FuelIntake;
 
 public class Robot extends IterativeRobot {
   public static CoProcessor coProcessor;
-
   public static Drive drive;
-
   public static GearIntake gearIntake;
-
   public static FuelIntake fuelIntake;
-
   public static TwinShooter twinShooter;
 
   @Override

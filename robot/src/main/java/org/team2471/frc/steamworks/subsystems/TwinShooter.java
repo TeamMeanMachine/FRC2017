@@ -3,6 +3,7 @@ package org.team2471.frc.steamworks.subsystems;
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.steamworks.HardwareMap;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team2471.frc.steamworks.defaultcommands.TwinShooterDefaultCommand;
@@ -19,6 +20,13 @@ public class TwinShooter extends Subsystem {
 
 
   public TwinShooter() {
+    DashboardUtils.putPersistantBoolean("Auto Aim", true);
+    DashboardUtils.putPersistantNumber("Shooter Setpoint", 1600);
+    DashboardUtils.putPersistantNumber("Shooter P", 0.02);
+    DashboardUtils.putPersistantNumber("Shooter I", 0.0);
+    DashboardUtils.putPersistantNumber("Shooter D", 0.02);
+    DashboardUtils.putPersistantNumber("Shooter F", 0.0);
+
     masterLeft.changeControlMode(CANTalon.TalonControlMode.Speed);
     slaveLeft.changeControlMode(CANTalon.TalonControlMode.Follower);
 

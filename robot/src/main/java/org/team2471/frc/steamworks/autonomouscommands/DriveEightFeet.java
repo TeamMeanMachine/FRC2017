@@ -5,7 +5,7 @@ import org.team2471.frc.lib.motion_profiling.Path2D;
 import org.team2471.frc.steamworks.HardwareMap;
 
 
-import static org.team2471.frc.steamworks.HardwareMap.DriveMap.shiftSolenoid;
+import static org.team2471.frc.steamworks.HardwareMap.DriveMap.shiftPTO;
 import static org.team2471.frc.steamworks.Robot.drive;
 
 public class DriveEightFeet extends FollowPathTankDriveCommand {
@@ -34,6 +34,6 @@ public class DriveEightFeet extends FollowPathTankDriveCommand {
   protected void initialize() {
     super.initialize();
     //System.out.println("Got To Drive Six Feet Initialize");
-    shiftSolenoid.set(true);
+    shiftPTO.set(true);
   }
 }

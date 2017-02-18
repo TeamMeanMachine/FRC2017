@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.control.MeanMotorController;
+import org.team2471.frc.lib.io.log.Logger;
 import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.defaultcommands.DriveDefaultCommand;
 
@@ -19,11 +20,15 @@ public class Drive extends Subsystem {
   private final CANTalon rightMotor2 = HardwareMap.DriveMap.rightMotor2;
   private final CANTalon rightMotor3 = HardwareMap.DriveMap.rightMotor3;
 
-  private final Solenoid shiftSolenoid = HardwareMap.DriveMap.shiftSolenoid;
+  private final Solenoid shiftPTO = HardwareMap.DriveMap.shiftPTO;
+  private final Solenoid climbPTO = HardwareMap.DriveMap.climbPTO;
+
+  private final Logger logger = new Logger("Drive");
 
   private CheesyDriveHelper cheesyDriveHelper;
   public static final double HIGH_SHIFTPOINT = 5.0;
   public static final double LOW_SHIFTPOINT = 2.0;
+
 
 
   public Drive() {
@@ -69,15 +74,21 @@ public class Drive extends Subsystem {
   }
 
   public void drive(double throttle, double turn, double turnLeft, double turnRight) {
+    // WE CANNOT TURN WHILE PTO IS ENGAGED. Use driveStraight() while climbing.
+    if(climbPTO.get()) {
+      logger.error("Robot attempted to use drive() while climber is engaged!");
+      return;
+    }
+
     DriveSignal signal = cheesyDriveHelper.cheesyDrive(throttle, turn, false);
     leftMotor1.set(signal.leftMotor - turnLeft);
     rightMotor1.set(signal.rightMotor + turnRight);
 
     double averageSpeed = getSpeed();
     if (averageSpeed > HIGH_SHIFTPOINT) {
-      shiftSolenoid.set(false);  // high gear
+      shiftPTO.set(false);  // high gear
     } else if (averageSpeed < LOW_SHIFTPOINT) {
-      shiftSolenoid.set(true);
+      shiftPTO.set(true);
     }
 
     SmartDashboard.putNumber("Speed", averageSpeed);
@@ -92,6 +103,16 @@ public class Drive extends Subsystem {
 
     leftMotor1.set(leftPower);
     rightMotor1.set(rightPower);
+  }
+
+  public void turnInPlace(double turn) {
+    drive(0, 0, 0, turn);
+  }
+
+  public void driveStraight(double throttle, boolean highGear) {
+    shiftPTO.set(highGear);
+    leftMotor1.set(throttle);
+    rightMotor1.set(throttle);
   }
 
   public double getSpeed() {

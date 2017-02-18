@@ -15,7 +15,6 @@ public class IOMap {
   private static Controller driverController = new Controller(0);
   private static Controller coDriverController = new Controller(1);
 
-  public static ControllerButton shootButton = coDriverController.getButton(LogitechJoystickMap.Buttons.TRIGGER);
   public static final ControllerAxis throttleAxis = driverController.getAxis(XboxMap.Axes.LEFT_THUMBSTICK_Y)
       .withDeadband(.2)
       .withInvert()
@@ -33,6 +32,13 @@ public class IOMap {
   public static final ControllerButton useIntakeButton = driverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
   public static final ControllerButton spitButton = driverController.getButton(XboxMap.Buttons.BACK);
 
+
+
+  public static final ControllerAxis aimAxis = coDriverController.getAxis(XboxMap.Axes.RIGHT_THUMBSTICK_X)
+      .withDeadband(0.2)
+      .withExponentialScaling(2);
+
+  public static ControllerButton shootButton = coDriverController.getButton(LogitechJoystickMap.Buttons.TRIGGER);
   public static final ControllerButton gearFeedButton = coDriverController.getButton(LogitechJoystickMap.Buttons.BASE_UPPER_LEFT);
   public static final ControllerButton fuelFeedButton = coDriverController.getButton(LogitechJoystickMap.Buttons.BASE_MIDDLE_LEFT);
 

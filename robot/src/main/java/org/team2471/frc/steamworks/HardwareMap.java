@@ -30,9 +30,8 @@ public class HardwareMap {
     public static final CANTalon leftMotor2 = new CANTalon(0);
     public static final CANTalon leftMotor3 = new CANTalon(2);
 
-//    public static final Solenoid climbPTO = new Solenoid(0);
-//    public static final Solenoid shiftPTO = new Solenoid(5);
-    public static final Solenoid shiftSolenoid = new Solenoid(5);
+    public static final Solenoid climbPTO = new Solenoid(0);
+    public static final Solenoid shiftPTO = new Solenoid(5);
 
   }
 

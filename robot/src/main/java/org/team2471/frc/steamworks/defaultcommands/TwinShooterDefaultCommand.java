@@ -13,14 +13,7 @@ import static org.team2471.frc.steamworks.Robot.twinShooter;
 public class TwinShooterDefaultCommand extends Command {
   public TwinShooterDefaultCommand() {
     requires(twinShooter);
-    SmartDashboard.putNumber("SHOOTER_ACCELERATION", 0);
     SmartDashboard.putNumber("SHOOTER_SETPOINT", 0);
-
-    DashboardUtils.putPersistantNumber("SHOOTER_P", 0);
-    DashboardUtils.putPersistantNumber("SHOOTER_I", 0);
-    DashboardUtils.putPersistantNumber("SHOOTER_D", 0);
-    DashboardUtils.putPersistantNumber("SHOOTER_F", 0);
-
   }
 
 
@@ -31,24 +24,6 @@ public class TwinShooterDefaultCommand extends Command {
 
   @Override
   protected void execute() {
-    twinShooter.setRPM(SmartDashboard.getNumber("SHOOTER_SETPOINT", 0));
-
-    // in rpm/s
-    SmartDashboard.putNumber("SHOOTER_LEFT_SPEED", twinShooter.getLeftSpeed());
-    SmartDashboard.putNumber("SHOOTER_LEFT_ERROR", twinShooter.getLeftError());
-
-    SmartDashboard.putNumber("SHOOTER_RIGHT_SPEED", twinShooter.getRightSpeed());
-    SmartDashboard.putNumber("SHOOTER_RIGHT_ERROR", twinShooter.getRightError());
-
-    twinShooter.setPIDF(
-        SmartDashboard.getNumber("SHOOTER_P", 0),
-        SmartDashboard.getNumber("SHOOTER_I", 0),
-        SmartDashboard.getNumber("SHOOTER_D", 0),
-        SmartDashboard.getNumber("SHOOTER_F", 0)
-    );
-
-    SmartDashboard.putNumber("SHOOTER_LEFT_VOLTAGE", HardwareMap.TwinShooterMap.masterLeft.getOutputVoltage() / 12);
-    SmartDashboard.putNumber("SHOOTER_RIGHT_VOLTAGE", HardwareMap.TwinShooterMap.masterRight.getOutputVoltage() / 12);
 
     double dpadPosition = IOMap.hoodDPad.get();
     if(dpadPosition == 315 || dpadPosition == 0 || dpadPosition == 45) {
@@ -66,7 +41,6 @@ public class TwinShooterDefaultCommand extends Command {
 
   @Override
   protected void end() {
-    System.out.println("Disable");
     twinShooter.disable();
   }
 
