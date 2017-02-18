@@ -3,8 +3,8 @@ package org.team2471.frc.steamworks.autonomouscommands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class DriveToHopper extends CommandGroup {
-  public DriveToHopper(){
+public class DriveToHopperAuto extends CommandGroup {
+  public DriveToHopperAuto(){
 
   DriverStation driverStation = DriverStation.getInstance();
 

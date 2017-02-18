@@ -12,6 +12,8 @@ import org.team2471.frc.steamworks.commands.FuelIntakeCommand;
 import org.team2471.frc.steamworks.commands.FeedGearCommand;
 
 public class IOMap {
+  private static IOMap instance = null;
+
   private static Controller driverController = new Controller(0);
   private static Controller coDriverController = new Controller(1);
 
@@ -53,4 +55,12 @@ public class IOMap {
       feedFuelTrigger.whileActive(new FeedFuelCommand());
     }
   }
+  public static IOMap getInstance() {
+    if(instance == null) {
+      instance = new IOMap();
+    }
+
+    return instance;
+  }
+
 }
