@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.control.MeanMotorController;
+import org.team2471.frc.steamworks.autonomouscommands.CircleTestAutonomous;
+import org.team2471.frc.steamworks.autonomouscommands.CoOpHopper;
+import org.team2471.frc.steamworks.autonomouscommands.CoOpHopperAuto;
 import org.team2471.frc.steamworks.autonomouscommands.DoNothingAuto;
 import org.team2471.frc.steamworks.autonomouscommands.DriveEightFeet;
 import org.team2471.frc.steamworks.autonomouscommands.DriveToHopperAuto;
@@ -58,6 +61,9 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Drive to middle lift", new DriveToLift(1.0));
     autoChooser.addObject("One Hundred point Auto", new OneHundredPointAuto());
     autoChooser.addObject("Drop off gear and go to far Hopper", new GearPlusFarHopper());
+    autoChooser.addObject("Circle Auto", new CircleTestAutonomous(1.0));
+    autoChooser.addObject("CoOp Hopper", new CoOpHopper());
+
     SmartDashboard.putData("AutoChooser", autoChooser);
   }
 
