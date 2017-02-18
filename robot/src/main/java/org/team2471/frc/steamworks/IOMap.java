@@ -34,13 +34,16 @@ public class IOMap {
 
 
 
+  public static final ControllerButton gearFeedButton = coDriverController.getButton(XboxMap.Buttons.Y);
+  public static ControllerAxis shootAxis = coDriverController.getAxis(3);
+
+  public static final ControllerButton fuelFeedButton = coDriverController.getButton(XboxMap.Buttons.A);
+
+  public static ControllerButton shootButton = () -> shootAxis.get() > 0.4;
+
   public static final ControllerAxis aimAxis = coDriverController.getAxis(XboxMap.Axes.RIGHT_THUMBSTICK_X)
       .withDeadband(0.2)
       .withExponentialScaling(2);
-
-  public static ControllerButton shootButton = coDriverController.getButton(LogitechJoystickMap.Buttons.TRIGGER);
-  public static final ControllerButton gearFeedButton = coDriverController.getButton(LogitechJoystickMap.Buttons.BASE_UPPER_LEFT);
-  public static final ControllerButton fuelFeedButton = coDriverController.getButton(LogitechJoystickMap.Buttons.BASE_MIDDLE_LEFT);
 
   public static final ControllerDPad hoodDPad = coDriverController.getDPad();
 
