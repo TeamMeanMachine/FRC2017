@@ -51,9 +51,9 @@ public class TwinShooterDefaultCommand extends Command {
     SmartDashboard.putNumber("SHOOTER_RIGHT_VOLTAGE", HardwareMap.TwinShooterMap.masterRight.getOutputVoltage() / 12);
 
     double dpadPosition = IOMap.hoodDPad.get();
-    if(dpadPosition == 315 || dpadPosition == 0 || dpadPosition == 45) {
+    if(dpadPosition == 0) {
       twinShooter.extendHood();
-    } else if(dpadPosition >= 135 && dpadPosition <= 225) {
+    } else if(dpadPosition == 180) {
       twinShooter.retractHood();
     }
 

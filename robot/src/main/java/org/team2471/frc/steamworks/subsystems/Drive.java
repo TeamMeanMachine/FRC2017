@@ -93,7 +93,7 @@ public class Drive extends Subsystem {
   }
 
   public double getSpeed() {
-    return (Math.abs(leftMotor1.getEncVelocity() / EDGES_PER_100_MS) + Math.abs(rightMotor1.getEncVelocity()) / EDGES_PER_100_MS) / 2.0;
+    return Math.abs(-leftMotor1.getEncVelocity() / EDGES_PER_100_MS + rightMotor1.getEncVelocity() / EDGES_PER_100_MS) / 2.0;
   }
 
   public double getDistance() {
