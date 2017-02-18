@@ -6,16 +6,16 @@ import com.team254.lib.util.DriveSignal;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team2471.frc.lib.control.MeanMotorController;
+import org.team2471.frc.lib.control.CANController;
 import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.defaultcommands.DriveDefaultCommand;
 
 public class Drive extends Subsystem {
-  private final MeanMotorController leftMotor1 = HardwareMap.DriveMap.leftMotor1;
+  private final CANController leftMotor1 = HardwareMap.DriveMap.leftMotor1;
   private final CANTalon leftMotor2 = HardwareMap.DriveMap.leftMotor2;
   private final CANTalon leftMotor3 = HardwareMap.DriveMap.leftMotor3;
 
-  private final MeanMotorController rightMotor1 = HardwareMap.DriveMap.rightMotor1;
+  private final CANController rightMotor1 = HardwareMap.DriveMap.rightMotor1;
   private final CANTalon rightMotor2 = HardwareMap.DriveMap.rightMotor2;
   private final CANTalon rightMotor3 = HardwareMap.DriveMap.rightMotor3;
 
@@ -24,6 +24,8 @@ public class Drive extends Subsystem {
   private CheesyDriveHelper cheesyDriveHelper;
   public static final double HIGH_SHIFTPOINT = 5.0;
   public static final double LOW_SHIFTPOINT = 2.0;
+  public static final int CODES_PER_REV = 216;
+  public static final double EDGES_PER_100_MS = CODES_PER_REV * 4.0 / 10.0;
 
 
   public Drive() {
@@ -41,21 +43,17 @@ public class Drive extends Subsystem {
     rightMotor3.set(rightMotor1.getDeviceID());
 
     leftMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-    leftMotor1.reverseSensor(false);
+    leftMotor1.reverseSensor(true);
     leftMotor1.reverseOutput(false);
-    leftMotor1.configEncoderCodesPerRev(212);
-    leftMotor1.setProfile(0);
-    leftMotor1.setF(0);
+    leftMotor1.configEncoderCodesPerRev(CODES_PER_REV);
     leftMotor1.setProfile(0);
     leftMotor1.setF(0);
     leftMotor1.setPID(2.0, 0, 2.0);
 
     rightMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-    rightMotor1.reverseSensor(true);
+    rightMotor1.reverseSensor(false);
     rightMotor1.reverseOutput(true);
-    rightMotor1.configEncoderCodesPerRev(212);
-    rightMotor1.setProfile(0);
-    rightMotor1.setF(0);
+    rightMotor1.configEncoderCodesPerRev(CODES_PER_REV);
     rightMotor1.setProfile(0);
     rightMotor1.setF(0);
     rightMotor1.setPID(2.0, 0, 2.0);
@@ -95,7 +93,7 @@ public class Drive extends Subsystem {
   }
 
   public double getSpeed() {
-    return (Math.abs(leftMotor1.getEncVelocity() / 82) + Math.abs(rightMotor1.getEncVelocity()) / 82) / 2.0;
+    return (Math.abs(leftMotor1.getEncVelocity() / EDGES_PER_100_MS) + Math.abs(rightMotor1.getEncVelocity()) / EDGES_PER_100_MS) / 2.0;
   }
 
   public double getDistance() {

@@ -1,9 +1,5 @@
 package org.team2471.frc.steamworks;
 
-import com.ctre.CANTalon;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team2471.frc.lib.control.MeanMotorController;
 import org.team2471.frc.steamworks.autonomouscommands.DriveToLift;
 import org.team2471.frc.steamworks.subsystems.TwinShooter;
 
