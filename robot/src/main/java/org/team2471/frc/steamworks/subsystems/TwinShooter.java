@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.steamworks.HardwareMap;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.team2471.frc.steamworks.defaultcommands.TwinShooterDefaultCommand;
 
 import static org.team2471.frc.steamworks.HardwareMap.TwinShooterMap.cycloneMotor;
 
@@ -28,11 +27,13 @@ public class TwinShooter extends Subsystem {
     DashboardUtils.putPersistantNumber("Shooter F", 0.0);
 
     masterLeft.changeControlMode(CANTalon.TalonControlMode.Speed);
-    slaveLeft.changeControlMode(CANTalon.TalonControlMode.Follower);
+//    slaveLeft.changeControlMode(CANTalon.TalonControlMode.Follower);
+//    slaveLeft.set(masterLeft.getDeviceID());
 
     masterRight.changeControlMode(CANTalon.TalonControlMode.Speed);
     masterRight.setInverted(true);
-    slaveRight.changeControlMode(CANTalon.TalonControlMode.Follower);
+//    slaveRight.changeControlMode(CANTalon.TalonControlMode.Follower);
+//    slaveRight.set(masterRight.getDeviceID());
 
     ballFeeder.setInverted(true);
 
@@ -101,8 +102,12 @@ public class TwinShooter extends Subsystem {
   }
 
   public void enableFeed() {
-    ballFeeder.set(1);
-    cycloneMotor.set(1);
+    if(masterLeft.isEnabled()) {
+      ballFeeder.set(1);
+      cycloneMotor.set(1);
+    } else {
+      disableFeed();
+    }
   }
 
   public void extendHood() {
@@ -116,7 +121,6 @@ public class TwinShooter extends Subsystem {
 
   @Override
   protected void initDefaultCommand() {
-    setDefaultCommand(new TwinShooterDefaultCommand());
   }
 }
 

@@ -24,8 +24,13 @@ public class FuelIntake extends Subsystem {
 
 
   public FuelIntake() {
+    intakeMotor.enableBrakeMode(false);
     intakeMotor.setInverted(true);
     leftWindshieldMotor.setInverted(true);
+  }
+
+  public double getCurrent() {
+    return intakeDrawSensor.getCurrent();
   }
 
   /**
@@ -50,6 +55,7 @@ public class FuelIntake extends Subsystem {
     leftWindshieldMotor.set(0.8);
     rightWindshieldMotor.set(0.8);
   }
+
 
   /**
    * Run intake motors in

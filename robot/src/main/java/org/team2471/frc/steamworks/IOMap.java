@@ -5,9 +5,10 @@ import org.team2471.frc.lib.io.Controller;
 import org.team2471.frc.lib.io.ControllerAxis;
 import org.team2471.frc.lib.io.ControllerButton;
 import org.team2471.frc.lib.io.ControllerDPad;
-import org.team2471.frc.lib.io.maps.LogitechJoystickMap;
 import org.team2471.frc.lib.io.maps.XboxMap;
-import org.team2471.frc.steamworks.commands.FeedFuelCommand;
+import org.team2471.frc.steamworks.commandgroups.ManualClimbCommandGroup;
+import org.team2471.frc.steamworks.commands.AimAndShootCommand;
+import org.team2471.frc.steamworks.commands.TiltGearIntakeCommand;
 import org.team2471.frc.steamworks.commands.FuelIntakeCommand;
 import org.team2471.frc.steamworks.commands.FeedGearCommand;
 
@@ -27,10 +28,16 @@ public class IOMap {
   public static final ControllerAxis leftAxis = driverController.getAxis(XboxMap.Axes.LEFT_TRIGGER);
   public static final ControllerAxis rightAxis = driverController.getAxis(XboxMap.Axes.RIGHT_TRIGGER);
 
+  public static final ControllerAxis playAnimationAxis = driverController.getAxis(XboxMap.Axes.RIGHT_TRIGGER)
+      .withExponentialScaling(2);
+  public static final ControllerAxis reverseAnimationAxis = driverController.getAxis(XboxMap.Axes.LEFT_TRIGGER)
+      .withExponentialScaling(2);
+
 
   public static final ControllerButton toggleIntakeButton = driverController.getButton(XboxMap.Buttons.X);
   public static final ControllerButton useIntakeButton = driverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
-  public static final ControllerButton spitButton = driverController.getButton(XboxMap.Buttons.BACK);
+  public static final ControllerButton spitButton = driverController.getButton(XboxMap.Buttons.START);
+  public static final ControllerButton climbButton = driverController.getButton(XboxMap.Buttons.BACK);
 
 
 
@@ -38,6 +45,7 @@ public class IOMap {
   public static ControllerAxis shootAxis = coDriverController.getAxis(3);
 
   public static final ControllerButton fuelFeedButton = coDriverController.getButton(XboxMap.Buttons.A);
+  public static final ControllerButton aimButton = coDriverController.getButton(XboxMap.Buttons.X);
 
   public static ControllerButton shootButton = () -> shootAxis.get() > 0.4;
 
@@ -49,17 +57,19 @@ public class IOMap {
 
   public static void init() {
     // null checks because subsystems may not be initialized when we are testing
-    if(Robot.fuelIntake != null) {
-      CommandTrigger fuelIntakeTrigger = new CommandTrigger(toggleIntakeButton::get);
-      fuelIntakeTrigger.toggleWhenActive(new FuelIntakeCommand());
-    }
+    CommandTrigger fuelIntakeTrigger = new CommandTrigger(toggleIntakeButton::get);
+    fuelIntakeTrigger.toggleWhenActive(new FuelIntakeCommand());
 
-    if(Robot.gearIntake != null) {
-      CommandTrigger feedGearTrigger = new CommandTrigger(gearFeedButton::get);
-      feedGearTrigger.whileActive(new FeedGearCommand());
+    CommandTrigger feedGearTrigger = new CommandTrigger(gearFeedButton::get);
+    feedGearTrigger.whileActive(new FeedGearCommand());
 
-      CommandTrigger feedFuelTrigger = new CommandTrigger(fuelFeedButton::get);
-      feedFuelTrigger.whileActive(new FeedFuelCommand());
-    }
+    CommandTrigger feedFuelTrigger = new CommandTrigger(fuelFeedButton::get);
+    feedFuelTrigger.whileActive(new TiltGearIntakeCommand());
+
+    CommandTrigger climbTrigger = new CommandTrigger(climbButton::get);
+    climbTrigger.whileActive(new ManualClimbCommandGroup());
+
+    CommandTrigger aimTrigger = new CommandTrigger(aimButton::get);
+    aimTrigger.toggleWhenActive(new AimAndShootCommand());
   }
 }

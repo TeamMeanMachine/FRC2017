@@ -1,22 +1,11 @@
 package org.team2471.frc.steamworks;
 
-import com.ctre.CANTalon;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team2471.frc.lib.control.MeanMotorController;
-import org.team2471.frc.lib.io.dashboard.DashboardUtils;
-import org.team2471.frc.steamworks.autonomouscommands.CircleTestAutonomous;
-import org.team2471.frc.steamworks.autonomouscommands.CoOpHopper;
-import org.team2471.frc.steamworks.autonomouscommands.CoOpHopperAuto;
-import org.team2471.frc.steamworks.autonomouscommands.DoNothingAuto;
-import org.team2471.frc.steamworks.autonomouscommands.DriveEightFeet;
-import org.team2471.frc.steamworks.autonomouscommands.DriveToHopperAuto;
-import org.team2471.frc.steamworks.autonomouscommands.DriveToLeftLift;
-import org.team2471.frc.steamworks.autonomouscommands.DriveToLift;
-import org.team2471.frc.steamworks.autonomouscommands.GearPlusFarHopper;
-import org.team2471.frc.steamworks.autonomouscommands.OneHundredPointAuto;
+import org.team2471.frc.steamworks.autonomouscommands.*;
+import org.team2471.frc.steamworks.comm.CoProcessor;
 import org.team2471.frc.steamworks.subsystems.TwinShooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -40,6 +29,8 @@ public class Robot extends IterativeRobot {
   @SuppressWarnings("unchecked")
   @Override
   public void robotInit() {
+    NetworkTable nt = NetworkTable.getTable("SmartDashboard");
+    nt.getKeys().forEach(nt::clearPersistent);
     twinShooter = new TwinShooter();
     drive = new Drive();
     gearIntake = new GearIntake();
@@ -59,6 +50,8 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Drop off gear and go to far Hopper", new GearPlusFarHopper());
     autoChooser.addObject("Circle Auto", new CircleTestAutonomous(1.0));
     autoChooser.addObject("CoOp Hopper", new CoOpHopper());
+    autoChooser.addObject("One Hundred point Auto, Fuel first", new SecondOneHundredPointAuto());
+    autoChooser.addObject("Backwards test", new DriveBackwardsFromLLToHopper(1.0,false));
 
     SmartDashboard.putData("AutoChooser", autoChooser);
   }
@@ -80,6 +73,8 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Drive Speed", drive.getSpeed());
+    SmartDashboard.putNumber("Gear Sensor", HardwareMap.GearIntakeMap.gearSensor.getValue());
     Scheduler.getInstance().run();
   }
 

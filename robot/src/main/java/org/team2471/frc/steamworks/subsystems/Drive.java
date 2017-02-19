@@ -114,6 +114,14 @@ public class Drive extends Subsystem {
     rightMotor1.set(throttle);
   }
 
+  public void enableClimbing() {
+    climbPTO.set(true);
+  }
+
+  public void disableClimbing() {
+    climbPTO.set(false);
+  }
+
   public double getSpeed() {
     return Math.abs(-leftMotor1.getEncVelocity() / EDGES_PER_100_MS + rightMotor1.getEncVelocity() / EDGES_PER_100_MS) / 2.0;
   }

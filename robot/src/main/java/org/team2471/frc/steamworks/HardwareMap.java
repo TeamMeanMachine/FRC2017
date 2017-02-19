@@ -2,6 +2,7 @@ package org.team2471.frc.steamworks;
 
 import com.ctre.CANTalon;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -22,12 +23,12 @@ public class HardwareMap {
   }
 
   public static final class DriveMap {
-    public static final CANController rightMotor1 = new CANController(14);
-    public static final CANTalon rightMotor2 = new CANTalon(15);
+    public static final CANController rightMotor1 = new CANController(15);
+    public static final CANTalon rightMotor2 = new CANTalon(14);
     public static final CANTalon rightMotor3 = new CANTalon(13);
 
-    public static final CANController leftMotor1 = new CANController(1);
-    public static final CANTalon leftMotor2 = new CANTalon(0);
+    public static final CANController leftMotor1 = new CANController(0);
+    public static final CANTalon leftMotor2 = new CANTalon(1);
     public static final CANTalon leftMotor3 = new CANTalon(2);
 
     public static final Solenoid climbPTO = new Solenoid(0);
@@ -46,6 +47,6 @@ public class HardwareMap {
   public static final class GearIntakeMap {
     public static final Solenoid flapSolenoid = new Solenoid(3);
     public static final Solenoid tiltSolenoid = new Solenoid(2);
-    public static final DigitalInput gearSensor = new DigitalInput(0);
+    public static final AnalogInput gearSensor = new AnalogInput(3);
   }
 }
