@@ -22,7 +22,8 @@ public class FeedGearCommand extends Command {
 
   @Override
   protected boolean isFinished() {
-    return Robot.gearIntake.hasGear();
+    return false;
+//    return Robot.gearIntake.hasGear(); FIXME
   }
 }
 

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.steamworks.HardwareMap;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.team2471.frc.steamworks.defaultcommands.TwinShooterDefaultCommand;
 
 import static org.team2471.frc.steamworks.HardwareMap.TwinShooterMap.cycloneMotor;
 
@@ -24,16 +25,17 @@ public class TwinShooter extends Subsystem {
     DashboardUtils.putPersistantNumber("Shooter P", 0.02);
     DashboardUtils.putPersistantNumber("Shooter I", 0.0);
     DashboardUtils.putPersistantNumber("Shooter D", 0.02);
-    DashboardUtils.putPersistantNumber("Shooter F", 0.0);
+    DashboardUtils.putPersistantNumber("Shooter Left F", 0.0);
+    DashboardUtils.putPersistantNumber("Shooter Right F", 0.0);
 
     masterLeft.changeControlMode(CANTalon.TalonControlMode.Speed);
-//    slaveLeft.changeControlMode(CANTalon.TalonControlMode.Follower);
-//    slaveLeft.set(masterLeft.getDeviceID());
+    slaveLeft.changeControlMode(CANTalon.TalonControlMode.Follower);
+    slaveLeft.set(masterLeft.getDeviceID());
 
     masterRight.changeControlMode(CANTalon.TalonControlMode.Speed);
     masterRight.setInverted(true);
-//    slaveRight.changeControlMode(CANTalon.TalonControlMode.Follower);
-//    slaveRight.set(masterRight.getDeviceID());
+    slaveRight.changeControlMode(CANTalon.TalonControlMode.Follower);
+    slaveRight.set(masterRight.getDeviceID());
 
     ballFeeder.setInverted(true);
 
@@ -62,11 +64,11 @@ public class TwinShooter extends Subsystem {
     return masterRight.getError();
   }
 
-  public void setPIDF(double p, double i, double d, double f) {
+  public void setPIDF(double p, double i, double d, double leftF, double rightF) {
     masterLeft.setPID(p, i, d);
-    masterLeft.setF(f);
+    masterLeft.setF(leftF);
     masterRight.setPID(p, i, d);
-    masterRight.setF(f);
+    masterRight.setF(rightF);
   }
 
   /**
@@ -121,6 +123,7 @@ public class TwinShooter extends Subsystem {
 
   @Override
   protected void initDefaultCommand() {
+    setDefaultCommand(new TwinShooterDefaultCommand());
   }
 }
 

@@ -28,7 +28,7 @@ public class Drive extends Subsystem {
 
   private CheesyDriveHelper cheesyDriveHelper;
   public static final double HIGH_SHIFTPOINT = 5.0;
-  public static final double LOW_SHIFTPOINT = 2.0;
+  public static final double LOW_SHIFTPOINT = 2.75;
   public static final int CODES_PER_REV = 216;
   public static final double EDGES_PER_100_MS = CODES_PER_REV * 4.0 / 10.0;
 

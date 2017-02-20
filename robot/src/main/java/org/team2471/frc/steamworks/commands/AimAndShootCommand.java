@@ -34,27 +34,28 @@ public class AimAndShootCommand extends PIDCommand {
 
   @Override
   public void execute() {
-    Robot.twinShooter.setRPM(SmartDashboard.getNumber("Shooter Speed", 0));
+    Robot.twinShooter.setRPM((int) SmartDashboard.getNumber("Shooter Setpoint", 5000));
 
     // in rpm/s
     SmartDashboard.putNumber("Shooter Left Speed", Robot.twinShooter.getLeftSpeed());
     SmartDashboard.putNumber("Shooter Left Error", Robot.twinShooter.getLeftError());
     SmartDashboard.putNumber("Shooter Left Master Voltage", HardwareMap.TwinShooterMap.masterLeft.getOutputVoltage() / 12);
     SmartDashboard.putNumber("Shooter Left Slave Voltage", HardwareMap.TwinShooterMap.slaveLeft.getOutputVoltage() / 12);
+    SmartDashboard.putNumber("Shooter Left Setpoint", HardwareMap.TwinShooterMap.masterLeft.getSetpoint());
 
     SmartDashboard.putNumber("Shooter Right Speed", Robot.twinShooter.getRightSpeed());
     SmartDashboard.putNumber("Shooter Right Error", Robot.twinShooter.getRightError());
     SmartDashboard.putNumber("Shooter Right Master Voltage", HardwareMap.TwinShooterMap.masterRight.getOutputVoltage() / 12);
     SmartDashboard.putNumber("Shooter Right Slave Voltage", HardwareMap.TwinShooterMap.slaveRight.getOutputVoltage() / 12);
+    SmartDashboard.putNumber("Shooter Right Setpoint", HardwareMap.TwinShooterMap.masterRight.getSetpoint());
 
     Robot.twinShooter.setPIDF(
         SmartDashboard.getNumber("Shooter P", 0),
         SmartDashboard.getNumber("Shooter I", 0),
         SmartDashboard.getNumber("Shooter D", 0),
-        SmartDashboard.getNumber("Shooter F", 0)
+        SmartDashboard.getNumber("Shooter Left F", 0),
+        SmartDashboard.getNumber("Shooter Right F", 0)
     );
-
-    Robot.twinShooter.setRPM(SmartDashboard.getNumber("Shooter Setpoint", 5000));
 
     SmartDashboard.putNumber("Shooter Left Voltage", HardwareMap.TwinShooterMap.masterLeft.getOutputVoltage() / 12);
     SmartDashboard.putNumber("Shooter Right Voltage", HardwareMap.TwinShooterMap.masterRight.getOutputVoltage() / 12);
@@ -107,7 +108,7 @@ public class AimAndShootCommand extends PIDCommand {
       }
     } else {
       targetFound = true;
-      lastError = IOMap.aimAxis.get() * 45;
+      lastError = IOMap.aimAxis.get() * 15;
       return lastError;
     }
   }
@@ -118,6 +119,6 @@ public class AimAndShootCommand extends PIDCommand {
       output = 0;
     }
 
-    Robot.drive.turnInPlace(output);
+    Robot.drive.turnInPlace(-output); // inverted for some reason
   }
 }
