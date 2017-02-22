@@ -29,7 +29,7 @@ public class DriveToLeftLift extends FollowPathTankDriveCommand {
         m_path.setTravelDirection(1.0);
 
         m_path.addPointAndTangent(0.0, 0.0, 0.0, 6.0);
-        m_path.addPointAndTangent(3.3, 9.0, 6.0, 3.0);
+        m_path.addPointAndTangent(3.3, 8.9, 6.0, 3.0);
 
         m_path.addEasePoint( 0.0, 0.0 );
         m_path.addEasePoint( 4.0, 1.0 );

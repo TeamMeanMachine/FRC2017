@@ -15,7 +15,7 @@ public class SecondOneHundredPointAuto extends CommandGroup {
     addParallel(new TiltGearIntakeCommand(), 6.0);
     if(alliance == alliance.Blue){
       addSequential(new DriveToHopperAutoBlue(1.0));
-      addSequential(new WaitCommand(3.0));
+      addSequential(new WaitCommand(2.0));
       addSequential(new DriveBackwardsFromHopper(1.0, false));
  //     addSequential(new DriveBackwardsFromLLToHopper(1.0, false));
     }
