@@ -1,6 +1,8 @@
 package org.team2471.frc.steamworks;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -83,6 +85,6 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void testPeriodic() {
-
+    LiveWindow.run();
   }
 }

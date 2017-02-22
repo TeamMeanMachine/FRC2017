@@ -1,5 +1,6 @@
 package org.team2471.frc.steamworks;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.team2471.frc.lib.control.CommandTrigger;
 import org.team2471.frc.lib.io.Controller;
 import org.team2471.frc.lib.io.ControllerAxis;
@@ -7,10 +8,7 @@ import org.team2471.frc.lib.io.ControllerButton;
 import org.team2471.frc.lib.io.ControllerDPad;
 import org.team2471.frc.lib.io.maps.XboxMap;
 import org.team2471.frc.steamworks.commandgroups.ManualClimbCommandGroup;
-import org.team2471.frc.steamworks.commands.AimAndShootCommand;
-import org.team2471.frc.steamworks.commands.TiltGearIntakeCommand;
-import org.team2471.frc.steamworks.commands.FuelIntakeCommand;
-import org.team2471.frc.steamworks.commands.FeedGearCommand;
+import org.team2471.frc.steamworks.commands.*;
 
 public class IOMap {
   private static Controller driverController = new Controller(0);
@@ -36,9 +34,11 @@ public class IOMap {
 
   public static final ControllerButton toggleIntakeButton = driverController.getButton(XboxMap.Buttons.X);
   public static final ControllerButton useIntakeButton = driverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
-  public static final ControllerButton spitButton = driverController.getButton(XboxMap.Buttons.START);
+  public static final ControllerButton spitButton = driverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
   public static final ControllerButton climbButton = driverController.getButton(XboxMap.Buttons.BACK);
 
+  public static final ControllerButton signalDriverButton = coDriverController.getButton(XboxMap.Buttons.START);
+  public static final ControllerButton signalCoDriverButton = driverController.getButton(XboxMap.Buttons.START);
 
 
   public static final ControllerButton gearFeedButton = coDriverController.getButton(XboxMap.Buttons.Y);
@@ -71,5 +71,11 @@ public class IOMap {
 
     CommandTrigger aimTrigger = new CommandTrigger(aimButton::get);
     aimTrigger.toggleWhenActive(new AimAndShootCommand());
+
+    CommandTrigger signalDriverTrigger = new CommandTrigger(signalDriverButton::get);
+    signalDriverTrigger.whileActive(new RumbleCommand(driverController, 1, RumbleCommand.StickSide.RIGHT));
+
+    CommandTrigger signalCoDriverTrigger = new CommandTrigger(signalCoDriverButton::get);
+    signalCoDriverTrigger.whileActive(new RumbleCommand(coDriverController, 1, RumbleCommand.StickSide.LEFT));
   }
 }

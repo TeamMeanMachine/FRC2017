@@ -4,14 +4,21 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.util.WaitingOnHardware;
 
 public class GearIntake extends Subsystem {
 
-  private Solenoid tiltSolenoid = HardwareMap.GearIntakeMap.tiltSolenoid;
-  private Solenoid flapSolenoid = HardwareMap.GearIntakeMap.flapSolenoid;
-  private AnalogInput gearSensor = HardwareMap.GearIntakeMap.gearSensor;
+  private final Solenoid tiltSolenoid = HardwareMap.GearIntakeMap.tiltSolenoid;
+  private final Solenoid flapSolenoid = HardwareMap.GearIntakeMap.flapSolenoid;
+  private final AnalogInput gearSensor = HardwareMap.GearIntakeMap.gearSensor;
+
+  public GearIntake() {
+    LiveWindow.addActuator("GearIntake", "Tilt Solenoid", tiltSolenoid);
+    LiveWindow.addActuator("GearIntake", "Flap Solenoid", flapSolenoid);
+    LiveWindow.addSensor("GearIntake", "Gear Sensor", gearSensor);
+  }
 
   /**
    * TiltGearIntakeCommand gear intake forward

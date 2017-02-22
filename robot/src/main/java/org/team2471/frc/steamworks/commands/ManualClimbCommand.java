@@ -13,6 +13,7 @@ public class ManualClimbCommand extends Command {
   @Override
   protected void initialize() {
     Robot.drive.enableClimbing();
+    Robot.fuelIntake.extend();
   }
 
   @Override
@@ -27,6 +28,5 @@ public class ManualClimbCommand extends Command {
 
   @Override
   protected void end() {
-    Robot.drive.disableClimbing();
   }
 }

@@ -3,14 +3,19 @@ package org.team2471.frc.steamworks.subsystems;
 import com.ctre.CANTalon;
 import com.team254.frc2016.CheesyDriveHelper;
 import com.team254.lib.util.DriveSignal;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.control.MeanMotorController;
 import org.team2471.frc.lib.io.log.Logger;
 import org.team2471.frc.lib.control.CANController;
 import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.defaultcommands.DriveDefaultCommand;
+
+import java.security.Security;
 
 public class Drive extends Subsystem {
   private final CANController leftMotor1 = HardwareMap.DriveMap.leftMotor1;
@@ -27,20 +32,25 @@ public class Drive extends Subsystem {
   private final Logger logger = new Logger("Drive");
 
   private CheesyDriveHelper cheesyDriveHelper;
-  public static final double HIGH_SHIFTPOINT = 5.0;
-  public static final double LOW_SHIFTPOINT = 2.75;
+  public static final double HIGH_SHIFTPOINT = 6.0;
+  public static final double LOW_SHIFTPOINT = 2.0;
   public static final int CODES_PER_REV = 216;
   public static final double EDGES_PER_100_MS = CODES_PER_REV * 4.0 / 10.0;
 
-
-
   public Drive() {
+    leftMotor1.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
     leftMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
     leftMotor2.changeControlMode(CANTalon.TalonControlMode.Follower);
     leftMotor3.changeControlMode(CANTalon.TalonControlMode.Follower);
+
+    // Only invert this motor on competition bot
+    leftMotor3.setInverted(true);
+    leftMotor3.reverseOutput(true);
+
     leftMotor2.set(leftMotor1.getDeviceID());
     leftMotor3.set(leftMotor1.getDeviceID());
 
+    rightMotor1.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
     rightMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
     rightMotor1.setInverted(true);
     rightMotor2.changeControlMode(CANTalon.TalonControlMode.Follower);
@@ -65,6 +75,17 @@ public class Drive extends Subsystem {
     rightMotor1.setPID(2.0, 0, 2.0);
 
     cheesyDriveHelper = new CheesyDriveHelper();
+
+    // limit voltage ramp rate
+    leftMotor1.setVoltageRampRate(9);
+    rightMotor1.setVoltageRampRate(9);
+
+    LiveWindow.addActuator("Drive", "Right Motor 1", rightMotor1);
+    LiveWindow.addActuator("Drive", "Right Motor 2", rightMotor2);
+    LiveWindow.addActuator("Drive", "Right Motor 3", rightMotor3);
+    LiveWindow.addActuator("Drive", "Left Motor 1", leftMotor1);
+    LiveWindow.addActuator("Drive", "Left Motor 2", leftMotor2);
+    LiveWindow.addActuator("Drive", "Left Motor 3", leftMotor3);
   }
 
   @Override
@@ -74,14 +95,12 @@ public class Drive extends Subsystem {
 
   public void drive(double throttle, double turn, double turnLeft, double turnRight) {
     // WE CANNOT TURN WHILE PTO IS ENGAGED. Use driveStraight() while climbing.
-    if(climbPTO.get()) {
+    if(isClimbing()) {
       logger.error("Robot attempted to use drive() while climber is engaged!");
       return;
     }
 
     DriveSignal signal = cheesyDriveHelper.cheesyDrive(throttle, turn, false);
-    leftMotor1.set(signal.leftMotor - turnLeft);
-    rightMotor1.set(signal.rightMotor + turnRight);
 
     double averageSpeed = getSpeed();
     if (averageSpeed > HIGH_SHIFTPOINT) {
@@ -115,14 +134,20 @@ public class Drive extends Subsystem {
   }
 
   public void enableClimbing() {
-    climbPTO.set(true);
-  }
-
-  public void disableClimbing() {
     climbPTO.set(false);
   }
 
+  public void disableClimbing() {
+    climbPTO.set(true);
+  }
+
+  public boolean isClimbing() {
+    return !climbPTO.get();
+  }
+
   public double getSpeed() {
+    SmartDashboard.putNumber("Left Speed", -leftMotor1.getEncVelocity() / EDGES_PER_100_MS);
+    SmartDashboard.putNumber("Right Speed", rightMotor1.getEncVelocity() / EDGES_PER_100_MS);
     return Math.abs(-leftMotor1.getEncVelocity() / EDGES_PER_100_MS + rightMotor1.getEncVelocity() / EDGES_PER_100_MS) / 2.0;
   }
 

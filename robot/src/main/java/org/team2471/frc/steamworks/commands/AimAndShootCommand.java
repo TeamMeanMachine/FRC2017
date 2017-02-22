@@ -7,6 +7,7 @@ import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.comm.VisionData;
+import org.team2471.frc.steamworks.subsystems.TwinShooter;
 
 public class AimAndShootCommand extends PIDCommand {
 
@@ -49,16 +50,22 @@ public class AimAndShootCommand extends PIDCommand {
     SmartDashboard.putNumber("Shooter Right Slave Voltage", HardwareMap.TwinShooterMap.slaveRight.getOutputVoltage() / 12);
     SmartDashboard.putNumber("Shooter Right Setpoint", HardwareMap.TwinShooterMap.masterRight.getSetpoint());
 
+    SmartDashboard.putString("Shooter Errors", Robot.twinShooter.getLeftError() + ":" + Robot.twinShooter.getRightError());
+
     Robot.twinShooter.setPIDF(
         SmartDashboard.getNumber("Shooter P", 0),
         SmartDashboard.getNumber("Shooter I", 0),
         SmartDashboard.getNumber("Shooter D", 0),
+        SmartDashboard.getNumber("Shooter I Zone", 0),
         SmartDashboard.getNumber("Shooter Left F", 0),
         SmartDashboard.getNumber("Shooter Right F", 0)
     );
 
     SmartDashboard.putNumber("Shooter Left Voltage", HardwareMap.TwinShooterMap.masterLeft.getOutputVoltage() / 12);
     SmartDashboard.putNumber("Shooter Right Voltage", HardwareMap.TwinShooterMap.masterRight.getOutputVoltage() / 12);
+
+    SmartDashboard.putString("Shooter Amps", HardwareMap.pdp.getCurrent(HardwareMap.TwinShooterMap.masterLeft.getDeviceID()) + ":" +
+                                                  HardwareMap.pdp.getCurrent(HardwareMap.TwinShooterMap.masterRight.getDeviceID()));
 
 
     boolean shoot = SmartDashboard.getBoolean("Auto Aim", false) ?
