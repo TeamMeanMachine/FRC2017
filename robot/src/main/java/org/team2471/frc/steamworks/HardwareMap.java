@@ -7,15 +7,16 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Solenoid;
 import org.team2471.frc.lib.control.CANController;
+import org.team2471.frc.lib.control.MeanMotorController;
 import org.team2471.frc.util.control.PDPDrawSensor;
 
 public class HardwareMap {
   public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
 
   public static final class TwinShooterMap {
-    public static final CANTalon masterLeft = new CANTalon(4);
+    public static final MeanMotorController masterLeft = new MeanMotorController(4);
     public static final CANTalon slaveLeft = new CANTalon(5);
-    public static final CANTalon masterRight = new CANTalon(10);
+    public static final MeanMotorController masterRight = new MeanMotorController(10);
     public static final CANTalon slaveRight = new CANTalon(11);
     public static final CANTalon ballFeeder = new CANTalon(6);
     public static final CANTalon cycloneMotor = new CANTalon(12);
