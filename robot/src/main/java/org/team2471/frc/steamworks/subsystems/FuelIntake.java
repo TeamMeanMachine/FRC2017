@@ -27,7 +27,8 @@ public class FuelIntake extends Subsystem {
   public FuelIntake() {
     intakeMotor.enableBrakeMode(false);
     intakeMotor.setInverted(true);
-    leftWindshieldMotor.setInverted(true);
+    leftWindshieldMotor.setInverted(false);
+    rightWindshieldMotor.setInverted(true);
 
     LiveWindow.addActuator("FuelIntake", "Intake Motor", intakeMotor);
     LiveWindow.addActuator("FuelIntake", "Left Windshield Motor", intakeMotor);
