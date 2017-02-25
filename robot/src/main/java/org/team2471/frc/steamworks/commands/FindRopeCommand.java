@@ -17,7 +17,8 @@ public class FindRopeCommand extends Command {
 
   @Override
   protected void execute() {
-    Robot.drive.driveStraight(IOMap.playAnimationAxis.get() - IOMap.reverseAnimationAxis.get(), false);
+   // Robot.drive.driveStraight(IOMap.playAnimationAxis.get() - IOMap.reverseAnimationAxis.get(), false);
+    Robot.drive.drive(IOMap.throttleAxis.get(), IOMap.turnAxis.get(), IOMap.leftAxis.get(), IOMap.rightAxis.get());
     logger.debug("Current: " + Robot.fuelIntake.getCurrent());
     Robot.fuelIntake.rollIn();
   }

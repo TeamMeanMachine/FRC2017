@@ -14,6 +14,7 @@ public class IOMap {
   private static Controller driverController = new Controller(0);
   private static Controller coDriverController = new Controller(1);
 
+  // Driver controls
   public static final ControllerAxis throttleAxis = driverController.getAxis(XboxMap.Axes.LEFT_THUMBSTICK_Y)
       .withDeadband(.2)
       .withInvert()
@@ -26,20 +27,21 @@ public class IOMap {
   public static final ControllerAxis leftAxis = driverController.getAxis(XboxMap.Axes.LEFT_TRIGGER);
   public static final ControllerAxis rightAxis = driverController.getAxis(XboxMap.Axes.RIGHT_TRIGGER);
 
-  public static final ControllerAxis playAnimationAxis = driverController.getAxis(XboxMap.Axes.RIGHT_TRIGGER)
+  public static final ControllerAxis playAnimationAxis = driverController.getAxis(XboxMap.Axes.LEFT_TRIGGER)
       .withExponentialScaling(2);
-  public static final ControllerAxis reverseAnimationAxis = driverController.getAxis(XboxMap.Axes.LEFT_TRIGGER)
+  public static final ControllerAxis reverseAnimationAxis = driverController.getAxis(XboxMap.Axes.RIGHT_TRIGGER)
       .withExponentialScaling(2);
-
 
   public static final ControllerButton toggleIntakeButton = driverController.getButton(XboxMap.Buttons.X);
   public static final ControllerButton useIntakeButton = driverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
   public static final ControllerButton spitButton = driverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
-  public static final ControllerButton climbButton = driverController.getButton(XboxMap.Buttons.BACK);
+  public static final ControllerButton climbButton = driverController.getButton(XboxMap.Buttons.Y);
+  public static final ControllerButton gearButton = driverController.getButton(XboxMap.Buttons.A);
 
-  public static final ControllerButton signalDriverButton = coDriverController.getButton(XboxMap.Buttons.START);
   public static final ControllerButton signalCoDriverButton = driverController.getButton(XboxMap.Buttons.START);
 
+  //Co-Driver controls
+  public static final ControllerButton signalDriverButton = coDriverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
 
   public static final ControllerButton gearFeedButton = coDriverController.getButton(XboxMap.Buttons.Y);
   public static ControllerAxis shootAxis = coDriverController.getAxis(3);
@@ -68,6 +70,9 @@ public class IOMap {
 
     CommandTrigger climbTrigger = new CommandTrigger(climbButton::get);
     climbTrigger.whileActive(new ManualClimbCommandGroup());
+
+//    CommandTrigger gearTrigger = new CommandTrigger(gearButton::get);
+//    climbTrigger.whileActive(new GearCommandGroup());
 
     CommandTrigger aimTrigger = new CommandTrigger(aimButton::get);
     aimTrigger.toggleWhenActive(new AimAndShootCommand());
