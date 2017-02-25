@@ -28,7 +28,7 @@ public class RumbleCommand extends Command {
 
   @Override
   protected boolean isFinished() {
-    return false;
+    return isInterruptible();
   }
 
   @Override

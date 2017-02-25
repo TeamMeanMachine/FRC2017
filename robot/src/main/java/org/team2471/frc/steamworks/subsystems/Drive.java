@@ -95,7 +95,7 @@ public class Drive extends Subsystem {
 
   public void drive(double throttle, double turn, double turnLeft, double turnRight) {
     // WE CANNOT TURN WHILE PTO IS ENGAGED. Use driveStraight() while climbing.
-    if(isClimbing()) {
+    if (isClimbing()) {
       logger.error("Robot attempted to use drive() while climber is engaged!");
       return;
     }
@@ -121,6 +121,8 @@ public class Drive extends Subsystem {
 
     leftMotor1.set(leftPower);
     rightMotor1.set(rightPower);
+
+    //leftMotor1.setStatusFrameRateMs();
   }
 
   public void turnInPlace(double turn) {

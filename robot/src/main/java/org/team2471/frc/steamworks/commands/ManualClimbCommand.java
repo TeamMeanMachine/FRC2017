@@ -1,15 +1,17 @@
 package org.team2471.frc.steamworks.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.team2471.frc.lib.control.CommandTrigger;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
 
 public class ManualClimbCommand extends Command {
-  double startDistance;
+  private double startDistance;
 
   public ManualClimbCommand() {
     requires(Robot.drive);
     requires(Robot.fuelIntake);
+    setInterruptible(false);
   }
 
   @Override
@@ -25,11 +27,12 @@ public class ManualClimbCommand extends Command {
     if (distance > 10) {
       Robot.fuelIntake.extend();
     }
+
   }
 
   @Override
   protected boolean isFinished() {
-    return false;
+    return startDistance < Robot.drive.getDistance() - 1.5;
   }
 
   @Override

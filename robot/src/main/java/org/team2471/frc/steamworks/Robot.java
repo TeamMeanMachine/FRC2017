@@ -25,8 +25,8 @@ public class Robot extends IterativeRobot {
 
   Command autonomousCommand;
 
-
   @SuppressWarnings("unchecked")
+
   @Override
   public void robotInit() {
     NetworkTable nt = NetworkTable.getTable("SmartDashboard");
@@ -55,6 +55,8 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Backwards test", new DriveBackwardsFromLLToHopper(1.0,false));
 
     SmartDashboard.putData("AutoChooser", autoChooser);
+
+    drive.disableClimbing();
   }
 
     @Override

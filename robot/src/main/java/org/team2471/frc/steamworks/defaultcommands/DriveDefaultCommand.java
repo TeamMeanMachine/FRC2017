@@ -14,11 +14,11 @@ public class DriveDefaultCommand extends Command {
 
   @Override
   protected void initialize() {
-    Robot.drive.disableClimbing();
   }
 
   @Override
   protected void execute() {
+    Robot.drive.disableClimbing();
     Robot.drive.drive(IOMap.throttleAxis.get(), IOMap.turnAxis.get(), IOMap.leftAxis.get(), IOMap.rightAxis.get());
     SmartDashboard.putNumber("Drive Speed", Robot.drive.getSpeed());
 

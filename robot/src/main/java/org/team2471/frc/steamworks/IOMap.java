@@ -83,4 +83,8 @@ public class IOMap {
     CommandTrigger signalCoDriverTrigger = new CommandTrigger(signalCoDriverButton::get);
     signalCoDriverTrigger.whileActive(new RumbleCommand(coDriverController, 1, RumbleCommand.StickSide.LEFT));
   }
+
+  public static Controller getDriverController() {
+    return driverController;
+  }
 }
