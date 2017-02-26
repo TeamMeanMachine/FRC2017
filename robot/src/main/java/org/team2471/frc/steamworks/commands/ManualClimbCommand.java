@@ -29,14 +29,14 @@ public class ManualClimbCommand extends PlayAnimationCommand {
     rightCurve = new MotionProfileCurve(Robot.drive.getRightMotor1(), animation );
 
     leftCurve.storeValue( 0.0, 0.0 );
-    leftCurve.storeValue( 1.25, -12.5 );
-    leftCurve.storeValue( 2.5, -25.0 );
-    leftCurve.storeValue( 15.0, -30.0 );
+    leftCurve.storeValue( 1.5, -12.5 );
+    leftCurve.storeValue( 3.0, -27.0 );
+    leftCurve.storeValue( 15.0, -35.0 );
 
     rightCurve.storeValue( 0.0, 0.0 );
-    rightCurve.storeValue( 1.25, -12.5 );
-    rightCurve.storeValue( 2.5, -25.0 );
-    rightCurve.storeValue( 15.0, -30.0 );
+    rightCurve.storeValue( 1.5, -12.5 );
+    rightCurve.storeValue( 3.0, -27.0 );
+    rightCurve.storeValue( 15.0, -35.0 );
 
     setAnimation(animation);
   }
@@ -50,7 +50,7 @@ public class ManualClimbCommand extends PlayAnimationCommand {
 
     Robot.drive.getLeftMotor1().changeControlMode(CANTalon.TalonControlMode.Position);
     Robot.drive.getRightMotor1().changeControlMode(CANTalon.TalonControlMode.Position);
-    Robot.drive.lowGear();
+    Robot.drive.hiGear();
 
     leftCurve.setOffset(Robot.drive.getLeftMotor1().getPosition());
     rightCurve.setOffset(Robot.drive.getRightMotor1().getPosition());
@@ -62,7 +62,7 @@ public class ManualClimbCommand extends PlayAnimationCommand {
     super.execute();
 
     double distance = Math.abs(Robot.drive.getDistance() - startDistance);
-    if (distance > 25) {
+    if (distance > 27) {
       Robot.fuelIntake.extend();
     }
     else {
