@@ -7,13 +7,10 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team2471.frc.lib.control.MeanMotorController;
 import org.team2471.frc.lib.io.log.Logger;
 import org.team2471.frc.lib.control.CANController;
 import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.defaultcommands.DriveDefaultCommand;
-
-import java.security.Security;
 
 public class Drive extends Subsystem {
   private final CANController leftMotor1 = HardwareMap.DriveMap.leftMotor1;
@@ -94,7 +91,7 @@ public class Drive extends Subsystem {
   public void drive(double throttle, double turn, double turnLeft, double turnRight) {
     // WE CANNOT TURN WHILE PTO IS ENGAGED. Use driveStraight() while climbing.
     if (isClimbing()) {
-      logger.error("Robot attempted to use drive() while climber is engaged!");
+      //logger.error("Robot attempted to use drive() while climber is engaged!");
       return;
     }
 
@@ -102,9 +99,9 @@ public class Drive extends Subsystem {
 
     double averageSpeed = getSpeed();
     if (averageSpeed > HIGH_SHIFTPOINT) {
-      shiftPTO.set(false);  // high gear
+      hiGear();
     } else if (averageSpeed < LOW_SHIFTPOINT) {
-      shiftPTO.set(true);
+      lowGear();
     }
 
     SmartDashboard.putNumber("Speed", averageSpeed);
@@ -121,6 +118,10 @@ public class Drive extends Subsystem {
     rightMotor1.set(rightPower);
 
     //leftMotor1.setStatusFrameRateMs();
+
+    SmartDashboard.putNumber("Left Distance", -leftMotor1.getPosition());
+    SmartDashboard.putNumber("Right Distance", -rightMotor1.getPosition());
+    SmartDashboard.putNumber("Distance", getDistance());
   }
 
   public void turnInPlace(double turn) {
@@ -145,18 +146,36 @@ public class Drive extends Subsystem {
     return !climbPTO.get();
   }
 
-  public double getSpeed() {
-    SmartDashboard.putNumber("Left Speed", -leftMotor1.getEncVelocity() / EDGES_PER_100_MS);
+  public double getSpeed() {  // Math.abs() only at the end, so that turning in place doesn't shift to high gear
+    SmartDashboard.putNumber("Left Speed", -leftMotor1.getEncVelocity() / EDGES_PER_100_MS);  // getSpeed() is faster - unsure about units.
     SmartDashboard.putNumber("Right Speed", rightMotor1.getEncVelocity() / EDGES_PER_100_MS);
     return Math.abs(-leftMotor1.getEncVelocity() / EDGES_PER_100_MS + rightMotor1.getEncVelocity() / EDGES_PER_100_MS) / 2.0;
   }
 
   public double getDistance() {
+    SmartDashboard.putNumber("Left Distance", leftMotor1.getPosition());
+    SmartDashboard.putNumber("Right Distance", rightMotor1.getPosition());
     return (Math.abs(leftMotor1.getPosition()) + Math.abs(rightMotor1.getPosition())) / 2;
   }
 
   public void setPID(double p,double i,double d){
     leftMotor1.setPID(p, i, d);
     rightMotor1.setPID(p, i, d);
+  }
+
+  public CANController getLeftMotor1() {
+    return leftMotor1;
+  }
+
+  public CANController getRightMotor1() {
+    return rightMotor1;
+  }
+
+  public void lowGear() {
+    shiftPTO.set(true);
+  }
+
+  public void hiGear() {
+    shiftPTO.set(false);
   }
 }

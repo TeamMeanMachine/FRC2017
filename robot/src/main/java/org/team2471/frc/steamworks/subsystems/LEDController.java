@@ -15,7 +15,7 @@ public class LEDController extends Subsystem {
           serialPort = new SerialPort(9600, SerialPort.Port.kUSB1);
         } catch(RuntimeException ignored) {
           try {
-            logger.warn("Could not establish connection with teensy. Retrying...", 10);
+            //logger.warn("Could not establish connection with teensy. Retrying...", 10);
             Thread.sleep(2000);
           } catch (InterruptedException e) {
             e.printStackTrace();
