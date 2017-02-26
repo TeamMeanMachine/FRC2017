@@ -54,8 +54,6 @@ public class ManualClimbCommand extends PlayAnimationCommand {
 
     leftCurve.setOffset(Robot.drive.getLeftMotor1().getPosition());
     rightCurve.setOffset(Robot.drive.getRightMotor1().getPosition());
-
-    System.out.println("Climber Initialize.");
   }
 
   @Override
@@ -64,7 +62,7 @@ public class ManualClimbCommand extends PlayAnimationCommand {
     super.execute();
 
     double distance = Math.abs(Robot.drive.getDistance() - startDistance);
-    if (distance > 27) {
+    if (distance > 25) {
       Robot.fuelIntake.extend();
     }
     else {
@@ -72,8 +70,6 @@ public class ManualClimbCommand extends PlayAnimationCommand {
     }
 
     SmartDashboard.putNumber("Climb Time", timer.get());
-    SmartDashboard.putNumber("Timer Time", Timer.getFPGATimestamp());
-    SmartDashboard.putNumber("Utility Time", Utility.getFPGATime());
   }
 
   @Override
