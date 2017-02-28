@@ -8,14 +8,11 @@ import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.comm.VisionData;
-import org.team2471.frc.steamworks.subsystems.GearIntake;
-import org.team2471.frc.steamworks.subsystems.TwinShooter;
 
 public class AimAndShootCommand extends PIDCommand {
 
   private final PIDController pidController = getPIDController();
-  private Timer timer1 = new Timer();
-  private Timer timer2 = new Timer();
+  private final Timer agitatorTimer = new Timer();
 
   private boolean targetFound = false;
   private double lastError = 1.0;
@@ -32,9 +29,9 @@ public class AimAndShootCommand extends PIDCommand {
 
   @Override
   protected void initialize() {
-    timer1.start();
     Robot.twinShooter.enable();
     pidController.enable();
+    agitatorTimer.start();
   }
 
 
@@ -86,22 +83,19 @@ public class AimAndShootCommand extends PIDCommand {
 
     if (shoot) {
       Robot.twinShooter.enableFeed();
+
+      if(agitatorTimer.hasPeriodPassed(2.5)) {
+        agitatorTimer.reset();
+        Robot.gearIntake.retract();
+      } else if(agitatorTimer.hasPeriodPassed(2.0)) {
+        Robot.gearIntake.extend();
+      } else {
+        Robot.gearIntake.retract();
+      }
     } else {
       Robot.twinShooter.disableFeed();
+      agitatorTimer.reset();
     }
-
-    if (timer1.get() > 2) {
-      Robot.gearIntake.extend();
-      timer2.start();
-      timer1.stop();
-    }
-    if (timer2.get() > .5) {
-      Robot.gearIntake.retract();
-      timer1.start();
-      timer2.stop();
-    }
-
-
   }
 
 
@@ -118,8 +112,7 @@ public class AimAndShootCommand extends PIDCommand {
     Robot.twinShooter.disable();
     Robot.gearIntake.retract();
     pidController.disable();
-    timer1.stop();
-    timer2.stop();
+    agitatorTimer.stop();
   }
 
   @Override
