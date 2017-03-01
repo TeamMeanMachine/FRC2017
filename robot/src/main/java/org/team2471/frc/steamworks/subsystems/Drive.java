@@ -171,6 +171,10 @@ public class Drive extends Subsystem {
     return rightMotor1;
   }
 
+  public double getAngle() {
+    return HardwareMap.gyro.getAngle();
+  }
+
   public void lowGear() {
     shiftPTO.set(true);
   }

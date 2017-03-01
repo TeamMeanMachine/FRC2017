@@ -2,16 +2,15 @@ package org.team2471.frc.steamworks;
 
 import com.ctre.CANTalon;
 
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.Solenoid;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.*;
 import org.team2471.frc.lib.control.CANController;
 import org.team2471.frc.lib.control.MeanMotorController;
 import org.team2471.frc.util.control.PDPDrawSensor;
 
 public class HardwareMap {
   public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
+  public static final AHRS gyro = new AHRS(I2C.Port.kMXP);
 
   public static final class TwinShooterMap {
     public static final MeanMotorController masterLeft = new MeanMotorController(4);

@@ -96,6 +96,19 @@ public class AimAndShootCommand extends PIDCommand {
       Robot.twinShooter.disableFeed();
       agitatorTimer.reset();
     }
+
+    // update target
+    double setpoint = Robot.drive.getAngle();
+    if(SmartDashboard.getBoolean("Auto Aim", false)) {
+      VisionData boilerData = Robot.coProcessor.getBoilerData();
+      if(boilerData.targetPresent()) {
+        setpoint += boilerData.getError();
+      }
+    } else {
+      // manual aim
+      setpoint += IOMap.aimAxis.get() * 15;
+    }
+    setSetpoint(setpoint);
   }
 
 
@@ -117,22 +130,7 @@ public class AimAndShootCommand extends PIDCommand {
 
   @Override
   protected double returnPIDInput() {
-    if (SmartDashboard.getBoolean("Auto Aim", false)) {
-      VisionData boilerData = Robot.coProcessor.getBoilerData();
-      if(boilerData.isPresent()) {
-        targetFound = true;
-        double distance = boilerData.getDistance(); // TODO: do stuff with distance
-        lastError = boilerData.getError();
-        return lastError;
-      } else {
-        targetFound = false;
-        return lastError;
-      }
-    } else {
-      targetFound = true;
-      lastError = IOMap.aimAxis.get() * 15;
-      return lastError;
-    }
+    return Robot.drive.getAngle();
   }
 
   @Override
