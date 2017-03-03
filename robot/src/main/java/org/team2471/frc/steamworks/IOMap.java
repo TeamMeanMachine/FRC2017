@@ -1,6 +1,5 @@
 package org.team2471.frc.steamworks;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.team2471.frc.lib.control.CommandTrigger;
 import org.team2471.frc.lib.io.Controller;
 import org.team2471.frc.lib.io.ControllerAxis;
@@ -71,11 +70,8 @@ public class IOMap {
     CommandTrigger climbTrigger = new CommandTrigger(climbButton::get);
     climbTrigger.whileActive(new ManualClimbCommandGroup());
 
-//    CommandTrigger gearTrigger = new CommandTrigger(gearButton::get);
-//    climbTrigger.whileActive(new GearCommandGroup());
-
     CommandTrigger aimTrigger = new CommandTrigger(aimButton::get);
-    aimTrigger.toggleWhenActive(new AimAndShootCommand());
+    aimTrigger.toggleWhenActive(new AimCommand());
 
     CommandTrigger signalDriverTrigger = new CommandTrigger(signalDriverButton::get);
     signalDriverTrigger.whileActive(new RumbleCommand(driverController, 1, RumbleCommand.StickSide.RIGHT));

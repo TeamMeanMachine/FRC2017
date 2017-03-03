@@ -18,12 +18,10 @@ public class Robot extends IterativeRobot {
   public static Drive drive;
   public static GearIntake gearIntake;
   public static FuelIntake fuelIntake;
-  public static TwinShooter twinShooter;
+  public static Shooter shooter;
   public static LEDController ledController;
 
   public static SendableChooser autoChooser;
-
-  Command autonomousCommand;
 
   @SuppressWarnings("unchecked")
 
@@ -31,7 +29,8 @@ public class Robot extends IterativeRobot {
   public void robotInit() {
     NetworkTable nt = NetworkTable.getTable("SmartDashboard");
     nt.getKeys().forEach(nt::clearPersistent);
-    twinShooter = new TwinShooter();
+//    twinShooter = new TwinShooter();
+    shooter = new Shooter();
     drive = new Drive();
     gearIntake = new GearIntake();
     fuelIntake = new FuelIntake();
@@ -62,7 +61,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
       if (autoChooser != null) {
-        autonomousCommand = (Command) autoChooser.getSelected();
+        Command autonomousCommand = (Command) autoChooser.getSelected();
         if (autonomousCommand != null) {
           autonomousCommand.start();
         }
