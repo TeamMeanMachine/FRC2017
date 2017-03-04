@@ -1,5 +1,6 @@
 package org.team2471.frc.steamworks;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.team2471.frc.lib.control.CommandTrigger;
 import org.team2471.frc.lib.io.Controller;
 import org.team2471.frc.lib.io.ControllerAxis;
@@ -78,6 +79,12 @@ public class IOMap {
 
     CommandTrigger signalCoDriverTrigger = new CommandTrigger(signalCoDriverButton::get);
     signalCoDriverTrigger.whileActive(new RumbleCommand(coDriverController, 1, RumbleCommand.StickSide.LEFT));
+
+    CommandTrigger extendHoodTrgger = new CommandTrigger(hoodDPad::isUp);
+    extendHoodTrgger.whenActive(new ExtendHoodCommand());
+
+    CommandTrigger retractHoodTrigger = new CommandTrigger(hoodDPad::isDown);
+    retractHoodTrigger.whenActive(new RetractHoodCommand());
   }
 
   public static Controller getDriverController() {

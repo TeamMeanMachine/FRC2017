@@ -13,9 +13,9 @@ public class HardwareMap {
   public static final AHRS gyro = new AHRS(I2C.Port.kMXP);
 
   public static final class TwinShooterMap {
-    public static final MeanMotorController masterLeft = new MeanMotorController(4);
-    public static final CANTalon slaveLeft = new CANTalon(5);
-    public static final MeanMotorController masterRight = new MeanMotorController(10);
+    public static final CANTalon masterLeft = new CANTalon(5);
+    public static final CANTalon slaveLeft = new CANTalon(4);
+    public static final CANTalon masterRight = new CANTalon(10);
     public static final CANTalon slaveRight = new CANTalon(11);
     public static final CANTalon ballFeeder = new CANTalon(6);
     public static final CANTalon cycloneMotor = new CANTalon(12);

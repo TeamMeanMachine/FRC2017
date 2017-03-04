@@ -2,18 +2,22 @@ package org.team2471.frc.steamworks.subsystems;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team2471.frc.steamworks.HardwareMap;
 
 public class Shooter extends Subsystem {
-  private final CANTalon rightMasterMotor = new CANTalon(10);
-  private final CANTalon rightSlaveMotor = new CANTalon(11);
+  private final CANTalon rightMasterMotor = HardwareMap.TwinShooterMap.masterRight;
+  private final CANTalon rightSlaveMotor = HardwareMap.TwinShooterMap.slaveRight;
 
-  private final CANTalon leftMasterMotor = new CANTalon(5);
-  private final CANTalon leftSlaveMotor = new CANTalon(4);
+  private final CANTalon leftMasterMotor = HardwareMap.TwinShooterMap.masterLeft;
+  private final CANTalon leftSlaveMotor = HardwareMap.TwinShooterMap.slaveLeft;
 
-  private final CANTalon cycloneMotor = new CANTalon(12);
-  private final CANTalon elevatorMotor = new CANTalon(6);
+  private final CANTalon cycloneMotor = HardwareMap.TwinShooterMap.cycloneMotor;
+  private final CANTalon elevatorMotor = HardwareMap.TwinShooterMap.ballFeeder;
+
+  private final Solenoid hoodSolenoid = HardwareMap.TwinShooterMap.hoodSolenoid;
 
   public Shooter() {
     rightMasterMotor.configEncoderCodesPerRev(205);
@@ -40,20 +44,20 @@ public class Shooter extends Subsystem {
     leftMasterMotor.enableBrakeMode(false);
     leftSlaveMotor.changeControlMode(TalonControlMode.Follower);
     leftSlaveMotor.set(this.leftMasterMotor.getDeviceID());
+
+    leftMasterMotor.setInverted(false);
     leftMasterMotor.reverseOutput(false);
     leftMasterMotor.reverseSensor(true);
 
     leftSlaveMotor.reverseOutput(false);
     leftSlaveMotor.enableBrakeMode(false);
 
+    rightMasterMotor.setInverted(true);
     rightMasterMotor.reverseOutput(false);
     rightMasterMotor.reverseSensor(true);
-    rightMasterMotor.setInverted(true);
 
-
-    cycloneMotor.setInverted(true);
-    elevatorMotor.setInverted(false);
-    rightMasterMotor.getClass();
+    cycloneMotor.setInverted(false);
+    elevatorMotor.setInverted(true);
   }
 
   public void setPID(double p, double i, double d, double leftF, double rightF) {
@@ -117,12 +121,20 @@ public class Shooter extends Subsystem {
   public void reset() {
     rightMasterMotor.set(0.0);
     leftMasterMotor.set(0.0);
-    setIntake(0.0);
+    setIntake(0.0, 0.0);
   }
 
-  public void setIntake(double power) {
-    cycloneMotor.set(power);
-    elevatorMotor.set(power);
+  public void setIntake(double cycloneSpeed, double elevatorSpeed) {
+    cycloneMotor.set(cycloneSpeed);
+    elevatorMotor.set(elevatorSpeed);
+  }
+
+  public void extendHood() {
+    hoodSolenoid.set(true);
+  }
+
+  public void retractHood() {
+    hoodSolenoid.set(false);
   }
 
   protected void initDefaultCommand() {
