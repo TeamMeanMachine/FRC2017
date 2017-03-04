@@ -1,13 +1,11 @@
 package org.team2471.frc.steamworks.autonomouscommands;
 
 
-import com.ctre.CANTalon;
-import org.team2471.frc.lib.control.MeanMotorController;
 import org.team2471.frc.lib.motion_profiling.FollowPathTankDriveCommand;
 import org.team2471.frc.lib.motion_profiling.Path2D;
 import org.team2471.frc.steamworks.HardwareMap;
 
-import static org.team2471.frc.steamworks.HardwareMap.DriveMap.shiftSolenoid;
+import static org.team2471.frc.steamworks.HardwareMap.DriveMap.shiftPTO;
 import static org.team2471.frc.steamworks.Robot.drive;
 
 public class CoOpHopperAuto extends FollowPathTankDriveCommand {
@@ -37,6 +35,6 @@ public class CoOpHopperAuto extends FollowPathTankDriveCommand {
   @Override
   protected void initialize() {
     super.initialize();
-    shiftSolenoid.set(true);
+    shiftPTO.set(true);
   }
 }

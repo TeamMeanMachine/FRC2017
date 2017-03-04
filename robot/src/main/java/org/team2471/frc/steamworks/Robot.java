@@ -1,70 +1,62 @@
 package org.team2471.frc.steamworks;
 
-import com.ctre.CANTalon;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team2471.frc.lib.control.MeanMotorController;
-import org.team2471.frc.steamworks.autonomouscommands.CircleTestAutonomous;
-import org.team2471.frc.steamworks.autonomouscommands.CoOpHopper;
-import org.team2471.frc.steamworks.autonomouscommands.CoOpHopperAuto;
-import org.team2471.frc.steamworks.autonomouscommands.DoNothingAuto;
-import org.team2471.frc.steamworks.autonomouscommands.DriveEightFeet;
-import org.team2471.frc.steamworks.autonomouscommands.DriveToHopperAuto;
-import org.team2471.frc.steamworks.autonomouscommands.DriveToLeftLift;
-import org.team2471.frc.steamworks.autonomouscommands.DriveToLift;
-import org.team2471.frc.steamworks.autonomouscommands.DriveToRightLift;
-import org.team2471.frc.steamworks.autonomouscommands.GearPlusFarHopper;
-import org.team2471.frc.steamworks.autonomouscommands.OneHundredPointAuto;
-import org.team2471.frc.steamworks.subsystems.TwinShooter;
+import org.team2471.frc.steamworks.autonomouscommands.*;
+import org.team2471.frc.steamworks.comm.CoProcessor;
+import org.team2471.frc.steamworks.subsystems.*;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import org.team2471.frc.steamworks.subsystems.Drive;
-import org.team2471.frc.steamworks.subsystems.GearIntake;
-import org.team2471.frc.steamworks.subsystems.FuelIntake;
 
 public class Robot extends IterativeRobot {
   public static CoProcessor coProcessor;
-
   public static Drive drive;
-
   public static GearIntake gearIntake;
-
   public static FuelIntake fuelIntake;
-
   public static TwinShooter twinShooter;
+  public static LEDController ledController;
 
   public static SendableChooser autoChooser;
 
   Command autonomousCommand;
 
+  @SuppressWarnings("unchecked")
 
   @Override
   public void robotInit() {
+    NetworkTable nt = NetworkTable.getTable("SmartDashboard");
+    nt.getKeys().forEach(nt::clearPersistent);
     twinShooter = new TwinShooter();
     drive = new Drive();
     gearIntake = new GearIntake();
     fuelIntake = new FuelIntake();
+    ledController = new LEDController();
 
     coProcessor = new CoProcessor();
     IOMap.init();
-    IOMap.getInstance();
 
     autoChooser = new SendableChooser();
     autoChooser.addObject("Don't Move", new DoNothingAuto());
     autoChooser.addObject("Drive to Hopper", new DriveToHopperAuto());
     autoChooser.addObject("Drive Eight Feet", new DriveEightFeet(1.0));
     autoChooser.addObject("Drive to left Lift", new DriveToLeftLift(1.0));
-    autoChooser.addObject("Drive to right Lift", new DriveToRightLift(1.0, true));
+    autoChooser.addObject("Drive to right Lift", new DriveToLeftLift(1.0, true));
     autoChooser.addObject("Drive to middle lift", new DriveToLift(1.0));
     autoChooser.addObject("One Hundred point Auto", new OneHundredPointAuto());
     autoChooser.addObject("Drop off gear and go to far Hopper", new GearPlusFarHopper());
     autoChooser.addObject("Circle Auto", new CircleTestAutonomous(1.0));
     autoChooser.addObject("CoOp Hopper", new CoOpHopper());
+    autoChooser.addObject("One Hundred point Auto, Fuel first", new SecondOneHundredPointAuto());
+    autoChooser.addObject("Backwards test", new DriveBackwardsFromLLToHopper(1.0,false));
 
     SmartDashboard.putData("AutoChooser", autoChooser);
+
+    drive.disableClimbing();
   }
 
     @Override
@@ -84,10 +76,17 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Drive Speed", drive.getSpeed());
+    SmartDashboard.putNumber("Gear Sensor", HardwareMap.GearIntakeMap.gearSensor.getValue());
     Scheduler.getInstance().run();
   }
 
   @Override
   public void disabledPeriodic() {
+  }
+
+  @Override
+  public void testPeriodic() {
+    LiveWindow.run();
   }
 }

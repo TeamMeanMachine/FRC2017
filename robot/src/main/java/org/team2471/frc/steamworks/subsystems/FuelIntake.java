@@ -2,6 +2,7 @@ package org.team2471.frc.steamworks.subsystems;
 
 import com.ctre.CANTalon;
 
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.team2471.frc.lib.io.log.LogLevel;
 import org.team2471.frc.lib.io.log.Logger;
 import org.team2471.frc.steamworks.HardwareMap;
@@ -24,8 +25,19 @@ public class FuelIntake extends Subsystem {
 
 
   public FuelIntake() {
+    intakeMotor.enableBrakeMode(false);
     intakeMotor.setInverted(true);
-    leftWindshieldMotor.setInverted(true);
+    leftWindshieldMotor.setInverted(false);
+    rightWindshieldMotor.setInverted(true);
+
+    LiveWindow.addActuator("FuelIntake", "Intake Motor", intakeMotor);
+    LiveWindow.addActuator("FuelIntake", "Left Windshield Motor", intakeMotor);
+    LiveWindow.addActuator("FuelIntake", "Right Windshield Motor", intakeMotor);
+    LiveWindow.addActuator("FuelIntake", "Solenoid", intakeSolenoid);
+  }
+
+  public double getCurrent() {
+    return intakeDrawSensor.getCurrent();
   }
 
   /**
@@ -50,6 +62,7 @@ public class FuelIntake extends Subsystem {
     leftWindshieldMotor.set(0.8);
     rightWindshieldMotor.set(0.8);
   }
+
 
   /**
    * Run intake motors in
