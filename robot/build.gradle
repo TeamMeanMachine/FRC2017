@@ -9,6 +9,7 @@ frc {
   team = "2471"
   robotClass = "org.team2471.frc.steamworks.Robot"
 //  robotClass = "org.team2471.frc.TestRobot"
+//  robotClass = "temp.Robot"
 }
 
 dependencies {

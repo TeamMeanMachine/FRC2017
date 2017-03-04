@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.*;
 import org.team2471.frc.steamworks.comm.CoProcessor;
+import org.team2471.frc.steamworks.comm.VisionData;
 import org.team2471.frc.steamworks.subsystems.*;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -77,6 +78,9 @@ public class Robot extends IterativeRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("Drive Speed", drive.getSpeed());
     SmartDashboard.putNumber("Gear Sensor", HardwareMap.GearIntakeMap.gearSensor.getValue());
+
+    VisionData boilerData = coProcessor.getBoilerData();
+    SmartDashboard.putNumber("Boiler", boilerData.targetPresent() ? boilerData.getError() : -1337.0); // don't use this number for real stuff
     Scheduler.getInstance().run();
   }
 
