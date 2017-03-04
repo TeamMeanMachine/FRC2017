@@ -12,12 +12,12 @@ public class DriveToLeftLiftAuto extends CommandGroup {
     int location = driverStation.getLocation();
 
     if (alliance == alliance.Blue){
-      addSequential(new DriveToLeftLift(1.0, false));
+      addSequential(new DriveToLeftLift(1.0, true));
       addSequential(new TiltGearIntakeCommand(), 2.0);
 
     }
     if (alliance == alliance.Red);
-    addSequential(new DriveToLeftLift(1.0, true));
+    addSequential(new DriveToLeftLift(1.0, false));
     addSequential(new TiltGearIntakeCommand(), 2.0);
 
   }
