@@ -14,7 +14,7 @@ public class DriveToHopperAuto extends CommandGroup {
 
   addParallel(new TiltGearIntakeCommand(), 5.0);
   if (alliance == DriverStation.Alliance.Blue) {
-    addSequential(new DriveToHopperAutoBlue(1.0));
+    addSequential(new DriveToHopperAutoBlue(1.0, false));
 
   }
   else if (alliance == DriverStation.Alliance.Red){

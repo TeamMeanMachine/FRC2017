@@ -44,8 +44,8 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Don't Move", new DoNothingAuto());
     autoChooser.addObject("Drive to Hopper", new DriveToHopperAuto());
     autoChooser.addObject("Drive Eight Feet", new DriveEightFeet(1.0));
-    autoChooser.addObject("Drive to left Lift", new DriveToLeftLift(1.0));
-    autoChooser.addObject("Drive to right Lift", new DriveToLeftLift(1.0, true));
+    autoChooser.addObject("Drive to left Lift", new DriveToLeftLiftAuto());
+    autoChooser.addObject("Drive to right Lift", new DriveToRightLiftAuto());
     autoChooser.addObject("Drive to middle lift", new DriveToLift(1.0));
     autoChooser.addObject("One Hundred point Auto", new OneHundredPointAuto());
     autoChooser.addObject("Drop off gear and go to far Hopper", new GearPlusFarHopper());
