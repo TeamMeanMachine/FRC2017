@@ -1,5 +1,6 @@
 package org.team2471.frc.steamworks.comm;
 
+import edu.wpi.first.wpilibj.Timer;
 import org.team2471.frc.lib.io.log.LogLevel;
 import org.team2471.frc.lib.io.log.Logger;
 
@@ -13,6 +14,8 @@ public class CoProcessor {
   private VisionData boilerData = VisionData.empty(0);
   private VisionData gearData = VisionData.empty(0);
   private VisionData ropeData = VisionData.empty(0);
+
+  private double lastTime = Timer.getFPGATimestamp();
 
   public CoProcessor() {
     logger.setLocalLogLevel(LogLevel.INFO);

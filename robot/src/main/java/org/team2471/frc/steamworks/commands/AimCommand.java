@@ -37,6 +37,7 @@ public class AimCommand extends PIDCommand {
 
   protected void execute() {
     Robot.fuelIntake.retract();
+    Robot.gearIntake.retract();
 
     // set rpms
     Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
@@ -74,7 +75,7 @@ public class AimCommand extends PIDCommand {
       }
     } else {
       Robot.shooter.setIntake(0, 0);
-      Robot.gearIntake.extend();
+//      Robot.gearIntake.extend();
       Robot.fuelIntake.stopRoll();
       agitatorTimer.reset();
     }

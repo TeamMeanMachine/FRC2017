@@ -80,7 +80,7 @@ public class Robot extends IterativeRobot {
     SmartDashboard.putNumber("Gear Sensor", HardwareMap.GearIntakeMap.gearSensor.getValue());
 
     VisionData boilerData = coProcessor.getBoilerData();
-    SmartDashboard.putNumber("Boiler", boilerData.targetPresent() ? boilerData.getError() : -1337.0); // don't use this number for real stuff
+    SmartDashboard.putString("Boiler", boilerData.targetPresent() ? Double.toString(boilerData.getError()) : "NONE"); // don't use this number for real stuff
     Scheduler.getInstance().run();
   }
 
