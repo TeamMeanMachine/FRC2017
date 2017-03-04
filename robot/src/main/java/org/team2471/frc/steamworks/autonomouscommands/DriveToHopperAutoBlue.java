@@ -12,10 +12,11 @@ import static org.team2471.frc.steamworks.Robot.drive;
 public class DriveToHopperAutoBlue extends FollowPathTankDriveCommand {
   Path2D m_path;
 
-  public DriveToHopperAutoBlue(double speed ) {
+  public DriveToHopperAutoBlue(double speed, boolean mirror ) {
     requires(drive);
 
     setSpeed( speed );
+    setMirrorPath(mirror);
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
 
