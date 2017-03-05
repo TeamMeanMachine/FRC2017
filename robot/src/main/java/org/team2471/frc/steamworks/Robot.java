@@ -86,6 +86,8 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void disabledPeriodic() {
+    VisionData boilerData = coProcessor.getBoilerData();
+    SmartDashboard.putString("Boiler", boilerData.targetPresent() ? Double.toString(boilerData.getError()) : "NONE"); // don't use this number for real stuff
   }
 
   @Override

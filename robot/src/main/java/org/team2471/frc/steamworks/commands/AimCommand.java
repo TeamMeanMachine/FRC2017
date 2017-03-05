@@ -1,12 +1,15 @@
 package org.team2471.frc.steamworks.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.comm.VisionData;
+import org.team2471.frc.steamworks.subsystems.Drive;
 
 public class AimCommand extends PIDCommand {
   private final double AGITATOR_DELAY = 1.5; // time between each agitator interval
@@ -23,8 +26,11 @@ public class AimCommand extends PIDCommand {
     requires(Robot.drive);
     requires(Robot.gearIntake);
     requires(Robot.fuelIntake);
+    SmartDashboard.putData("Aim Controller", turnController);
 
-    turnController.setAbsoluteTolerance(0.1);
+    DashboardUtils.putPersistantNumber("Aim Offset", 0);
+
+    turnController.setAbsoluteTolerance(2.0);
     turnController.setToleranceBuffer(10);
   }
 
@@ -53,10 +59,10 @@ public class AimCommand extends PIDCommand {
       // manual aim
       angle += IOMap.aimAxis.get() * 15;
     }
-    turnController.setSetpoint(angle);
+    turnController.setSetpoint(-(angle + SmartDashboard.getNumber("Aim Offset", 0)));
 
     // shooting and agitator
-    boolean shoot = SmartDashboard.getBoolean("Auto Aim", false) ?
+    boolean shoot = DriverStation.getInstance().isAutonomous() ?
         turnController.onTarget() :  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {

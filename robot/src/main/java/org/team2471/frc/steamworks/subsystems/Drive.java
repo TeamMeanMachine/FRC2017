@@ -75,6 +75,14 @@ public class Drive extends Subsystem {
     leftMotor1.setVoltageRampRate(9);
     rightMotor1.setVoltageRampRate(9);
 
+    // ramp rates
+    leftMotor1.setVoltageRampRate(12);
+    leftMotor2.setVoltageRampRate(12);
+    leftMotor3.setVoltageRampRate(12);
+    rightMotor1.setVoltageRampRate(12);
+    rightMotor2.setVoltageRampRate(12);
+    rightMotor3.setVoltageRampRate(12);
+
     LiveWindow.addActuator("Drive", "Right Motor 1", rightMotor1);
     LiveWindow.addActuator("Drive", "Right Motor 2", rightMotor2);
     LiveWindow.addActuator("Drive", "Right Motor 3", rightMotor3);
