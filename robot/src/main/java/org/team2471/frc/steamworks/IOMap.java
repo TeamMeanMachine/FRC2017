@@ -49,7 +49,7 @@ public class IOMap {
   public static final ControllerButton fuelFeedButton = coDriverController.getButton(XboxMap.Buttons.A);
   public static final ControllerButton aimButton = coDriverController.getButton(XboxMap.Buttons.X);
 
-  public static ControllerButton shootButton = () -> shootAxis.get() > 0.4;
+  public static ControllerButton shootButton = () -> shootAxis.get() > 0.15;
 
   public static final ControllerAxis aimAxis = coDriverController.getAxis(XboxMap.Axes.RIGHT_THUMBSTICK_X)
       .withDeadband(0.2)

@@ -76,12 +76,12 @@ public class Drive extends Subsystem {
     rightMotor1.setVoltageRampRate(9);
 
     // ramp rates
-    leftMotor1.setVoltageRampRate(12);
-    leftMotor2.setVoltageRampRate(12);
-    leftMotor3.setVoltageRampRate(12);
-    rightMotor1.setVoltageRampRate(12);
-    rightMotor2.setVoltageRampRate(12);
-    rightMotor3.setVoltageRampRate(12);
+    leftMotor1.setVoltageRampRate(72);
+    leftMotor2.setVoltageRampRate(72);
+    leftMotor3.setVoltageRampRate(72);
+    rightMotor1.setVoltageRampRate(72);
+    rightMotor2.setVoltageRampRate(72);
+    rightMotor3.setVoltageRampRate(72);
 
     LiveWindow.addActuator("Drive", "Right Motor 1", rightMotor1);
     LiveWindow.addActuator("Drive", "Right Motor 2", rightMotor2);
@@ -180,7 +180,7 @@ public class Drive extends Subsystem {
   }
 
   public double getAngle() {
-    return HardwareMap.gyro.getAngle();
+    return -HardwareMap.gyro.getAngle();
   }
 
   public void lowGear() {

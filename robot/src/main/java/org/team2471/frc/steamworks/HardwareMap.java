@@ -4,13 +4,17 @@ import com.ctre.CANTalon;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import org.team2471.frc.lib.control.CANController;
 import org.team2471.frc.lib.control.MeanMotorController;
+import org.team2471.frc.steamworks.subsystems.Drive;
+import org.team2471.frc.steamworks.subsystems.FuelIntake;
 import org.team2471.frc.util.control.PDPDrawSensor;
 
 public class HardwareMap {
   public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
-  public static final AHRS gyro = new AHRS(I2C.Port.kMXP);
+//  public static final AHRS gyro = new AHRS(SPI.Port.kMXP);
+  public static final Gyro gyro = new ADXRS450_Gyro();
 
   public static final class TwinShooterMap {
     public static final CANTalon masterLeft = new CANTalon(5);
@@ -48,5 +52,14 @@ public class HardwareMap {
     public static final Solenoid flapSolenoid = new Solenoid(3);
     public static final Solenoid tiltSolenoid = new Solenoid(2);
     public static final AnalogInput gearSensor = new AnalogInput(3);
+  }
+
+  public static void init() {
+    // do some call to each static class to force members to be initialized now.
+    // this is good because initialization takes time, and we want to spend our first 5 seconds of auto moving
+    TwinShooterMap.ballFeeder.get();
+    DriveMap.rightMotor1.get();
+    FuelIntakeMap.intakeMotor.get();
+    GearIntakeMap.flapSolenoid.get();
   }
 }

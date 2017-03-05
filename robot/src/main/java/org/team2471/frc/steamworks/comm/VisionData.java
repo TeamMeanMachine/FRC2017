@@ -25,7 +25,7 @@ public class VisionData {
     return distance;
   }
 
-  public double getImageNumber() {
+  public int getImageNumber() {
     return imageNumber;
   }
 

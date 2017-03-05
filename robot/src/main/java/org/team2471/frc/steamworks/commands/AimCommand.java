@@ -9,19 +9,23 @@ import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.comm.VisionData;
-import org.team2471.frc.steamworks.subsystems.Drive;
 
 public class AimCommand extends PIDCommand {
   private final double AGITATOR_DELAY = 1.5; // time between each agitator interval
   private final double AGITATOR_DURATION = 0.5; // time to extend gear intake while agitation active
 
   private final Timer agitatorTimer = new Timer();
+  private final Timer shootingTimer = new Timer();
   private final PIDController turnController = getPIDController();
 
   private boolean wasExtended;
+  private boolean foundTarget;
+
+  private int lastImageNumber = 0;
+  private double lastImageTimestamp = Timer.getFPGATimestamp();
 
   public AimCommand() {
-    super(1.0/45.0, 0, 1.0/45.0);
+    super(0.05, 0, 1.0/25.0);
     requires(Robot.shooter);
     requires(Robot.drive);
     requires(Robot.gearIntake);
@@ -31,55 +35,76 @@ public class AimCommand extends PIDCommand {
     DashboardUtils.putPersistantNumber("Aim Offset", 0);
 
     turnController.setAbsoluteTolerance(2.0);
-    turnController.setToleranceBuffer(10);
+    turnController.setToleranceBuffer(30);
   }
 
   protected void initialize() {
     Robot.shooter.enable();
     agitatorTimer.start();
+    shootingTimer.start();
 
     wasExtended = Robot.fuelIntake.isExtended();
+    foundTarget = false;
   }
 
   protected void execute() {
     Robot.fuelIntake.retract();
-    Robot.gearIntake.retract();
 
     // set rpms
     Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
 
-    // turning
-    double angle = Robot.drive.getAngle();
+    double angle = returnPIDInput();
     if(SmartDashboard.getBoolean("Auto Aim", false)) {
-      VisionData boilerData = Robot.coProcessor.getBoilerData();
-      if(boilerData.targetPresent()) {
-        angle += boilerData.getError();
+      if(!foundTarget) {
+        VisionData boilerData = Robot.coProcessor.getBoilerData();
+        if(boilerData.targetPresent()) {
+          angle += boilerData.getError() * 0.8;
+          int imageNumber = boilerData.getImageNumber();
+          if(lastImageNumber != imageNumber) {
+            lastImageNumber = boilerData.getImageNumber();
+            lastImageTimestamp = Timer.getFPGATimestamp();
+          }
+        } else {
+          int revolutions = (int) angle / 360;
+          angle = 150 + revolutions * 360;
+        }
       }
     } else {
       // manual aim
       angle += IOMap.aimAxis.get() * 15;
     }
-    turnController.setSetpoint(-(angle + SmartDashboard.getNumber("Aim Offset", 0)));
+
+    turnController.setSetpoint(angle + SmartDashboard.getNumber("Aim Offset", 0));
+
+    if (!foundTarget && turnController.onTarget()) {
+      foundTarget = true;
+    }
+
+
+
+
+    System.out.println(turnController.getSetpoint());
+    System.out.println(turnController.getError());
 
     // shooting and agitator
-    boolean shoot = DriverStation.getInstance().isAutonomous() ?
-        turnController.onTarget() :  // auto aim condition
+    boolean autonomous = DriverStation.getInstance().isAutonomous();
+    boolean shoot = autonomous ?
+        foundTarget :  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
-      Robot.shooter.setIntake(0.8, 1.0);
+      shootingTimer.reset();
+      double speed = autonomous ? 1.0 : (IOMap.shootAxis.get() - 0.15) * 1/(1 - 0.15);
+      Robot.shooter.setIntake(speed * 0.8, speed);
       Robot.fuelIntake.rollIn();
 
       if(agitatorTimer.get() > AGITATOR_DELAY + AGITATOR_DURATION) {
-        System.out.println("RESET: " + agitatorTimer.get());
         agitatorTimer.reset();
       } else if(agitatorTimer.get() > AGITATOR_DELAY) {
         Robot.gearIntake.retract();
-        System.out.println("EXTEND: " + agitatorTimer.get());
       } else {
         Robot.gearIntake.extend();
-        System.out.println("RETRACT: " + agitatorTimer.get());
       }
-    } else {
+    } else if(shootingTimer.get() < 0.2){
       Robot.shooter.setIntake(0, 0);
 //      Robot.gearIntake.extend();
       Robot.fuelIntake.stopRoll();
