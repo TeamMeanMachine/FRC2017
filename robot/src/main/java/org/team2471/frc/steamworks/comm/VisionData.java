@@ -33,8 +33,8 @@ public class VisionData {
     return new VisionData(imageNumber, error, distance, true);
   }
 
-  static VisionData empty(int imageNumber) {
-    return new VisionData(imageNumber, Double.NaN, Double.NaN, false);
+  static VisionData empty() {
+    return new VisionData(0, Double.NaN, Double.NaN, false);
   }
 
   @Override

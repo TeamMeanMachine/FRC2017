@@ -35,9 +35,9 @@ public class OneHundredPointAuto extends CommandGroup {
     addSequential(new BackwardsFromBackHopper(1.0, mirrored));
     addSequential(new DriveBackToShoot(1.0, mirrored));
 //    addSequential(new DriveBackwardsFromHopper(1.0, mirrored));
-//    addSequential(new ExtendHoodCommand());
+    addSequential(new ExtendHoodCommand());
 //    addSequential(new PrintCommand("Done!"));
-//    addSequential(new AimCommand());
-//    addSequential(new RetractHoodCommand());
+    addSequential(new AimCommand());
+    addSequential(new RetractHoodCommand());
   }
 }
