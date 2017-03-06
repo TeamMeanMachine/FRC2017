@@ -80,9 +80,6 @@ public class AimCommand extends PIDCommand {
       foundTarget = true;
     }
 
-
-
-
     System.out.println(turnController.getSetpoint());
     System.out.println(turnController.getError());
 
@@ -134,6 +131,7 @@ public class AimCommand extends PIDCommand {
     agitatorTimer.stop();
     turnController.disable();
     Robot.shooter.reset();
+    Robot.gearIntake.retract();
 
     if(wasExtended) {
       Robot.fuelIntake.extend();

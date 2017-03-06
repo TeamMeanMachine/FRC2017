@@ -31,10 +31,10 @@ public class Shooter extends Subsystem {
     rightSlaveMotor.enableBrakeMode(false);
 
     // set ramp rates
-    leftMasterMotor.setVoltageRampRate(32);
-    leftSlaveMotor.setVoltageRampRate(32);
-    rightMasterMotor.setVoltageRampRate(32);
-    rightSlaveMotor.setVoltageRampRate(32);
+//    leftMasterMotor.setVoltageRampRate(32);
+//    leftSlaveMotor.setVoltageRampRate(32);
+//    rightMasterMotor.setVoltageRampRate(32);
+//    rightSlaveMotor.setVoltageRampRate(32);
 
 
     leftMasterMotor.configEncoderCodesPerRev(205);
