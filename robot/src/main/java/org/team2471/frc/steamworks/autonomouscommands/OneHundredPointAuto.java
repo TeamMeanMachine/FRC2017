@@ -24,7 +24,7 @@ public class OneHundredPointAuto extends CommandGroup {
     }
 
     addSequential(new DriveToLeftLift(1.0, mirrored));
-    addSequential(new TiltGearIntakeCommand(), 2.0);
+    addSequential(new TiltGearIntakeCommand(), 0.8);
     addSequential(new PrintCommand("Finished first drive"));
     addSequential(new DriveBackwardsFromLLToHopper(1.0, mirrored));
     addSequential(new PrintCommand("Finished driving backwards"));
