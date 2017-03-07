@@ -12,10 +12,9 @@ public class DriveEightFeet extends FollowPathTankDriveCommand {
 
   Path2D m_path;
 
-  public DriveEightFeet(double speed ) {
+  public DriveEightFeet() {
     requires(drive);
 
-    setSpeed( speed );
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
 

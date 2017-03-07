@@ -23,7 +23,7 @@ public class GearTen extends CommandGroup {
     }
 
     addSequential(new ExtendHoodCommand());
-    addSequential(new DriveToLeftLift(1.0, mirrored));
+    addSequential(new DriveToBoilerLiftInner(1.0, mirrored));
     addSequential(new TiltGearIntakeCommand(), 0.8);
     addSequential(new DriveBackwardsFromLLToHopper(1.0, !mirrored));
     addParallel(new DelayedCommand(new TiltGearIntakeCommand(),2.0, 2.5));

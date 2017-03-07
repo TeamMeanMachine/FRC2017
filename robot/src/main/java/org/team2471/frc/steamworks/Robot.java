@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.*;
 import org.team2471.frc.steamworks.comm.CoProcessor;
 import org.team2471.frc.steamworks.comm.VisionData;
-import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.ZeroGyroCommand;
 import org.team2471.frc.steamworks.subsystems.*;
 
@@ -44,11 +43,11 @@ public class Robot extends IterativeRobot {
 
     autoChooser = new SendableChooser();
     autoChooser.addObject("Don't Move", new DoNothingAuto());
-    autoChooser.addObject("Drive to Hopper", new DriveToHopperAuto());
-    autoChooser.addObject("Drive Eight Feet", new DriveEightFeet(1.0));
-    autoChooser.addObject("Drive to left Lift", new DriveToLeftLiftAuto());
-    autoChooser.addObject("Drive to right Lift", new DriveToBoilerLift());
-    autoChooser.addObject("Drive to middle lift", new DriveToLift(1.0));
+    autoChooser.addObject("Hopper", new DriveToHopperAuto());
+    autoChooser.addObject("Drive Eight Feet", new DriveEightFeet());
+    autoChooser.addObject("Feeder Lift", new DriveToFeederLift());
+    autoChooser.addObject("Boiler Lift", new DriveToBoilerLift());
+    autoChooser.addObject("Middle lift", new DriveToMiddleLift());
     autoChooser.addObject("One Hundred point Auto", new OneHundredPointAuto());
 //    autoChooser.addObject("Drop off gear and go to far Hopper", new GearPlusFarHopper());
 //    autoChooser.addObject("Circle Auto", new CircleTestAutonomous(1.0));
