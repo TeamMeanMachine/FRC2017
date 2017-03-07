@@ -19,7 +19,6 @@ public class AimCommand extends PIDCommand {
   private final PIDController turnController = getPIDController();
 
   private boolean wasExtended;
-  private boolean foundTarget;
 
   private int lastImageNumber = 0;
   private double lastImageTimestamp = Timer.getFPGATimestamp();
@@ -44,7 +43,6 @@ public class AimCommand extends PIDCommand {
     shootingTimer.start();
 
     wasExtended = Robot.fuelIntake.isExtended();
-    foundTarget = false;
   }
 
   protected void execute() {
@@ -55,41 +53,29 @@ public class AimCommand extends PIDCommand {
 
     double angle = returnPIDInput();
     if(SmartDashboard.getBoolean("Auto Aim", false)) {
-      if(!foundTarget) {
-        VisionData boilerData = Robot.coProcessor.getBoilerData();
-        if(boilerData.targetPresent()) {
-          angle += boilerData.getError() * 0.8;
-          int imageNumber = boilerData.getImageNumber();
-          if(lastImageNumber != imageNumber) {
-            lastImageNumber = boilerData.getImageNumber();
-            lastImageTimestamp = Timer.getFPGATimestamp();
-          }
-        } else {
-          int revolutions = (int) angle / 360;
-          angle = 150 + revolutions * 360;
+      VisionData boilerData = Robot.coProcessor.getBoilerData();
+      if(boilerData.targetPresent()) {
+        angle += boilerData.getError() * 0.8;
+        int imageNumber = boilerData.getImageNumber();
+        if(lastImageNumber != imageNumber) {
+          lastImageNumber = boilerData.getImageNumber();
+          lastImageTimestamp = Timer.getFPGATimestamp();
         }
       }
+      double offset = SmartDashboard.getNumber("Aim Offset", 0);
+      offset += IOMap.turnAxis.get() * (30/50); // 30 degrees per second (50 samples)
+      angle += offset;
+      SmartDashboard.putNumber("Aim Offset", offset);
     } else {
       // manual aim
       angle += IOMap.aimAxis.get() * 15;
     }
-
-    turnController.setSetpoint(angle + SmartDashboard.getNumber("Aim Offset", 0));
-
-    if (!foundTarget && turnController.onTarget()) {
-      foundTarget = true;
-    }
-
-
-
-
-    System.out.println(turnController.getSetpoint());
-    System.out.println(turnController.getError());
+    turnController.setSetpoint(angle);
 
     // shooting and agitator
     boolean autonomous = DriverStation.getInstance().isAutonomous();
     boolean shoot = autonomous ?
-        foundTarget :  // auto aim condition
+        turnController.onTarget() :  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();
@@ -134,6 +120,7 @@ public class AimCommand extends PIDCommand {
     agitatorTimer.stop();
     turnController.disable();
     Robot.shooter.reset();
+    Robot.gearIntake.retract();
 
     if(wasExtended) {
       Robot.fuelIntake.extend();

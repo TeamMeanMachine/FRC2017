@@ -11,9 +11,9 @@ import java.util.function.Consumer;
 
 public class CoProcessor {
   private final Logger logger = new Logger("CoProcessor");
-  private VisionData boilerData = VisionData.empty(0);
-  private VisionData gearData = VisionData.empty(0);
-  private VisionData ropeData = VisionData.empty(0);
+  private VisionData boilerData = VisionData.empty();
+  private VisionData gearData = VisionData.empty();
+  private VisionData ropeData = VisionData.empty();
 
   private double lastTime = Timer.getFPGATimestamp();
 
@@ -59,6 +59,12 @@ public class CoProcessor {
         String message = new String(packet.getData());
         logger.trace("Packet received: " + message);
 
+        if(message.equals("NONE")) {
+          setBoilerData(VisionData.empty());
+          setGearData(VisionData.empty());
+          setRopeData(VisionData.empty());
+        }
+
         try {
           String[] splitMessage = message.split(";");
           String context = splitMessage[0];
@@ -79,19 +85,13 @@ public class CoProcessor {
               break;
           }
 
-
           int imageNumber = Integer.parseInt(splitMessage[1]);
           String errorString = splitMessage[2];
-          if(errorString.equals("None")) {
-            updater.accept(VisionData.empty(imageNumber));
-            logger.trace("Empty data received for context " + context);
-          } else  {
-            double error = Double.parseDouble(errorString);
-            double distance = Double.parseDouble(splitMessage[3]);
-            VisionData data = VisionData.from(imageNumber, error, distance);
-            updater.accept(data);
-            logger.trace(data.toString());
-          }
+          double error = Double.parseDouble(errorString);
+          double distance = Double.parseDouble(splitMessage[3]);
+          VisionData data = VisionData.from(imageNumber, error, distance);
+          updater.accept(data);
+          logger.trace(data.toString());
         } catch (RuntimeException ignored) {
           logger.warn("Invalid packet received: " + message);
         }

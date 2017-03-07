@@ -5,6 +5,7 @@ import com.ctre.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.steamworks.HardwareMap;
 
 public class Shooter extends Subsystem {
@@ -20,6 +21,12 @@ public class Shooter extends Subsystem {
   private final Solenoid hoodSolenoid = HardwareMap.TwinShooterMap.hoodSolenoid;
 
   public Shooter() {
+    DashboardUtils.putPersistantNumber("Shooter P", 0);
+    DashboardUtils.putPersistantNumber("Shooter I", 0);
+    DashboardUtils.putPersistantNumber("Shooter D", 0);
+    DashboardUtils.putPersistantNumber("Shooter Left F", 0);
+    DashboardUtils.putPersistantNumber("Shooter Right F", 0);
+
     rightMasterMotor.configEncoderCodesPerRev(205);
     rightMasterMotor.changeControlMode(TalonControlMode.Speed);
     rightMasterMotor.setProfile(0);
@@ -31,10 +38,10 @@ public class Shooter extends Subsystem {
     rightSlaveMotor.enableBrakeMode(false);
 
     // set ramp rates
-    leftMasterMotor.setVoltageRampRate(32);
-    leftSlaveMotor.setVoltageRampRate(32);
-    rightMasterMotor.setVoltageRampRate(32);
-    rightSlaveMotor.setVoltageRampRate(32);
+//    leftMasterMotor.setVoltageRampRate(32);
+//    leftSlaveMotor.setVoltageRampRate(32);
+//    rightMasterMotor.setVoltageRampRate(32);
+//    rightSlaveMotor.setVoltageRampRate(32);
 
 
     leftMasterMotor.configEncoderCodesPerRev(205);

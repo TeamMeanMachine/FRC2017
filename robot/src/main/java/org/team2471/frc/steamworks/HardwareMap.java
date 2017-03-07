@@ -1,20 +1,17 @@
 package org.team2471.frc.steamworks;
 
+import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.ctre.CANTalon;
 
-import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import org.team2471.frc.lib.control.CANController;
-import org.team2471.frc.lib.control.MeanMotorController;
-import org.team2471.frc.steamworks.subsystems.Drive;
-import org.team2471.frc.steamworks.subsystems.FuelIntake;
 import org.team2471.frc.util.control.PDPDrawSensor;
 
 public class HardwareMap {
   public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
 //  public static final AHRS gyro = new AHRS(SPI.Port.kMXP);
-  public static final Gyro gyro = new ADXRS450_Gyro();
+  public static final Gyro gyro = new ADIS16448_IMU();
 
   public static final class TwinShooterMap {
     public static final CANTalon masterLeft = new CANTalon(5);
