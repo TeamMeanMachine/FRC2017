@@ -21,11 +21,12 @@ public class Shooter extends Subsystem {
   private final Solenoid hoodSolenoid = HardwareMap.TwinShooterMap.hoodSolenoid;
 
   public Shooter() {
-    DashboardUtils.putPersistantNumber("Shooter P", 1);
-    DashboardUtils.putPersistantNumber("Shooter I", 1);
-    DashboardUtils.putPersistantNumber("Shooter D", 1);
-    DashboardUtils.putPersistantNumber("Shooter Left F", 1);
-    DashboardUtils.putPersistantNumber("Shooter Right F", 1);
+    DashboardUtils.putPersistantNumber("Shooter P", 0.05);
+    DashboardUtils.putPersistantNumber("Shooter I", 0);
+    DashboardUtils.putPersistantNumber("Shooter D", 1.0);
+    DashboardUtils.putPersistantNumber("Shooter Left F", 0.07);
+    DashboardUtils.putPersistantNumber("Shooter Right F", 0.075);
+    DashboardUtils.putPersistantNumber("Shooter Setpoint", 6000);
 
     rightMasterMotor.configEncoderCodesPerRev(205);
     rightMasterMotor.changeControlMode(TalonControlMode.Speed);

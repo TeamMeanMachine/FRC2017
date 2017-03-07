@@ -135,7 +135,7 @@ public class AimCommand extends PIDCommand {
 
   @Override
   protected void usePIDOutput(double output) {
-    Robot.drive.turnInPlace(output);
+    Robot.drive.arcade(IOMap.coDriverThrottleAxis.get(), output);
   }
 }
 

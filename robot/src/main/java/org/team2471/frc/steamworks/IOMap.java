@@ -1,6 +1,5 @@
 package org.team2471.frc.steamworks;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.team2471.frc.lib.control.CommandTrigger;
 import org.team2471.frc.lib.io.Controller;
 import org.team2471.frc.lib.io.ControllerAxis;
@@ -55,7 +54,13 @@ public class IOMap {
       .withDeadband(0.2)
       .withExponentialScaling(2);
 
-  public static final ControllerDPad hoodDPad = coDriverController.getDPad();
+  public static final ControllerDPad shooterDPad = coDriverController.getDPad();
+
+  public static final ControllerAxis coDriverThrottleAxis = coDriverController.getAxis(XboxMap.Axes.LEFT_THUMBSTICK_Y)
+      .withDeadband(.2)
+      .withInvert()
+      .withExponentialScaling(2)
+      .map(value -> value * 0.5); // slow it down
 
   public static void init() {
     // null checks because subsystems may not be initialized when we are testing
@@ -80,11 +85,17 @@ public class IOMap {
     CommandTrigger signalCoDriverTrigger = new CommandTrigger(signalCoDriverButton::get);
     signalCoDriverTrigger.whileActive(new RumbleCommand(coDriverController, 1, RumbleCommand.StickSide.LEFT));
 
-    CommandTrigger extendHoodTrgger = new CommandTrigger(hoodDPad::isUp);
+    CommandTrigger extendHoodTrgger = new CommandTrigger(shooterDPad::isUp);
     extendHoodTrgger.whenActive(new ExtendHoodCommand());
 
-    CommandTrigger retractHoodTrigger = new CommandTrigger(hoodDPad::isDown);
+    CommandTrigger retractHoodTrigger = new CommandTrigger(shooterDPad::isDown);
     retractHoodTrigger.whenActive(new RetractHoodCommand());
+
+    CommandTrigger incrementRPMTrigger = new CommandTrigger(shooterDPad::isRight);
+    incrementRPMTrigger.whenActive(new UpdateRPMCommand(50));
+
+    CommandTrigger decrementRPMTrigger = new CommandTrigger(shooterDPad::isLeft);
+    decrementRPMTrigger.whenActive(new UpdateRPMCommand(-50));
   }
 
   public static Controller getDriverController() {

@@ -142,6 +142,10 @@ public class Drive extends Subsystem {
     rightMotor1.set(throttle);
   }
 
+  public void arcade(double throttle, double turn) {
+    drive(throttle, 0, 0, turn);
+  }
+
   public void enableClimbing() {
     climbPTO.set(false);
   }
