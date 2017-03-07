@@ -2,7 +2,6 @@ package org.team2471.frc.steamworks.autonomouscommands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.PrintCommand;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.ExtendHoodCommand;
@@ -12,8 +11,8 @@ import org.team2471.frc.util.DelayedCommand;
 
 import static edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-public class OneHundredPointAuto extends CommandGroup {
-  public OneHundredPointAuto() {
+public class GearTen extends CommandGroup {
+  public GearTen() {
     DriverStation driverStation = DriverStation.getInstance();
 
     Alliance alliance = driverStation.getAlliance();
@@ -26,17 +25,8 @@ public class OneHundredPointAuto extends CommandGroup {
     addSequential(new ExtendHoodCommand());
     addSequential(new DriveToLeftLift(1.0, mirrored));
     addSequential(new TiltGearIntakeCommand(), 0.8);
-//    addSequential(new DriveBackToHopper(1.0, mirrored));
-//    addSequential(new PrintCommand("Finished first drive"));
-    addSequential(new DriveBackwardsFromLLToHopper(1.0, mirrored));
-//    addSequential(new PrintCommand("Finished driving backwards"));
+    addSequential(new DriveBackwardsFromLLToHopper(1.0, !mirrored));
     addParallel(new DelayedCommand(new TiltGearIntakeCommand(),2.0, 2.5));
-    addSequential(new DriveToHopperFromLeftLift(1.0, mirrored));
-    addSequential(new WaitCommand(2.0));
-//    addSequential(new BackwardsFromBackHopper(1.0, mirrored));
-//    addSequential(new DriveBackToShoot(1.0, mirrored));
-    addSequential(new DriveBackwardsFromHopper(1.0, mirrored));
-//    addSequential(new PrintCommand("Done!"));
     addSequential(new AimCommand());
     addSequential(new RetractHoodCommand());
   }
