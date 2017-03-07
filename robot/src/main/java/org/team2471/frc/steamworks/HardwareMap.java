@@ -11,7 +11,7 @@ import org.team2471.frc.util.control.PDPDrawSensor;
 public class HardwareMap {
   public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
 //  public static final AHRS gyro = new AHRS(SPI.Port.kMXP);
-  public static final Gyro gyro = new ADIS16448_IMU();
+  public static final ADIS16448_IMU gyro = new ADIS16448_IMU();
 
   public static final class TwinShooterMap {
     public static final CANTalon masterLeft = new CANTalon(5);

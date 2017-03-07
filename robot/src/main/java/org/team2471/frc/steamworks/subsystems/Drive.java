@@ -180,7 +180,7 @@ public class Drive extends Subsystem {
   }
 
   public double getAngle() {
-    return -HardwareMap.gyro.getAngle();
+    return (leftMotor1.getPosition() - rightMotor1.getPosition()) / (32.0 / 12.0 * Math.PI) * 158.0;
   }
 
   public void lowGear() {

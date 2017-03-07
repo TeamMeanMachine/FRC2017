@@ -23,6 +23,7 @@ public class OneHundredPointAuto extends CommandGroup {
       throw new RuntimeException("Invalid alliance detected");
     }
 
+    addSequential(new ExtendHoodCommand());
     addSequential(new DriveToLeftLift(1.0, mirrored));
     addSequential(new TiltGearIntakeCommand(), 0.8);
     addSequential(new DriveBackToHopper(1.0, mirrored));
@@ -35,7 +36,6 @@ public class OneHundredPointAuto extends CommandGroup {
     addSequential(new BackwardsFromBackHopper(1.0, mirrored));
     addSequential(new DriveBackToShoot(1.0, mirrored));
 //    addSequential(new DriveBackwardsFromHopper(1.0, mirrored));
-    addSequential(new ExtendHoodCommand());
 //    addSequential(new PrintCommand("Done!"));
     addSequential(new AimCommand());
     addSequential(new RetractHoodCommand());

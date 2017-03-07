@@ -1,5 +1,6 @@
 package org.team2471.frc.steamworks;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -86,7 +87,8 @@ public class Robot extends IterativeRobot {
     SmartDashboard.putNumber("Gyro", drive.getAngle());
 
     VisionData boilerData = coProcessor.getBoilerData();
-    SmartDashboard.putString("Boiler", boilerData.targetPresent() ? Double.toString(boilerData.getError()) : "NONE"); // don't use this number for real stuff
+    SmartDashboard.putString("Boiler Error", boilerData.targetPresent() ? Double.toString(boilerData.getError()) : "NONE"); // don't use this number for real stuff
+    SmartDashboard.putString("Boiler Distance", boilerData.targetPresent() ? Double.toString(boilerData.getDistance()) : "NONE");
     Scheduler.getInstance().run();
   }
 

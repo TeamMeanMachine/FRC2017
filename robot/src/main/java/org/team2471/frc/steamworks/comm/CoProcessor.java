@@ -59,10 +59,11 @@ public class CoProcessor {
         String message = new String(packet.getData());
         logger.trace("Packet received: " + message);
 
-        if(message.equals("NONE")) {
+        if(message.startsWith("NONE")) {
           setBoilerData(VisionData.empty());
           setGearData(VisionData.empty());
           setRopeData(VisionData.empty());
+          continue;
         }
 
         try {

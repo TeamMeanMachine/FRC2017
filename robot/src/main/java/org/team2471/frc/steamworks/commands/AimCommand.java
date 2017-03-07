@@ -19,6 +19,7 @@ public class AimCommand extends PIDCommand {
   private final PIDController turnController = getPIDController();
 
   private boolean wasExtended;
+  private double offset;
 
   private int lastImageNumber = 0;
   private double lastImageTimestamp = Timer.getFPGATimestamp();
@@ -42,7 +43,7 @@ public class AimCommand extends PIDCommand {
     agitatorTimer.start();
     shootingTimer.start();
 
-    wasExtended = Robot.fuelIntake.isExtended();
+    offset = SmartDashboard.getNumber("Aim Offset", 0);
   }
 
   protected void execute() {
@@ -55,27 +56,26 @@ public class AimCommand extends PIDCommand {
     if(SmartDashboard.getBoolean("Auto Aim", false)) {
       VisionData boilerData = Robot.coProcessor.getBoilerData();
       if(boilerData.targetPresent()) {
-        angle += boilerData.getError() * 0.8;
-        int imageNumber = boilerData.getImageNumber();
-        if(lastImageNumber != imageNumber) {
-          lastImageNumber = boilerData.getImageNumber();
-          lastImageTimestamp = Timer.getFPGATimestamp();
-        }
+        angle -= boilerData.getError() * 0.7;
       }
-      double offset = SmartDashboard.getNumber("Aim Offset", 0);
-      offset += IOMap.turnAxis.get() * (30/50); // 30 degrees per second (50 samples)
-      angle += offset;
-      SmartDashboard.putNumber("Aim Offset", offset);
+//      offset += IOMap.turnAxis.get() * (30/50); // 30 degrees per second (50 samples)
+//      angle += offset;
+//      SmartDashboard.putNumber("Aim Offset", offset);
     } else {
       // manual aim
-      angle += IOMap.aimAxis.get() * 15;
+      angle += IOMap.aimAxis.get() * 7.5;
     }
     turnController.setSetpoint(angle);
 
     // shooting and agitator
     boolean autonomous = DriverStation.getInstance().isAutonomous();
+
+    if(autonomous) {
+      Robot.shooter.extendHood();
+    }
+
     boolean shoot = autonomous ?
-        turnController.onTarget() :  // auto aim condition
+        turnController.getAvgError() < 2 :  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();
@@ -92,7 +92,6 @@ public class AimCommand extends PIDCommand {
       }
     } else if(shootingTimer.get() < 0.2){
       Robot.shooter.setIntake(0, 0);
-//      Robot.gearIntake.extend();
       Robot.fuelIntake.stopRoll();
       agitatorTimer.reset();
     }
