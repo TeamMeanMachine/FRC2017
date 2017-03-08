@@ -11,8 +11,8 @@ import org.team2471.frc.util.DelayedCommand;
 
 import static edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-public class GearTen extends CommandGroup {
-  public GearTen() {
+public class GearTenAuto extends CommandGroup {
+  public GearTenAuto() {
     DriverStation driverStation = DriverStation.getInstance();
 
     Alliance alliance = driverStation.getAlliance();
@@ -23,7 +23,7 @@ public class GearTen extends CommandGroup {
     }
 
     addSequential(new ExtendHoodCommand());
-    addSequential(new DriveToBoilerLiftInner(1.0, mirrored));
+    addSequential(new BoilerLiftInner(1.0, mirrored));
     addSequential(new TiltGearIntakeCommand(), 0.8);
     addSequential(new DriveBackwardsFromLLToHopper(1.0, !mirrored));
     addParallel(new DelayedCommand(new TiltGearIntakeCommand(),2.0, 2.5));

@@ -9,15 +9,11 @@ import org.team2471.frc.steamworks.HardwareMap;
 import static org.team2471.frc.steamworks.HardwareMap.DriveMap.shiftPTO;
 import static org.team2471.frc.steamworks.Robot.drive;
 
-public class DriveToBoilerLiftInner extends FollowPathTankDriveCommand {
+public class BoilerLiftInner extends FollowPathTankDriveCommand {
 
     Path2D m_path;
 
-    public DriveToBoilerLiftInner(double speed) {
-      this(speed, false);
-    }
-
-    public DriveToBoilerLiftInner(double speed, boolean mirror){
+    public BoilerLiftInner(double speed, boolean mirror){
         requires(drive);
 
         setSpeed( speed );
@@ -29,7 +25,7 @@ public class DriveToBoilerLiftInner extends FollowPathTankDriveCommand {
         m_path.setTravelDirection(1.0);
 
         m_path.addPointAndTangent(0.0, 0.0, 0.0, 6.0);
-        m_path.addPointAndTangent(6.5, 8.5, 14.0, 4.0);
+        m_path.addPointAndTangent(6.5, 8.5, 12.0, 4.0);
 
         m_path.addEasePoint( 0.0, 0.0 );
         m_path.addEasePoint( 4.0, 1.0 );
