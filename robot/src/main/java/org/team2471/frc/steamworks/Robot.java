@@ -1,12 +1,12 @@
 package org.team2471.frc.steamworks;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.*;
+import org.team2471.frc.steamworks.autonomousroutines.*;
 import org.team2471.frc.steamworks.comm.CoProcessor;
 import org.team2471.frc.steamworks.comm.VisionData;
 import org.team2471.frc.steamworks.commands.ZeroGyroCommand;

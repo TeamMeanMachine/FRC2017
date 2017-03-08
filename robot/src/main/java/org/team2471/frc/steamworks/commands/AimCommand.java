@@ -21,6 +21,8 @@ public class AimCommand extends PIDCommand {
   private boolean wasExtended;
   private double offset;
 
+  private boolean targetFound;
+
   private int lastImageNumber = 0;
   private double lastImageTimestamp = Timer.getFPGATimestamp();
 
@@ -43,6 +45,8 @@ public class AimCommand extends PIDCommand {
     agitatorTimer.start();
     shootingTimer.start();
 
+    targetFound = false;
+
     offset = SmartDashboard.getNumber("Aim Offset", 0);
   }
 
@@ -57,6 +61,7 @@ public class AimCommand extends PIDCommand {
       VisionData boilerData = Robot.coProcessor.getBoilerData();
       if(boilerData.targetPresent()) {
         angle -= boilerData.getError() * 0.7;
+        targetFound = true;
       }
 //      offset += IOMap.turnAxis.get() * (30/50); // 30 degrees per second (50 samples)
 //      angle += offset;
@@ -74,8 +79,9 @@ public class AimCommand extends PIDCommand {
       Robot.shooter.extendHood();
     }
 
+
     boolean shoot = autonomous ?
-        turnController.getAvgError() < 2 :  // auto aim condition
+        turnController.getAvgError() < 2 && targetFound :  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();

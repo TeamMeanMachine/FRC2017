@@ -21,7 +21,7 @@ public class DriveToHopperFromLeftLift extends FollowPathTankDriveCommand {
     m_path.setTravelDirection(1.0);
 
     m_path.addPointAndTangent(4.8, 3.0, -3.0, 2.0);
-    m_path.addPointAndTangent(-1.0, 0.3, -4.0, -0.0);
+    m_path.addPointAndTangent(-1.0, 2.3, -4.0, -0.0);
 
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(3.0, 1.0);
