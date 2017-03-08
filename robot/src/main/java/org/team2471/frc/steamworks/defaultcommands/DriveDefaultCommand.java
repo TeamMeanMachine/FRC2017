@@ -22,14 +22,9 @@ public class DriveDefaultCommand extends Command {
     Robot.drive.drive(IOMap.throttleAxis.get(), IOMap.turnAxis.get(), IOMap.leftAxis.get(), IOMap.rightAxis.get());
     SmartDashboard.putNumber("Drive Speed", Robot.drive.getSpeed());
 
-    double left1Speed = HardwareMap.DriveMap.leftMotor1.getOutputVoltage() / 12;
-    double left2Speed = HardwareMap.DriveMap.leftMotor2.getOutputVoltage() / 12;
-    double left3Speed = HardwareMap.DriveMap.leftMotor3.getOutputVoltage() / 12;
-    double right1Speed = HardwareMap.DriveMap.rightMotor1.getOutputVoltage() / 12;
-    double right2Speed = HardwareMap.DriveMap.rightMotor2.getOutputVoltage() / 12;
-    double right3Speed = HardwareMap.DriveMap.rightMotor3.getOutputVoltage() / 12;
-    SmartDashboard.putString("Left Outputs", left1Speed + ":" + left2Speed + ":" + left3Speed);
-    SmartDashboard.putString("Right Outputs", right1Speed + ":" + right2Speed + ":" + right3Speed);
+    double leftDistance = Robot.drive.getLeftMotor1().getPosition();
+    double rightDistance = Robot.drive.getRightMotor1().getPosition();
+    SmartDashboard.putString("Drive Distances", leftDistance + ":" + rightDistance);
   }
 
   @Override
