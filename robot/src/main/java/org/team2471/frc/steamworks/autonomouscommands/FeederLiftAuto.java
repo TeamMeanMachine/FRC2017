@@ -4,21 +4,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.team2471.frc.steamworks.commands.TiltGearIntakeCommand;
 
-public class DriveToLeftLiftAuto extends CommandGroup {
-  public DriveToLeftLiftAuto(){
+public class FeederLiftAuto extends CommandGroup {
+  public FeederLiftAuto(){
     DriverStation driverStation = DriverStation.getInstance();
-
     DriverStation.Alliance alliance = driverStation.getAlliance();
-    int location = driverStation.getLocation();
+    boolean mirrored = alliance == DriverStation.Alliance.Red;
 
-    if (alliance == alliance.Blue){
-      addSequential(new DriveToLeftLift(1.0, false));
-      addSequential(new TiltGearIntakeCommand(), 2.0);
-
-    }
-    if (alliance == alliance.Red);
-    addSequential(new DriveToLeftLift(1.0, true));
+    addSequential(new FeederLiftInner(1.0, mirrored));
     addSequential(new TiltGearIntakeCommand(), 2.0);
-
   }
 }

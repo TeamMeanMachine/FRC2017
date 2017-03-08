@@ -1,6 +1,6 @@
 package org.team2471.frc.steamworks;
 
-import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.*;
 import org.team2471.frc.steamworks.comm.CoProcessor;
+import org.team2471.frc.steamworks.comm.VisionData;
+import org.team2471.frc.steamworks.commands.ZeroGyroCommand;
 import org.team2471.frc.steamworks.subsystems.*;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -18,12 +20,10 @@ public class Robot extends IterativeRobot {
   public static Drive drive;
   public static GearIntake gearIntake;
   public static FuelIntake fuelIntake;
-  public static TwinShooter twinShooter;
+  public static Shooter shooter;
   public static LEDController ledController;
 
   public static SendableChooser autoChooser;
-
-  Command autonomousCommand;
 
   @SuppressWarnings("unchecked")
 
@@ -31,30 +31,34 @@ public class Robot extends IterativeRobot {
   public void robotInit() {
     NetworkTable nt = NetworkTable.getTable("SmartDashboard");
     nt.getKeys().forEach(nt::clearPersistent);
-    twinShooter = new TwinShooter();
+    shooter = new Shooter();
     drive = new Drive();
     gearIntake = new GearIntake();
     fuelIntake = new FuelIntake();
     ledController = new LEDController();
+    HardwareMap.init();
 
     coProcessor = new CoProcessor();
     IOMap.init();
 
     autoChooser = new SendableChooser();
     autoChooser.addObject("Don't Move", new DoNothingAuto());
-    autoChooser.addObject("Drive to Hopper", new DriveToHopperAuto());
-    autoChooser.addObject("Drive Eight Feet", new DriveEightFeet(1.0));
-    autoChooser.addObject("Drive to left Lift", new DriveToLeftLift(1.0));
-    autoChooser.addObject("Drive to right Lift", new DriveToLeftLift(1.0, true));
-    autoChooser.addObject("Drive to middle lift", new DriveToLift(1.0));
+    autoChooser.addObject("Hopper", new DriveToHopperAuto());
+    autoChooser.addObject("Drive Eight Feet", new DriveEightFeet());
+    autoChooser.addObject("Feeder Lift", new FeederLiftAuto());
+    autoChooser.addObject("Boiler Lift", new BoilerLiftAuto());
+    autoChooser.addObject("Middle lift", new DriveToMiddleLift());
     autoChooser.addObject("One Hundred point Auto", new OneHundredPointAuto());
-    autoChooser.addObject("Drop off gear and go to far Hopper", new GearPlusFarHopper());
-    autoChooser.addObject("Circle Auto", new CircleTestAutonomous(1.0));
-    autoChooser.addObject("CoOp Hopper", new CoOpHopper());
-    autoChooser.addObject("One Hundred point Auto, Fuel first", new SecondOneHundredPointAuto());
-    autoChooser.addObject("Backwards test", new DriveBackwardsFromLLToHopper(1.0,false));
+//    autoChooser.addObject("Drop off gear and go to far Hopper", new GearPlusFarHopper());
+//    autoChooser.addObject("Circle Auto", new CircleTestAutonomous(1.0));
+//    autoChooser.addObject("CoOp Hopper", new CoOpHopper());
+//    autoChooser.addObject("One Hundred point Auto, Fuel first", new SecondOneHundredPointAuto());
+//    autoChooser.addObject("Backwards test", new DriveBackwardsFromLLToHopper(1.0,false));
+//    autoChooser.addObject("Just Shoot Auto", new AimCommand());
+    autoChooser.addObject("Gear Plus Ten Fuel", new GearTenAuto());
 
     SmartDashboard.putData("AutoChooser", autoChooser);
+    SmartDashboard.putData(new ZeroGyroCommand());
 
     drive.disableClimbing();
   }
@@ -62,11 +66,12 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
       if (autoChooser != null) {
-        autonomousCommand = (Command) autoChooser.getSelected();
+        Command autonomousCommand = (Command) autoChooser.getSelected();
         if (autonomousCommand != null) {
           autonomousCommand.start();
         }
       }
+      HardwareMap.gyro.reset();
     }
 
   @Override
@@ -78,11 +83,23 @@ public class Robot extends IterativeRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("Drive Speed", drive.getSpeed());
     SmartDashboard.putNumber("Gear Sensor", HardwareMap.GearIntakeMap.gearSensor.getValue());
+
+    SmartDashboard.putNumber("Gyro", drive.getAngle());
+
+    VisionData boilerData = coProcessor.getBoilerData();
+    SmartDashboard.putString("Boiler Error", boilerData.targetPresent() ? Double.toString(boilerData.getError()) : "NONE"); // don't use this number for real stuff
+    SmartDashboard.putString("Boiler Distance", boilerData.targetPresent() ? Double.toString(boilerData.getDistance()) : "NONE");
     Scheduler.getInstance().run();
   }
 
   @Override
   public void disabledPeriodic() {
+    VisionData boilerData = coProcessor.getBoilerData();
+    SmartDashboard.putString("Boiler", boilerData.targetPresent() ? Double.toString(boilerData.getError()) : "NONE"); // don't use this number for real stuff
+  }
+
+  @Override
+  public void testInit() {
   }
 
   @Override

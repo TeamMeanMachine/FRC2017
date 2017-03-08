@@ -3,10 +3,10 @@ package org.team2471.frc.steamworks.comm;
 public class VisionData {
   private final double error;
   private final double distance;
-  private final double imageNumber;
+  private final int imageNumber;
   private final boolean present;
 
-  private VisionData(double error, double distance, double imageNumber, boolean present) {
+  private VisionData(int imageNumber, double error, double distance, boolean present) {
     this.error = error;
     this.imageNumber = imageNumber;
     this.distance = distance;
@@ -25,15 +25,21 @@ public class VisionData {
     return distance;
   }
 
-  public double getImageNumber() {
+  public int getImageNumber() {
     return imageNumber;
   }
 
-  static VisionData from(double error, double distance, double latency) {
-    return new VisionData(error, distance, latency, true);
+  static VisionData from(int imageNumber, double error, double distance) {
+    return new VisionData(imageNumber, error, distance, true);
   }
 
   static VisionData empty() {
-    return new VisionData(Double.NaN, Double.NaN, Double.NaN, false);
+    return new VisionData(0, Double.NaN, Double.NaN, false);
+  }
+
+  @Override
+  public String toString() {
+    return present ? "Image: " + imageNumber + "\nError: " + error + "\nDistance: " + distance
+        : "Image: " + imageNumber + "\nEMPTY";
   }
 }

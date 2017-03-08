@@ -40,6 +40,10 @@ public class FuelIntake extends Subsystem {
     return intakeDrawSensor.getCurrent();
   }
 
+  public boolean isExtended() {
+    return intakeSolenoid.get();
+  }
+
   /**
    * Push intake out
    **/

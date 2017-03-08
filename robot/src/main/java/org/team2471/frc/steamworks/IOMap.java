@@ -1,6 +1,5 @@
 package org.team2471.frc.steamworks;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.team2471.frc.lib.control.CommandTrigger;
 import org.team2471.frc.lib.io.Controller;
 import org.team2471.frc.lib.io.ControllerAxis;
@@ -49,13 +48,19 @@ public class IOMap {
   public static final ControllerButton fuelFeedButton = coDriverController.getButton(XboxMap.Buttons.A);
   public static final ControllerButton aimButton = coDriverController.getButton(XboxMap.Buttons.X);
 
-  public static ControllerButton shootButton = () -> shootAxis.get() > 0.4;
+  public static ControllerButton shootButton = () -> shootAxis.get() > 0.15;
 
   public static final ControllerAxis aimAxis = coDriverController.getAxis(XboxMap.Axes.RIGHT_THUMBSTICK_X)
       .withDeadband(0.2)
       .withExponentialScaling(2);
 
-  public static final ControllerDPad hoodDPad = coDriverController.getDPad();
+  public static final ControllerDPad shooterDPad = coDriverController.getDPad();
+
+  public static final ControllerAxis coDriverThrottleAxis = coDriverController.getAxis(XboxMap.Axes.LEFT_THUMBSTICK_Y)
+      .withDeadband(.2)
+      .withInvert()
+      .withExponentialScaling(2)
+      .map(value -> value * 0.5); // slow it down
 
   public static void init() {
     // null checks because subsystems may not be initialized when we are testing
@@ -71,17 +76,26 @@ public class IOMap {
     CommandTrigger climbTrigger = new CommandTrigger(climbButton::get);
     climbTrigger.whileActive(new ManualClimbCommandGroup());
 
-//    CommandTrigger gearTrigger = new CommandTrigger(gearButton::get);
-//    climbTrigger.whileActive(new GearCommandGroup());
-
     CommandTrigger aimTrigger = new CommandTrigger(aimButton::get);
-    aimTrigger.toggleWhenActive(new AimAndShootCommand());
+    aimTrigger.toggleWhenActive(new AimCommand());
 
     CommandTrigger signalDriverTrigger = new CommandTrigger(signalDriverButton::get);
     signalDriverTrigger.whileActive(new RumbleCommand(driverController, 1, RumbleCommand.StickSide.RIGHT));
 
     CommandTrigger signalCoDriverTrigger = new CommandTrigger(signalCoDriverButton::get);
     signalCoDriverTrigger.whileActive(new RumbleCommand(coDriverController, 1, RumbleCommand.StickSide.LEFT));
+
+    CommandTrigger extendHoodTrgger = new CommandTrigger(shooterDPad::isUp);
+    extendHoodTrgger.whenActive(new ExtendHoodCommand());
+
+    CommandTrigger retractHoodTrigger = new CommandTrigger(shooterDPad::isDown);
+    retractHoodTrigger.whenActive(new RetractHoodCommand());
+
+    CommandTrigger incrementRPMTrigger = new CommandTrigger(shooterDPad::isRight);
+    incrementRPMTrigger.whenActive(new UpdateRPMCommand(50));
+
+    CommandTrigger decrementRPMTrigger = new CommandTrigger(shooterDPad::isLeft);
+    decrementRPMTrigger.whenActive(new UpdateRPMCommand(-50));
   }
 
   public static Controller getDriverController() {

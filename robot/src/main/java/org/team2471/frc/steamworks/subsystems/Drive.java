@@ -75,6 +75,14 @@ public class Drive extends Subsystem {
     leftMotor1.setVoltageRampRate(9);
     rightMotor1.setVoltageRampRate(9);
 
+    // ramp rates
+    leftMotor1.setVoltageRampRate(72);
+    leftMotor2.setVoltageRampRate(72);
+    leftMotor3.setVoltageRampRate(72);
+    rightMotor1.setVoltageRampRate(72);
+    rightMotor2.setVoltageRampRate(72);
+    rightMotor3.setVoltageRampRate(72);
+
     LiveWindow.addActuator("Drive", "Right Motor 1", rightMotor1);
     LiveWindow.addActuator("Drive", "Right Motor 2", rightMotor2);
     LiveWindow.addActuator("Drive", "Right Motor 3", rightMotor3);
@@ -134,6 +142,10 @@ public class Drive extends Subsystem {
     rightMotor1.set(throttle);
   }
 
+  public void arcade(double throttle, double turn) {
+    drive(throttle, 0, 0, turn);
+  }
+
   public void enableClimbing() {
     climbPTO.set(false);
   }
@@ -172,7 +184,7 @@ public class Drive extends Subsystem {
   }
 
   public double getAngle() {
-    return HardwareMap.gyro.getAngle();
+    return (leftMotor1.getPosition() - rightMotor1.getPosition()) / (32.0 / 12.0 * Math.PI) * 158.0;
   }
 
   public void lowGear() {
