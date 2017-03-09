@@ -24,11 +24,11 @@ public class DriveBackwardsFromHopper extends FollowPathTankDriveCommand {
     m_path = new Path2D();
     m_path.setTravelDirection(-1.0);
 
-    m_path.addPointAndTangent(4.2, 7.5, -2.0, -1.0);
-    m_path.addPointAndTangent(4.2, 5.0, 2.0, -0.5);
+    m_path.addPointAndTangent(-2.6, 4.2, 3.0, 1.0);
+    m_path.addPointAndTangent(2.0, 6.0, 0.5, 2.0);
 
     m_path.addEasePoint(0.0, 0.0);
-    m_path.addEasePoint(1.0, 1.0);
+    m_path.addEasePoint(1.5, 1.0);
 
 setPath(m_path);
 

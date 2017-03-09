@@ -9,10 +9,10 @@ import static org.team2471.frc.steamworks.HardwareMap.DriveMap.shiftPTO;
 import static org.team2471.frc.steamworks.Robot.drive;
 
 //This auto only works for the blue alliance
-public class DriveBackwardsFromLLToHopper extends FollowPathTankDriveCommand {
+public class DriveBackwardsFromBoilerLiftToHopper extends FollowPathTankDriveCommand {
   Path2D m_path;
 
-  public DriveBackwardsFromLLToHopper(double speed, boolean mirror) {
+  public DriveBackwardsFromBoilerLiftToHopper(double speed, boolean mirror) {
 
     requires(drive);
 
@@ -24,14 +24,13 @@ public class DriveBackwardsFromLLToHopper extends FollowPathTankDriveCommand {
     m_path = new Path2D();
     m_path.setTravelDirection(-1.0);
 
-    m_path.addPointAndTangent(4.2, 7.5, -2.0, -1.0);
-    m_path.addPointAndTangent(4.2, 3.0, 1.5, -1.0);
+    m_path.addPointAndTangent(6.5, 8.1, -4.0, -2.0);
+    m_path.addPointAndTangent(3.0, 4.0, 1.5, -2.0);
 
     m_path.addEasePoint(0.0, 0.0);
-    m_path.addEasePoint(2.0, 1.0);
+    m_path.addEasePoint(1.7, 1.0);
 
-setPath(m_path);
-
+    setPath(m_path);
   }
   @Override
   protected void initialize() {

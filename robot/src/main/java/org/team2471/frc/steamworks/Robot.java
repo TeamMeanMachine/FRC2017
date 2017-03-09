@@ -53,7 +53,7 @@ public class Robot extends IterativeRobot {
 //    autoChooser.addObject("Circle Auto", new CircleTestAutonomous(1.0));
 //    autoChooser.addObject("CoOp Hopper", new CoOpHopper());
 //    autoChooser.addObject("One Hundred point Auto, Fuel first", new SecondOneHundredPointAuto());
-//    autoChooser.addObject("Backwards test", new DriveBackwardsFromLLToHopper(1.0,false));
+//    autoChooser.addObject("Backwards test", new DriveBackwardsFromBoilerLiftToHopper(1.0,false));
 //    autoChooser.addObject("Just Shoot Auto", new AimCommand());
     autoChooser.addObject("Gear Plus Ten Fuel", new GearTenAuto());
 

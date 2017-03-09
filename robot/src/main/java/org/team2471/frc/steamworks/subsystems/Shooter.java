@@ -32,6 +32,7 @@ public class Shooter extends Subsystem {
     rightMasterMotor.changeControlMode(TalonControlMode.Speed);
     rightMasterMotor.setProfile(0);
     rightMasterMotor.reverseSensor(true);
+//    rightMasterMotor.reverseSensor(false);
     rightMasterMotor.enableBrakeMode(false);
     rightSlaveMotor.changeControlMode(TalonControlMode.Follower);
     rightSlaveMotor.set((double)this.rightMasterMotor.getDeviceID());
@@ -39,30 +40,29 @@ public class Shooter extends Subsystem {
     rightSlaveMotor.enableBrakeMode(false);
 
     // set ramp rates
-//    leftMasterMotor.setVoltageRampRate(32);
-//    leftSlaveMotor.setVoltageRampRate(32);
-//    rightMasterMotor.setVoltageRampRate(32);
-//    rightSlaveMotor.setVoltageRampRate(32);
+    leftMasterMotor.setVoltageRampRate(64);
+    leftSlaveMotor.setVoltageRampRate(64);
+    rightMasterMotor.setVoltageRampRate(64);
+    rightSlaveMotor.setVoltageRampRate(64);
 
 
     leftMasterMotor.configEncoderCodesPerRev(205);
     leftMasterMotor.changeControlMode(TalonControlMode.Speed);
     leftMasterMotor.setProfile(0);
     leftMasterMotor.reverseSensor(true);
+//    leftMasterMotor.reverseSensor(false);
     leftMasterMotor.enableBrakeMode(false);
     leftSlaveMotor.changeControlMode(TalonControlMode.Follower);
     leftSlaveMotor.set(this.leftMasterMotor.getDeviceID());
 
     leftMasterMotor.setInverted(false);
     leftMasterMotor.reverseOutput(false);
-    leftMasterMotor.reverseSensor(true);
 
     leftSlaveMotor.reverseOutput(false);
     leftSlaveMotor.enableBrakeMode(false);
 
     rightMasterMotor.setInverted(true);
     rightMasterMotor.reverseOutput(false);
-    rightMasterMotor.reverseSensor(true);
 
     cycloneMotor.setInverted(false);
     elevatorMotor.setInverted(true);
@@ -76,6 +76,7 @@ public class Shooter extends Subsystem {
     rightMasterMotor.setF(rightF);
     SmartDashboard.putNumber("Shooter Output Diff", (this.rightMasterMotor.getOutputVoltage() - this.rightSlaveMotor.getOutputVoltage()) / 12.0);
   }
+
 
   public void enable() {
     rightMasterMotor.enable();
