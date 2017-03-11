@@ -28,14 +28,14 @@ public class OneHundredPointAuto extends CommandGroup {
 
     addSequential(new ExtendHoodCommand());
     addSequential(new BoilerLiftInner(1.0, mirrored));
-    addParallel(new TiltGearIntakeCommand(), 6.8);
-    addSequential(new WaitCommand(0.8));
+    addParallel(new TiltGearIntakeCommand(), 9.8);
+    addSequential(new WaitCommand(2.8));
     addSequential(new DriveBackwardsFromBoilerLiftToHopper(1.0, mirrored));
 //    addParallel(new DelayedCommand(new TiltGearIntakeCommand(),1.0, 2.5));
     addSequential(new DriveToHopperFromBoilerLift(1.0, mirrored));
     addSequential(new WaitCommand(2.0));
     addSequential(new DriveBackwardsFromHopper(1.0, mirrored));
-    addSequential(new AimCommand());
+//    addSequential(new AimCommand());
     addSequential(new RetractHoodCommand());
   }
 }

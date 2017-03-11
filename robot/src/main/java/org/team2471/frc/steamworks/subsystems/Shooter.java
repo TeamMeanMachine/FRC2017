@@ -25,14 +25,14 @@ public class Shooter extends Subsystem {
     DashboardUtils.putPersistantNumber("Shooter I", 0);
     DashboardUtils.putPersistantNumber("Shooter D", 1.0);
     DashboardUtils.putPersistantNumber("Shooter Left F", 0.07);
-    DashboardUtils.putPersistantNumber("Shooter Right F", 0.075);
+    DashboardUtils.putPersistantNumber("Shooter Right F", 0.07);
     DashboardUtils.putPersistantNumber("Shooter Setpoint", 6000);
 
     rightMasterMotor.configEncoderCodesPerRev(205);
     rightMasterMotor.changeControlMode(TalonControlMode.Speed);
     rightMasterMotor.setProfile(0);
-    rightMasterMotor.reverseSensor(true);
-//    rightMasterMotor.reverseSensor(false);
+//    rightMasterMotor.reverseSensor(true);
+    rightMasterMotor.reverseSensor(false);
     rightMasterMotor.enableBrakeMode(false);
     rightSlaveMotor.changeControlMode(TalonControlMode.Follower);
     rightSlaveMotor.set((double)this.rightMasterMotor.getDeviceID());
@@ -49,8 +49,8 @@ public class Shooter extends Subsystem {
     leftMasterMotor.configEncoderCodesPerRev(205);
     leftMasterMotor.changeControlMode(TalonControlMode.Speed);
     leftMasterMotor.setProfile(0);
-    leftMasterMotor.reverseSensor(true);
-//    leftMasterMotor.reverseSensor(false);
+//    leftMasterMotor.reverseSensor(true);
+    leftMasterMotor.reverseSensor(false);
     leftMasterMotor.enableBrakeMode(false);
     leftSlaveMotor.changeControlMode(TalonControlMode.Follower);
     leftSlaveMotor.set(this.leftMasterMotor.getDeviceID());

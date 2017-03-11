@@ -25,7 +25,7 @@ public class DriveToMiddleLiftInner extends FollowPathTankDriveCommand{
         m_path.setTravelDirection(1.0);
 
         m_path.addPoint( 0.0, 0.0);
-        m_path.addPoint( 0.0, 6.0);
+        m_path.addPoint( 0.0, 7.4);
         //Change to farther lengths for actual robot since we are testing on Thunder, For all Autonomi
 
         m_path.addEasePoint( 0.0, 0.0 );

@@ -9,6 +9,7 @@ import org.team2471.frc.steamworks.autonomouscommands.*;
 import org.team2471.frc.steamworks.autonomousroutines.*;
 import org.team2471.frc.steamworks.comm.CoProcessor;
 import org.team2471.frc.steamworks.comm.VisionData;
+import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.ZeroGyroCommand;
 import org.team2471.frc.steamworks.subsystems.*;
 
@@ -54,7 +55,7 @@ public class Robot extends IterativeRobot {
 //    autoChooser.addObject("CoOp Hopper", new CoOpHopper());
 //    autoChooser.addObject("One Hundred point Auto, Fuel first", new SecondOneHundredPointAuto());
 //    autoChooser.addObject("Backwards test", new DriveBackwardsFromBoilerLiftToHopper(1.0,false));
-//    autoChooser.addObject("Just Shoot Auto", new AimCommand());
+    autoChooser.addObject("Just Shoot Auto", new AimCommand());
     autoChooser.addObject("Gear Plus Ten Fuel", new GearTenAuto());
 
     SmartDashboard.putData("AutoChooser", autoChooser);
@@ -84,7 +85,7 @@ public class Robot extends IterativeRobot {
     SmartDashboard.putNumber("Drive Speed", drive.getSpeed());
     SmartDashboard.putNumber("Gear Sensor", HardwareMap.GearIntakeMap.gearSensor.getValue());
 
-    SmartDashboard.putNumber("Gyro", drive.getAngle());
+    SmartDashboard.putNumber("FakeGyro", drive.getAngle());
 
     VisionData boilerData = coProcessor.getBoilerData();
     SmartDashboard.putString("Boiler Error", boilerData.targetPresent() ? Double.toString(boilerData.getError()) : "NONE"); // don't use this number for real stuff

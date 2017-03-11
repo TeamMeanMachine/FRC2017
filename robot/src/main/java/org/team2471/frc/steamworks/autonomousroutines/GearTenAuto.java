@@ -26,10 +26,11 @@ public class GearTenAuto extends CommandGroup {
 
     addSequential(new ExtendHoodCommand());
     addSequential(new BoilerLiftInner(1.0, mirrored));
-    addSequential(new TiltGearIntakeCommand(), 0.8);
+    addParallel(new TiltGearIntakeCommand(), 5);
+    addSequential(new WaitCommand(2.7));
     addSequential(new FaceBoilerFromBoilerLift(1.0, mirrored));
     addParallel(new DelayedCommand(new TiltGearIntakeCommand(),2.0, 2.5));
-    addSequential(new AimCommand());
+//    addSequential(new AimCommand());
     addSequential(new RetractHoodCommand());
   }
 }

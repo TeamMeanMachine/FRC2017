@@ -2,6 +2,7 @@ package org.team2471.frc.steamworks.subsystems;
 
 import com.ctre.CANTalon;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.team2471.frc.lib.io.log.LogLevel;
 import org.team2471.frc.lib.io.log.Logger;
@@ -13,9 +14,10 @@ import org.team2471.frc.steamworks.defaultcommands.FuelIntakeDefaultCommand;
 import org.team2471.frc.util.control.PDPDrawSensor;
 
 public class FuelIntake extends Subsystem {
-  public static final int INTAKE_CURRENT_LIMIT = 50;
+  public static final int INTAKE_CURRENT_LIMIT = 60;
 
   private final Logger logger = new Logger("FuelIntake");
+  private final Timer amperageTimer = new Timer();
 
   private CANTalon intakeMotor = HardwareMap.FuelIntakeMap.intakeMotor;
   private CANTalon leftWindshieldMotor = HardwareMap.FuelIntakeMap.leftWindshieldMotor;
@@ -30,6 +32,7 @@ public class FuelIntake extends Subsystem {
     leftWindshieldMotor.setInverted(false);
     rightWindshieldMotor.setInverted(true);
 
+    amperageTimer.start();
     LiveWindow.addActuator("FuelIntake", "Intake Motor", intakeMotor);
     LiveWindow.addActuator("FuelIntake", "Left Windshield Motor", intakeMotor);
     LiveWindow.addActuator("FuelIntake", "Right Windshield Motor", intakeMotor);
@@ -74,12 +77,13 @@ public class FuelIntake extends Subsystem {
   public void rollIn() {
     double current = intakeDrawSensor.getCurrent();
     logger.debug("Current: " + current, 1);
-    if(current < INTAKE_CURRENT_LIMIT) {
-      intakeMotor.set(0.8);
-    } else {
-      intakeMotor.set(0);
+    if(current > INTAKE_CURRENT_LIMIT) {
+      amperageTimer.reset();
       logger.warn("Current limit exceeded!", 1);
     }
+
+    boolean stalled = amperageTimer.get() < 0.15;
+    intakeMotor.set(stalled ? 0 : 0.8);
   }
 
   public void windShieldsStop() {

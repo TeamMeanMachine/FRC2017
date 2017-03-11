@@ -8,7 +8,6 @@ import org.team2471.frc.steamworks.HardwareMap;
 import static org.team2471.frc.steamworks.HardwareMap.DriveMap.shiftPTO;
 import static org.team2471.frc.steamworks.Robot.drive;
 
-//This auto only works for the blue alliance
 public class DriveBackwardsFromBoilerLiftToHopper extends FollowPathTankDriveCommand {
   Path2D m_path;
 

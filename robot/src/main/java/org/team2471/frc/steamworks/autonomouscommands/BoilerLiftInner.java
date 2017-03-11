@@ -25,7 +25,7 @@ public class BoilerLiftInner extends FollowPathTankDriveCommand {
         m_path.setTravelDirection(1.0);
 
         m_path.addPointAndTangent(0.0, 0.0, 0.0, 6.0);
-        m_path.addPointAndTangent(6.5, 8.1, 12.0, 6.0);
+        m_path.addPointAndTangent(5.9, 8.88, 12.0, 6.0);
 
         m_path.addEasePoint(0.0, 0.0);
         m_path.addEasePoint(4.0, 1.0);
