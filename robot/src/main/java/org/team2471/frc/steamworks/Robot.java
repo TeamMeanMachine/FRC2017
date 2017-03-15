@@ -50,13 +50,9 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Boiler Lift", new BoilerLiftAuto());
     autoChooser.addObject("Middle lift", new DriveToMiddleLift());
     autoChooser.addObject("One Hundred point Auto", new OneHundredPointAuto());
-//    autoChooser.addObject("Drop off gear and go to far Hopper", new GearPlusFarHopper());
-//    autoChooser.addObject("Circle Auto", new CircleTestAutonomous(1.0));
-//    autoChooser.addObject("CoOp Hopper", new CoOpHopper());
-//    autoChooser.addObject("One Hundred point Auto, Fuel first", new SecondOneHundredPointAuto());
-//    autoChooser.addObject("Backwards test", new DriveBackwardsFromBoilerLiftToHopper(1.0,false));
     autoChooser.addObject("Just Shoot Auto", new AimCommand());
-    autoChooser.addObject("Gear Plus Ten Fuel", new GearTenAuto());
+    autoChooser.addObject("Short fuel and gear", new BoilerGearAuto());
+    autoChooser.addObject("Gear plus ten fuel", new GearTenAuto());
 
     SmartDashboard.putData("AutoChooser", autoChooser);
     SmartDashboard.putData(new ZeroGyroCommand());

@@ -13,6 +13,7 @@ import org.team2471.frc.steamworks.comm.VisionData;
 public class AimCommand extends PIDCommand {
   private final double AGITATOR_DELAY = 1.5; // time between each agitator interval
   private final double AGITATOR_DURATION = 0.5; // time to extend gear intake while agitation active
+  private final double AUTO_SHOOT_DELAY = 0.5;
 
   private final Timer agitatorTimer = new Timer();
   private final Timer shootingTimer = new Timer();
@@ -25,6 +26,7 @@ public class AimCommand extends PIDCommand {
 
   private int lastImageNumber = 0;
   private double lastImageTimestamp = Timer.getFPGATimestamp();
+  private double startTime;
 
   public AimCommand() {
     super(0.05, 0, 1.0/25.0);
@@ -44,6 +46,8 @@ public class AimCommand extends PIDCommand {
     Robot.shooter.enable();
     agitatorTimer.start();
     shootingTimer.start();
+
+    startTime = Timer.getFPGATimestamp();
 
     targetFound = false;
 
@@ -85,7 +89,11 @@ public class AimCommand extends PIDCommand {
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();
-      double speed = autonomous ? 0.6 : (IOMap.shootAxis.get() - 0.15) * 1/(1 - 0.15);
+      double speed = autonomous ?
+          // auto
+          Timer.getFPGATimestamp() > startTime + AUTO_SHOOT_DELAY ? 0.6 : 0
+          // teleop
+          : (IOMap.shootAxis.get() - 0.15) * 1/(1 - 0.15);
       Robot.shooter.setIntake(speed * 0.8, speed);
       Robot.fuelIntake.rollIn();
 
@@ -117,7 +125,7 @@ public class AimCommand extends PIDCommand {
   }
 
   protected boolean isFinished() {
-    return false;
+    return isTimedOut();
   }
 
   protected void end() {
