@@ -31,9 +31,7 @@ public class IOMap {
   public static final ControllerAxis reverseAnimationAxis = driverController.getAxis(XboxMap.Axes.RIGHT_TRIGGER)
       .withExponentialScaling(2);
 
-  public static final ControllerButton toggleIntakeButton = driverController.getButton(XboxMap.Buttons.X);
-  public static final ControllerButton useIntakeButton = driverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
-  public static final ControllerButton spitButton = driverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
+
   public static final ControllerButton climbButton = driverController.getButton(XboxMap.Buttons.Y);
   public static final ControllerButton gearButton = driverController.getButton(XboxMap.Buttons.A);
 
@@ -45,6 +43,9 @@ public class IOMap {
   public static final ControllerButton gearFeedButton = coDriverController.getButton(XboxMap.Buttons.Y);
   public static ControllerAxis shootAxis = coDriverController.getAxis(3);
 
+  public static final ControllerButton toggleIntakeButton = coDriverController.getButton(XboxMap.Buttons.B);
+  public static final ControllerButton useIntakeButton = coDriverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
+  public static final ControllerButton spitButton = coDriverController.getButton(XboxMap.Axes.LEFT_TRIGGER);
   public static final ControllerButton fuelFeedButton = coDriverController.getButton(XboxMap.Buttons.A);
   public static final ControllerButton aimButton = coDriverController.getButton(XboxMap.Buttons.X);
 
