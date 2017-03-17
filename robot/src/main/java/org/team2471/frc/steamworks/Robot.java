@@ -53,6 +53,7 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Just Shoot Auto", new AimCommand());
     autoChooser.addObject("Short fuel and gear", new BoilerGearAuto());
     autoChooser.addObject("Gear plus ten fuel", new GearTenAuto());
+    autoChooser.addObject("40 KPA", new FortyKPAAuto());
 
     SmartDashboard.putData("AutoChooser", autoChooser);
     SmartDashboard.putData(new ZeroGyroCommand());
