@@ -26,7 +26,7 @@ public class DrivePathToTarget extends FollowPathTankDriveCommand{
         m_path = new Path2D();
         m_path.setTravelDirection(1.0);
 
-        double feet = new Vector2(xPos, yPos).length();
+        double feet = Vector2.length(new Vector2(xPos, yPos));
         double time = feet / fps;
 
         m_path.addPointAndTangent( 0.0, 0.0, 0.0, feet );  // use the full length of path for the tangent
