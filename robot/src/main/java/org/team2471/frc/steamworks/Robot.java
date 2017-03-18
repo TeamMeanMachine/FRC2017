@@ -30,8 +30,6 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void robotInit() {
-    NetworkTable nt = NetworkTable.getTable("SmartDashboard");
-    nt.getKeys().forEach(nt::clearPersistent);
     shooter = new Shooter();
     drive = new Drive();
     gearIntake = new GearIntake();

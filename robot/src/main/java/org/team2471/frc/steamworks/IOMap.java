@@ -9,6 +9,7 @@ import org.team2471.frc.lib.io.maps.XboxMap;
 import org.team2471.frc.steamworks.commandgroups.ManualClimbCommandGroup;
 import org.team2471.frc.steamworks.commands.*;
 
+@SuppressWarnings("WeakerAccess")
 public class IOMap {
   private static Controller driverController = new Controller(0);
   private static Controller coDriverController = new Controller(1);
@@ -45,7 +46,8 @@ public class IOMap {
 
   public static final ControllerButton toggleIntakeButton = coDriverController.getButton(XboxMap.Buttons.B);
   public static final ControllerButton useIntakeButton = coDriverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
-  public static final ControllerButton spitButton = coDriverController.getButton(XboxMap.Axes.LEFT_TRIGGER);
+  public static final ControllerAxis spitAxis = coDriverController.getAxis(XboxMap.Axes.LEFT_TRIGGER);
+  public static final ControllerButton spitButton = () -> spitAxis.get() > 0.2;
   public static final ControllerButton fuelFeedButton = coDriverController.getButton(XboxMap.Buttons.A);
   public static final ControllerButton aimButton = coDriverController.getButton(XboxMap.Buttons.X);
 
