@@ -10,9 +10,13 @@ import org.team2471.frc.lib.motion_profiling.PlayAnimationCommand;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
 
+import static org.team2471.frc.steamworks.IOMap.toggleIntakeButton;
+
+
 public class ManualClimbCommand extends PlayAnimationCommand {
   private double startDistance;
   private Timer timer;
+  private boolean automaticIntake;
 
   private MotionProfileAnimation animation;
   private MotionProfileCurve leftCurve;
@@ -20,7 +24,6 @@ public class ManualClimbCommand extends PlayAnimationCommand {
 
   public ManualClimbCommand() {
     requires(Robot.drive);
-    requires(Robot.fuelIntake);
     setInterruptible(false);
     timer = new Timer();
 
@@ -54,6 +57,7 @@ public class ManualClimbCommand extends PlayAnimationCommand {
 
     leftCurve.setOffset(Robot.drive.getLeftMotor1().getPosition());
     rightCurve.setOffset(Robot.drive.getRightMotor1().getPosition());
+    automaticIntake = true;
   }
 
   @Override
@@ -62,12 +66,18 @@ public class ManualClimbCommand extends PlayAnimationCommand {
     super.execute();
 
     double distance = Math.abs(Robot.drive.getDistance() - startDistance);
-    if (distance > 18) {
-      Robot.fuelIntake.extend();
-    }
-    else {
-      Robot.fuelIntake.retract();
-    }
+//    if (automaticIntake) {
+      if (distance > 18) {
+        Robot.fuelIntake.extend();
+      } else {
+        Robot.fuelIntake.retract();
+      }
+//    }
+//
+//    if (toggleIntakeButton.get()) {
+//      Robot.fuelIntake.toggle();
+//      automaticIntake = false;
+//    }
 
     SmartDashboard.putNumber("Climb Time", timer.get());
   }

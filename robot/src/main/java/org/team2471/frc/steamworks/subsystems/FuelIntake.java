@@ -61,6 +61,10 @@ public class FuelIntake extends Subsystem {
     intakeSolenoid.set(false);
   }
 
+  public void toggle(){
+    intakeSolenoid.set(!intakeSolenoid.get());
+  }
+
   /**
    * Run teh poly cords in
    * -> <-
