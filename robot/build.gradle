@@ -7,8 +7,9 @@ plugins {
 
 frc {
   team = "2471"
-  robotClass = "org.team2471.frc.steamworks.Robot"
+  robotClass = "org.team2471.frc.carbonknight"
 //  robotClass = "org.team2471.frc.TestRobot"
+  rioIP = "10.24.71.182"
 }
 
 dependencies {
