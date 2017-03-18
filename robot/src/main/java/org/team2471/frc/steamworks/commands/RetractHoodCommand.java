@@ -5,7 +5,7 @@ import org.team2471.frc.steamworks.Robot;
 
 public class RetractHoodCommand extends InstantCommand {
   @Override
-  protected void initialize() {
+  protected void execute() {
     Robot.shooter.retractHood();
   }
 }

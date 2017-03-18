@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class Robot extends IterativeRobot {
+  public static final boolean COMPETITION = false;
+
   public static CoProcessor coProcessor;
   public static Drive drive;
   public static GearIntake gearIntake;

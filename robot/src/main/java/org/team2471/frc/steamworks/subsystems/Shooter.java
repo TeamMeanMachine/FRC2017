@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.steamworks.HardwareMap;
+import org.team2471.frc.steamworks.Robot;
 
 public class Shooter extends Subsystem {
   private final CANTalon rightMasterMotor = HardwareMap.TwinShooterMap.masterRight;
@@ -31,8 +32,6 @@ public class Shooter extends Subsystem {
     rightMasterMotor.configEncoderCodesPerRev(205);
     rightMasterMotor.changeControlMode(TalonControlMode.Speed);
     rightMasterMotor.setProfile(0);
-//    rightMasterMotor.reverseSensor(true);
-    rightMasterMotor.reverseSensor(false);
     rightMasterMotor.enableBrakeMode(false);
     rightSlaveMotor.changeControlMode(TalonControlMode.Follower);
     rightSlaveMotor.set((double)this.rightMasterMotor.getDeviceID());
@@ -49,8 +48,6 @@ public class Shooter extends Subsystem {
     leftMasterMotor.configEncoderCodesPerRev(205);
     leftMasterMotor.changeControlMode(TalonControlMode.Speed);
     leftMasterMotor.setProfile(0);
-//    leftMasterMotor.reverseSensor(true);
-    leftMasterMotor.reverseSensor(false);
     leftMasterMotor.enableBrakeMode(false);
     leftSlaveMotor.changeControlMode(TalonControlMode.Follower);
     leftSlaveMotor.set(this.leftMasterMotor.getDeviceID());
@@ -66,6 +63,11 @@ public class Shooter extends Subsystem {
 
     cycloneMotor.setInverted(false);
     elevatorMotor.setInverted(true);
+
+    boolean reversed = !Robot.COMPETITION;
+
+    leftMasterMotor.reverseSensor(reversed);
+    rightMasterMotor.reverseSensor(reversed);
   }
 
   public void setPID(double p, double i, double d, double leftF, double rightF) {
@@ -139,10 +141,12 @@ public class Shooter extends Subsystem {
   }
 
   public void extendHood() {
+    System.out.println("Extend");
     hoodSolenoid.set(true);
   }
 
   public void retractHood() {
+    System.out.println("Retract");
     hoodSolenoid.set(false);
   }
 
