@@ -95,10 +95,10 @@ public class IOMap {
     retractHoodTrigger.whenActive(new RetractHoodCommand());
 
     CommandTrigger incrementRPMTrigger = new CommandTrigger(shooterDPad::isRight);
-    incrementRPMTrigger.whenActive(new UpdateRPMCommand(50));
+    incrementRPMTrigger.whenActive(new UpdateRPMCommand(10));
 
     CommandTrigger decrementRPMTrigger = new CommandTrigger(shooterDPad::isLeft);
-    decrementRPMTrigger.whenActive(new UpdateRPMCommand(-50));
+    decrementRPMTrigger.whenActive(new UpdateRPMCommand(-10));
   }
 
   public static Controller getDriverController() {

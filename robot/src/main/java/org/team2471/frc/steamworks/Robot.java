@@ -57,7 +57,6 @@ public class Robot extends IterativeRobot {
 
     SmartDashboard.putData("AutoChooser", autoChooser);
     SmartDashboard.putData(new ZeroGyroCommand());
-    SmartDashboard.putNumber("Shooter Offset", 0.0);
 
     drive.disableClimbing();
   }
@@ -98,7 +97,6 @@ public class Robot extends IterativeRobot {
   public void disabledPeriodic() {
     VisionData boilerData = coProcessor.getBoilerData();
     SmartDashboard.putString("Boiler", boilerData.targetPresent() ? Double.toString(boilerData.getError()) : "NONE"); // don't use this number for real stuff
-    System.out.println("Ticks: " + HardwareMap.TwinShooterMap.masterRight.getPosition());
   }
 
   @Override

@@ -46,10 +46,10 @@ public class AimCommand extends PIDCommand {
 
     curveDistanceToRPM = new MotionCurve();
     curveDistanceToRPM.storeValue(0.0, 0.0);
-    curveDistanceToRPM.storeValue(4.0, 5650.0);
-    curveDistanceToRPM.storeValue(4.5, 5900.0);
-    curveDistanceToRPM.storeValue(8.75, 5900.0 );
-    curveDistanceToRPM.storeValue(11.0, 5900.0);
+    curveDistanceToRPM.storeValue(4.0, 2650.0);
+    curveDistanceToRPM.storeValue(7.0, 2910.0);
+    curveDistanceToRPM.storeValue(8.75, 3160.0);
+    //curveDistanceToRPM.storeValue(11.0, 4000.0);
   }
 
   protected void initialize() {
@@ -100,7 +100,6 @@ public class AimCommand extends PIDCommand {
 //      Robot.shooter.extendHood();
     }
 
-
     boolean shoot = autonomous ?
         turnController.getAvgError() < 2 : // && targetFound :  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
@@ -108,9 +107,14 @@ public class AimCommand extends PIDCommand {
       shootingTimer.reset();
       double speed = autonomous ?
           // auto
-          Timer.getFPGATimestamp() > startTime + AUTO_SHOOT_DELAY ? 0.6 : 0
+          Timer.getFPGATimestamp() > startTime + AUTO_SHOOT_DELAY ? 0.9 : 0
           // teleop
           : (IOMap.shootAxis.get() - 0.15) * 1/(1 - 0.15);
+
+      if (!Robot.shooter.isHoodUp()) {  // boiler shot
+        speed *= 0.75;
+      }
+
       Robot.shooter.setIntake(speed * 0.8, speed);
       Robot.fuelIntake.rollIn();
 
@@ -139,6 +143,7 @@ public class AimCommand extends PIDCommand {
     Robot.shooter.setPID(SmartDashboard.getNumber("Shooter P", 0.02D),
         SmartDashboard.getNumber("Shooter I", 0.0D), SmartDashboard.getNumber("Shooter D", 0.0D),
         SmartDashboard.getNumber("Shooter Left F", 0.0D), SmartDashboard.getNumber("Shooter Right F", 0));
+    SmartDashboard.putNumber("Aim Error", turnController.getError());
   }
 
   protected boolean isFinished() {

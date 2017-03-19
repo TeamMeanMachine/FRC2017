@@ -24,13 +24,14 @@ public class Shooter extends Subsystem {
   public Shooter() {
     DashboardUtils.putPersistantNumber("Shooter P", 0.05);
     DashboardUtils.putPersistantNumber("Shooter I", 0);
-    DashboardUtils.putPersistantNumber("Shooter D", 1.0);
-    DashboardUtils.putPersistantNumber("Shooter Left F", 0.07);
-    DashboardUtils.putPersistantNumber("Shooter Right F", 0.07);
-    DashboardUtils.putPersistantNumber("Shooter Setpoint", 6000);
+    DashboardUtils.putPersistantNumber("Shooter D", 0.1);
+    DashboardUtils.putPersistantNumber("Shooter Left F", 0.072);
+    DashboardUtils.putPersistantNumber("Shooter Right F", 0.072);
+    DashboardUtils.putPersistantNumber("Shooter Setpoint", 2420);
 
-    //rightMasterMotor.configEncoderCodesPerRev(1445);
-    rightMasterMotor.configEncoderCodesPerRev(205);
+    final int codesPerRev = (int) (250 * 1.8); // encoder ticks * gear ratio
+
+    rightMasterMotor.configEncoderCodesPerRev(codesPerRev);
     rightMasterMotor.changeControlMode(TalonControlMode.Speed);
     rightMasterMotor.setProfile(0);
     rightMasterMotor.enableBrakeMode(false);
@@ -41,8 +42,8 @@ public class Shooter extends Subsystem {
     rightSlaveMotor.reverseOutput(false);
     rightSlaveMotor.enableBrakeMode(false);
 
-    //leftMasterMotor.configEncoderCodesPerRev(1445);
-    leftMasterMotor.configEncoderCodesPerRev(205);
+    //leftMasterMotor.configEncoderCodesPerRev(205);
+    leftMasterMotor.configEncoderCodesPerRev(codesPerRev);
     leftMasterMotor.changeControlMode(TalonControlMode.Speed);
     leftMasterMotor.setProfile(0);
     leftMasterMotor.enableBrakeMode(false);
