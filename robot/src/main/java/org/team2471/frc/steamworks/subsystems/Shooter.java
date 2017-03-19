@@ -33,41 +33,41 @@ public class Shooter extends Subsystem {
     rightMasterMotor.changeControlMode(TalonControlMode.Speed);
     rightMasterMotor.setProfile(0);
     rightMasterMotor.enableBrakeMode(false);
+    rightMasterMotor.setInverted(true);
+    rightMasterMotor.reverseOutput(false);
     rightSlaveMotor.changeControlMode(TalonControlMode.Follower);
     rightSlaveMotor.set((double)this.rightMasterMotor.getDeviceID());
     rightSlaveMotor.reverseOutput(false);
     rightSlaveMotor.enableBrakeMode(false);
 
-    // set ramp rates
-    leftMasterMotor.setVoltageRampRate(64);
-    leftSlaveMotor.setVoltageRampRate(64);
-    rightMasterMotor.setVoltageRampRate(64);
-    rightSlaveMotor.setVoltageRampRate(64);
-
-
     leftMasterMotor.configEncoderCodesPerRev(205);
     leftMasterMotor.changeControlMode(TalonControlMode.Speed);
     leftMasterMotor.setProfile(0);
     leftMasterMotor.enableBrakeMode(false);
-    leftSlaveMotor.changeControlMode(TalonControlMode.Follower);
-    leftSlaveMotor.set(this.leftMasterMotor.getDeviceID());
-
     leftMasterMotor.setInverted(false);
     leftMasterMotor.reverseOutput(false);
-
+    leftSlaveMotor.changeControlMode(TalonControlMode.Follower);
+    leftSlaveMotor.set(this.leftMasterMotor.getDeviceID());
     leftSlaveMotor.reverseOutput(false);
     leftSlaveMotor.enableBrakeMode(false);
 
-    rightMasterMotor.setInverted(true);
-    rightMasterMotor.reverseOutput(false);
+    // set ramp rates
+//    leftMasterMotor.setVoltageRampRate(64);
+//    leftSlaveMotor.setVoltageRampRate(64);
+//    rightMasterMotor.setVoltageRampRate(64);
+//    rightSlaveMotor.setVoltageRampRate(64);
 
     cycloneMotor.setInverted(false);
     elevatorMotor.setInverted(true);
 
-    boolean reversed = !Robot.COMPETITION;
-
-    leftMasterMotor.reverseSensor(reversed);
-    rightMasterMotor.reverseSensor(reversed);
+    if (Robot.COMPETITION) {
+      leftMasterMotor.reverseSensor(false);
+      rightMasterMotor.reverseSensor(false);
+    }
+    else {
+      leftMasterMotor.reverseSensor(true);  // the weird one
+      rightMasterMotor.reverseSensor(false);
+    }
   }
 
   public void setPID(double p, double i, double d, double leftF, double rightF) {
@@ -147,7 +147,7 @@ public class Shooter extends Subsystem {
 
   public void retractHood() {
     System.out.println("Retract");
-    hoodSolenoid.set(false);
+//    hoodSolenoid.set(false);
   }
 
   protected void initDefaultCommand() {

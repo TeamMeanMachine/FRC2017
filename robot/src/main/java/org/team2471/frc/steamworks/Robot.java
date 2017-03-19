@@ -88,6 +88,9 @@ public class Robot extends IterativeRobot {
     SmartDashboard.putString("Boiler Error", boilerData.targetPresent() ? Double.toString(boilerData.getError()) : "NONE"); // don't use this number for real stuff
     SmartDashboard.putString("Boiler Distance", boilerData.targetPresent() ? Double.toString(boilerData.getDistance()) : "NONE");
     Scheduler.getInstance().run();
+
+//    SmartDashboard.putNumber("Shooter Left Speed", HardwareMap.TwinShooterMap.masterLeft.getSpeed());
+//    SmartDashboard.putNumber("Shooter Right Speed", HardwareMap.TwinShooterMap.masterRight.getSpeed());
   }
 
   @Override
