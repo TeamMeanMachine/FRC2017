@@ -29,6 +29,7 @@ public class Shooter extends Subsystem {
     DashboardUtils.putPersistantNumber("Shooter Right F", 0.07);
     DashboardUtils.putPersistantNumber("Shooter Setpoint", 6000);
 
+    //rightMasterMotor.configEncoderCodesPerRev(1445);
     rightMasterMotor.configEncoderCodesPerRev(205);
     rightMasterMotor.changeControlMode(TalonControlMode.Speed);
     rightMasterMotor.setProfile(0);
@@ -40,6 +41,7 @@ public class Shooter extends Subsystem {
     rightSlaveMotor.reverseOutput(false);
     rightSlaveMotor.enableBrakeMode(false);
 
+    //leftMasterMotor.configEncoderCodesPerRev(1445);
     leftMasterMotor.configEncoderCodesPerRev(205);
     leftMasterMotor.changeControlMode(TalonControlMode.Speed);
     leftMasterMotor.setProfile(0);
@@ -52,10 +54,10 @@ public class Shooter extends Subsystem {
     leftSlaveMotor.enableBrakeMode(false);
 
     // set ramp rates
-//    leftMasterMotor.setVoltageRampRate(64);
-//    leftSlaveMotor.setVoltageRampRate(64);
-//    rightMasterMotor.setVoltageRampRate(64);
-//    rightSlaveMotor.setVoltageRampRate(64);
+    leftMasterMotor.setVoltageRampRate(32);
+    leftSlaveMotor.setVoltageRampRate(32);
+    rightMasterMotor.setVoltageRampRate(32);
+    rightSlaveMotor.setVoltageRampRate(32);
 
     cycloneMotor.setInverted(false);
     elevatorMotor.setInverted(true);
@@ -147,7 +149,11 @@ public class Shooter extends Subsystem {
 
   public void retractHood() {
     System.out.println("Retract");
-//    hoodSolenoid.set(false);
+    hoodSolenoid.set(false);
+  }
+
+  public boolean isHoodUp(){
+    return hoodSolenoid.get();
   }
 
   protected void initDefaultCommand() {

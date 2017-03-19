@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.io.dashboard.DashboardUtils;
+import org.team2471.frc.lib.motion_profiling.MotionCurve;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.comm.VisionData;
@@ -28,6 +29,8 @@ public class AimCommand extends PIDCommand {
   private double lastImageTimestamp = Timer.getFPGATimestamp();
   private double startTime;
 
+  private MotionCurve curveDistanceToRPM;
+
   public AimCommand() {
     super(0.05, 0, 1.0/25.0);
     requires(Robot.shooter);
@@ -40,6 +43,13 @@ public class AimCommand extends PIDCommand {
 
     turnController.setAbsoluteTolerance(2.0);
     turnController.setToleranceBuffer(30);
+
+    curveDistanceToRPM = new MotionCurve();
+    curveDistanceToRPM.storeValue(0.0, 0.0);
+    curveDistanceToRPM.storeValue(4.0, 5650.0);
+    curveDistanceToRPM.storeValue(4.5, 5900.0);
+    curveDistanceToRPM.storeValue(8.75, 5900.0 );
+    curveDistanceToRPM.storeValue(11.0, 5900.0);
   }
 
   protected void initialize() {
@@ -57,9 +67,6 @@ public class AimCommand extends PIDCommand {
   protected void execute() {
     Robot.fuelIntake.retract();
 
-    // set rpms
-    Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
-
     double angle = returnPIDInput();
     if(SmartDashboard.getBoolean("Auto Aim", false)) {
       VisionData boilerData = Robot.coProcessor.getBoilerData();
@@ -70,9 +77,19 @@ public class AimCommand extends PIDCommand {
 //      offset += IOMap.turnAxis.get() * (30/50); // 30 degrees per second (50 samples)
 //      angle += offset;
 //      SmartDashboard.putNumber("Aim Offset", offset);
+      // set rpms
+      if (Robot.shooter.isHoodUp()){
+        double rpm = curveDistanceToRPM.getValue(boilerData.getDistance());
+        Robot.shooter.setSetpoint(rpm + SmartDashboard.getNumber("Shooter OffSet", 0.0));
+      }
+      else {
+        Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
+      }
+
     } else {
       // manual aim
       angle += IOMap.aimAxis.get() * 7.5;
+      Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
     }
     turnController.setSetpoint(angle);
 
