@@ -33,6 +33,10 @@ public class AimCommand extends PIDCommand {
 
   public AimCommand() {
     super(0.07, 0, 0.1);
+    requires(Robot.drive);
+    requires(Robot.gearIntake);
+    requires(Robot.fuelIntake);
+    requires(Robot.shooter);
     DashboardUtils.putPersistantNumber("Aim Offset", 0);
 
     turnController.setAbsoluteTolerance(2.0);
