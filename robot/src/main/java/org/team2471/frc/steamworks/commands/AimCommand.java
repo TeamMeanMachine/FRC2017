@@ -1,5 +1,6 @@
 package org.team2471.frc.steamworks.commands;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
@@ -45,11 +46,11 @@ public class AimCommand extends PIDCommand {
     turnController.setToleranceBuffer(30);
 
     curveDistanceToRPM = new MotionCurve();
-    curveDistanceToRPM.storeValue(0.0, 0.0);
-    curveDistanceToRPM.storeValue(4.0, 2650.0);
-    curveDistanceToRPM.storeValue(7.0, 2910.0);
-    curveDistanceToRPM.storeValue(8.75, 3160.0);
-    //curveDistanceToRPM.storeValue(11.0, 4000.0);
+    curveDistanceToRPM.storeValue(0.0, 2650.0);
+    curveDistanceToRPM.storeValue(5.5, 2650.0);
+    curveDistanceToRPM.storeValue(8.5, 2910.0);
+    curveDistanceToRPM.storeValue(10.25, 3160.0);
+    curveDistanceToRPM.storeValue(12.5, 4000.0);
   }
 
   protected void initialize() {
@@ -79,7 +80,9 @@ public class AimCommand extends PIDCommand {
 //      SmartDashboard.putNumber("Aim Offset", offset);
       // set rpms
       if (Robot.shooter.isHoodUp()){
-        double rpm = curveDistanceToRPM.getValue(boilerData.getDistance());
+        //double rpm = curveDistanceToRPM.getValue(boilerData.getDistance());
+        double rpm = 2650;
+        System.out.println("Distance: " + boilerData.getDistance() + " RPM: " + rpm);
         Robot.shooter.setSetpoint(rpm + SmartDashboard.getNumber("Shooter OffSet", 0.0));
       }
       else {
