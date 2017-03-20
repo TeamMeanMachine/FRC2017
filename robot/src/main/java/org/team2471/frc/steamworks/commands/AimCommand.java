@@ -32,13 +32,7 @@ public class AimCommand extends PIDCommand {
   private MotionCurve curveDistanceToRPM;
 
   public AimCommand() {
-    super(0.05, 0, 1.0/25.0);
-    requires(Robot.shooter);
-    requires(Robot.drive);
-    requires(Robot.gearIntake);
-    requires(Robot.fuelIntake);
-    SmartDashboard.putData("Aim Controller", turnController);
-
+    super(0.07, 0, 0.1);
     DashboardUtils.putPersistantNumber("Aim Offset", 0);
 
     turnController.setAbsoluteTolerance(2.0);
