@@ -1,6 +1,5 @@
 package org.team2471.frc.steamworks.commands;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
@@ -80,8 +79,8 @@ public class AimCommand extends PIDCommand {
 //      SmartDashboard.putNumber("Aim Offset", offset);
       // set rpms
       if (Robot.shooter.isHoodUp()){
-        //double rpm = curveDistanceToRPM.getValue(boilerData.getDistance());
-        double rpm = 2650;
+        double rpm = curveDistanceToRPM.getValue(boilerData.getDistance());
+        //double rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
         System.out.println("Distance: " + boilerData.getDistance() + " RPM: " + rpm);
         Robot.shooter.setSetpoint(rpm + SmartDashboard.getNumber("Shooter OffSet", 0.0));
       }
