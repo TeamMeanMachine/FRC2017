@@ -99,11 +99,11 @@ public class AimCommand extends PIDCommand {
     boolean autonomous = DriverStation.getInstance().isAutonomous();
 
     if(autonomous) {
-//      Robot.shooter.extendHood();
+      Robot.shooter.extendHood();
     }
 
     boolean shoot = autonomous ?
-        turnController.getAvgError() < 2 : // && targetFound :  // auto aim condition
+        turnController.getAvgError() < 2  && targetFound :  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();
