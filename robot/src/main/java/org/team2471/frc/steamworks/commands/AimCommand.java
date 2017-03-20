@@ -49,7 +49,7 @@ public class AimCommand extends PIDCommand {
     curveDistanceToRPM.storeValue(5.5, 2650.0);
     curveDistanceToRPM.storeValue(8.5, 2910.0);
     curveDistanceToRPM.storeValue(10.25, 3160.0);
-    curveDistanceToRPM.storeValue(12.5, 4000.0);
+    curveDistanceToRPM.storeValue(12.5, 3160.0);
   }
 
   protected void initialize() {
@@ -73,20 +73,21 @@ public class AimCommand extends PIDCommand {
       if(boilerData.targetPresent()) {
         angle -= boilerData.getError() * 0.7;
         targetFound = true;
+
+        if (Robot.shooter.isHoodUp()){
+          double rpm = curveDistanceToRPM.getValue(boilerData.getDistance());
+          //double rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
+          System.out.println("Distance: " + boilerData.getDistance() + " RPM: " + rpm);
+          Robot.shooter.setSetpoint(rpm + SmartDashboard.getNumber("Shooter OffSet", 0.0));
+        }
+        else {
+          Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
+        }
       }
 //      offset += IOMap.turnAxis.get() * (30/50); // 30 degrees per second (50 samples)
 //      angle += offset;
 //      SmartDashboard.putNumber("Aim Offset", offset);
       // set rpms
-      if (Robot.shooter.isHoodUp()){
-        double rpm = curveDistanceToRPM.getValue(boilerData.getDistance());
-        //double rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
-        System.out.println("Distance: " + boilerData.getDistance() + " RPM: " + rpm);
-        Robot.shooter.setSetpoint(rpm + SmartDashboard.getNumber("Shooter OffSet", 0.0));
-      }
-      else {
-        Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
-      }
 
     } else {
       // manual aim
@@ -127,10 +128,13 @@ public class AimCommand extends PIDCommand {
       } else {
         Robot.gearIntake.retract();
       }
-    } else if(shootingTimer.get() < 0.2){
-      Robot.shooter.setIntake(0, 0);
-      Robot.fuelIntake.stopRoll();
-      agitatorTimer.reset();
+    } else {
+      Robot.gearIntake.retract();
+      if(shootingTimer.get() < 0.2){
+        Robot.shooter.setIntake(0, 0);
+        Robot.fuelIntake.stopRoll();
+        agitatorTimer.reset();
+      }
     }
 
     // Output necessary data to dashboard
