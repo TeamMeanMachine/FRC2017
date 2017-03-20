@@ -13,8 +13,8 @@ import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.comm.VisionData;
 
 public class AimCommand extends PIDCommand {
-  private final double AGITATOR_DELAY = 1.5; // time between each agitator interval
-  private final double AGITATOR_DURATION = 0.5; // time to extend gear intake while agitation active
+  private final double AGITATOR_DELAY = 0.5; // time between each agitator interval
+  private final double AGITATOR_DURATION = 1.5; // time to extend gear intake while agitation active
   private final double AUTO_SHOOT_DELAY = 0.5;
 
   private final Timer agitatorTimer = new Timer();
@@ -124,9 +124,9 @@ public class AimCommand extends PIDCommand {
       if(agitatorTimer.get() > AGITATOR_DELAY + AGITATOR_DURATION) {
         agitatorTimer.reset();
       } else if(agitatorTimer.get() > AGITATOR_DELAY) {
-        Robot.gearIntake.retract();
-      } else {
         Robot.gearIntake.extend();
+      } else {
+        Robot.gearIntake.retract();
       }
     } else if(shootingTimer.get() < 0.2){
       Robot.shooter.setIntake(0, 0);
