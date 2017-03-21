@@ -53,6 +53,12 @@ public class HardwareMap {
     public static final AnalogInput gearSensor = new AnalogInput(3);
   }
 
+  public static final class ActiveGearIntakeMap {
+    public static final Solenoid gearSolenoid = new Solenoid(10000000);
+    public static final CANTalon wheelMotor = new CANTalon(1000000);
+    public static final AnalogInput gearSensor = new AnalogInput(10000000);
+  }
+
   public static void init() {
     // do some call to each static class to force members to be initialized now.
     // this is necessary because initialization takes time, and we want to spend our first 5 seconds of auto moving
@@ -61,4 +67,6 @@ public class HardwareMap {
     FuelIntakeMap.intakeMotor.get();
     GearIntakeMap.flapSolenoid.get();
   }
+
+
 }

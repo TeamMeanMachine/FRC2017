@@ -22,6 +22,7 @@ public class Robot extends IterativeRobot {
   public static GearIntake gearIntake;
   public static FuelIntake fuelIntake;
   public static Shooter shooter;
+  public static ActiveGearIntake activeGearIntake;
   public static LEDController ledController;
 
   public static SendableChooser autoChooser;
