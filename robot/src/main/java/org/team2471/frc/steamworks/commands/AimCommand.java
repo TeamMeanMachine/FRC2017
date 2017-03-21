@@ -79,8 +79,13 @@ public class AimCommand extends PIDCommand {
           Robot.shooter.setSetpoint(rpm + SmartDashboard.getNumber("Shooter OffSet", 0.0));
         }
         else {
+          angle += IOMap.aimAxis.get() * 7.5;
           Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
         }
+      }
+      else {
+        angle += IOMap.aimAxis.get() * 7.5;
+        Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
       }
 //      offset += IOMap.turnAxis.get() * (30/50); // 30 degrees per second (50 samples)
 //      angle += offset;
