@@ -33,11 +33,11 @@ public class ManualClimbCommand extends PlayAnimationCommand {
     rightCurve = new MotionProfileCurve(Robot.drive.getRightMotor1(), animation );
 
     leftCurve.storeValue(0.0, 0.0 );
-    leftCurve.storeValue(3.5, 29.0 );
+    leftCurve.storeValue(1.0, 29.0 );
     leftCurve.storeValue(15.0, 40.0 );
 
     rightCurve.storeValue(0.0, 0.0 );
-    rightCurve.storeValue(3.5, 29.0 );
+    rightCurve.storeValue(1.0, 29.0 );
     rightCurve.storeValue(15.0, 40.0 );
 
     setAnimation(animation);
@@ -62,7 +62,7 @@ public class ManualClimbCommand extends PlayAnimationCommand {
 
   @Override
   protected void execute() {
-    setSpeed(IOMap.playAnimationAxis.get() - IOMap.reverseAnimationAxis.get());
+    setSpeed(IOMap.throttleAxis.get());
     super.execute();
 
     double distance = Math.abs(Robot.drive.getDistance() - startDistance);
