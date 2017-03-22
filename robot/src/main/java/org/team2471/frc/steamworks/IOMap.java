@@ -31,16 +31,19 @@ public class IOMap {
   public static final ControllerAxis reverseAnimationAxis = driverController.getAxis(XboxMap.Axes.RIGHT_TRIGGER)
       .withExponentialScaling(2);
 
+  public static final ControllerButton gearGroundPickupButton = driverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
+  public static final ControllerButton gearPegButton = driverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
 
   public static final ControllerButton climbButton = driverController.getButton(XboxMap.Buttons.Y);
-  public static final ControllerButton gearButton = driverController.getButton(XboxMap.Buttons.A);
 
-  public static final ControllerButton signalCoDriverButton = driverController.getButton(XboxMap.Buttons.START);
+
+  public static final ControllerButton signalCoDriverButton = driverController.getButton(XboxMap.Buttons.RIGHT_THUMBSTICK);
+
 
   //Co-Driver controls
   public static final ControllerButton signalDriverButton = coDriverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
 
-  public static final ControllerButton gearFeedButton = coDriverController.getButton(XboxMap.Buttons.Y);
+
   public static ControllerAxis shootAxis = coDriverController.getAxis(3);
 
   public static final ControllerButton toggleIntakeButton = coDriverController.getButton(XboxMap.Buttons.B);
@@ -48,6 +51,7 @@ public class IOMap {
   public static final ControllerButton spitButton = coDriverController.getButton(XboxMap.Axes.LEFT_TRIGGER);
   public static final ControllerButton fuelFeedButton = coDriverController.getButton(XboxMap.Buttons.A);
   public static final ControllerButton aimButton = coDriverController.getButton(XboxMap.Buttons.X);
+
 
   public static ControllerButton shootButton = () -> shootAxis.get() > 0.15;
 
@@ -61,18 +65,21 @@ public class IOMap {
       .withDeadband(.2)
       .withInvert()
       .withExponentialScaling(2)
-      .map(value -> value * 0.5); // slow it down
+      .map(value -> value * 0.5); // slow it extend
 
   public static void init() {
     // null checks because subsystems may not be initialized when we are testing
     CommandTrigger fuelIntakeTrigger = new CommandTrigger(toggleIntakeButton::get);
     fuelIntakeTrigger.toggleWhenActive(new FuelIntakeCommand());
 
-    CommandTrigger feedGearTrigger = new CommandTrigger(gearFeedButton::get);
-    feedGearTrigger.whileActive(new FeedGearCommand());
 
     CommandTrigger feedFuelTrigger = new CommandTrigger(fuelFeedButton::get);
-    feedFuelTrigger.whileActive(new TiltGearIntakeCommand());
+
+    CommandTrigger gearPegTrigger = new CommandTrigger(gearPegButton::get);
+    gearPegTrigger.whileActive(new ActiveGearPegCommand());
+
+    CommandTrigger gearGroundPickupTrigger = new CommandTrigger(gearGroundPickupButton::get);
+    gearGroundPickupTrigger.whenActive(new ActiveGearGroundIntakeCommand());
 
     CommandTrigger climbTrigger = new CommandTrigger(climbButton::get);
     climbTrigger.whileActive(new ManualClimbCommandGroup());
