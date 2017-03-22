@@ -69,7 +69,6 @@ public class IOMap {
       .map(value -> value * 0.5); // slow it down
 
   public static void init() {
-    // null checks because subsystems may not be initialized when we are testing
     CommandTrigger fuelIntakeTrigger = new CommandTrigger(toggleIntakeButton::get);
     fuelIntakeTrigger.toggleWhenActive(new FuelIntakeCommand());
 
@@ -80,7 +79,7 @@ public class IOMap {
     feedFuelTrigger.whileActive(new TiltGearIntakeCommand());
 
     CommandTrigger climbTrigger = new CommandTrigger(climbButton::get);
-    climbTrigger.whileActive(new ManualClimbCommandGroup());
+    climbTrigger.toggleWhenActive(new ManualClimbCommandGroup());
 
     CommandTrigger aimTrigger = new CommandTrigger(aimButton::get);
     aimTrigger.toggleWhenActive(new AimCommand());
