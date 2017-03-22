@@ -66,7 +66,7 @@ public class IOMap {
       .withDeadband(.2)
       .withInvert()
       .withExponentialScaling(2)
-      .map(value -> value * 0.5); // slow it down
+      .withLinearScaling(0.6);
 
   public static void init() {
     CommandTrigger fuelIntakeTrigger = new CommandTrigger(toggleIntakeButton::get);
