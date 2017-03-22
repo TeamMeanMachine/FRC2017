@@ -16,28 +16,28 @@ public class ActiveGearIntake extends Subsystem{
   public ActiveGearIntake() {
   }
 
-  /**Tilts the gear intake down.**/
-  public void down() {
+  /**Tilts the gear intake extend.**/
+  public void extend() {
     gearSolenoid.set(true);
   }
 
-  /**Tilts the gear intake up.**/
-  public void up() {
+  /**Tilts the gear intake retract.**/
+  public void retract() {
     gearSolenoid.set(false);
   }
 
   /**Runs the wheely motor in.**/
-  public void gearIn() {
+  public void rollIn() {
     wheelMotor.set(.5);
   }
 
   /**Runs the wheely motor out.**/
-  public void gearOut() {
+  public void rollOut() {
     wheelMotor.set(-.5);
   }
 
   /**Stops wheely motors.**/
-  public void motorStop() {
+  public void rollStop() {
     wheelMotor.set(0);
   }
 

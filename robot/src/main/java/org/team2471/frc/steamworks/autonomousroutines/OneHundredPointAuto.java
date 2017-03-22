@@ -7,11 +7,8 @@ import org.team2471.frc.steamworks.autonomouscommands.BoilerLiftInner;
 import org.team2471.frc.steamworks.autonomouscommands.DriveBackwardsFromHopper;
 import org.team2471.frc.steamworks.autonomouscommands.DriveBackwardsFromBoilerLiftToHopper;
 import org.team2471.frc.steamworks.autonomouscommands.DriveToHopperFromBoilerLift;
-import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.ExtendHoodCommand;
 import org.team2471.frc.steamworks.commands.RetractHoodCommand;
-import org.team2471.frc.steamworks.commands.TiltGearIntakeCommand;
-import org.team2471.frc.util.DelayedCommand;
 
 import static edu.wpi.first.wpilibj.DriverStation.Alliance;
 
@@ -28,7 +25,7 @@ public class OneHundredPointAuto extends CommandGroup {
 
     addSequential(new ExtendHoodCommand());
     addSequential(new BoilerLiftInner(1.0, mirrored));
-    addParallel(new TiltGearIntakeCommand(), 9.8);
+    //addParallel(new TiltGearIntakeCommand(), 9.8);
     addSequential(new WaitCommand(2.8));
     addSequential(new DriveBackwardsFromBoilerLiftToHopper(1.0, mirrored));
 //    addParallel(new DelayedCommand(new TiltGearIntakeCommand(),1.0, 2.5));

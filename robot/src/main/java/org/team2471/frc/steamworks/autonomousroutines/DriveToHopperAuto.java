@@ -8,13 +8,12 @@ import org.team2471.frc.steamworks.autonomouscommands.FaceBoilerFromHopper;
 import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.ExtendHoodCommand;
 import org.team2471.frc.steamworks.commands.RetractHoodCommand;
-import org.team2471.frc.steamworks.commands.TiltGearIntakeCommand;
 
 public class DriveToHopperAuto extends CommandGroup {
   public DriveToHopperAuto(){
     boolean mirrored = DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red;
 
-    addParallel(new TiltGearIntakeCommand(), 5.0);
+    //addParallel(new TiltGearIntakeCommand(), 5.0);
     addSequential(new ExtendHoodCommand());
     addSequential(new DriveToHopperAutoBlue(1.0, mirrored));
     addSequential(new WaitCommand(2));

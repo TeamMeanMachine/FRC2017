@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 public class Robot extends IterativeRobot {
   public static CoProcessor coProcessor;
   public static Drive drive;
-  public static GearIntake gearIntake;
   public static FuelIntake fuelIntake;
   public static Shooter shooter;
   public static ActiveGearIntake activeGearIntake;
@@ -35,7 +34,6 @@ public class Robot extends IterativeRobot {
     nt.getKeys().forEach(nt::clearPersistent);
     shooter = new Shooter();
     drive = new Drive();
-    gearIntake = new GearIntake();
     fuelIntake = new FuelIntake();
     ledController = new LEDController();
     HardwareMap.init();

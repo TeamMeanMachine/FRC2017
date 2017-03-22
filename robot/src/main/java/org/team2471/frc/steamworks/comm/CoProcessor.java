@@ -32,7 +32,7 @@ public class CoProcessor {
   }
 
   public VisionData getGearData() {
-    return gearData;
+  return gearData;
   }
 
   private void setGearData(VisionData gearData) {

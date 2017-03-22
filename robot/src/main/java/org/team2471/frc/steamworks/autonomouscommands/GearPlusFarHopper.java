@@ -2,7 +2,6 @@ package org.team2471.frc.steamworks.autonomouscommands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import org.team2471.frc.steamworks.commands.TiltGearIntakeCommand;
 
 public class GearPlusFarHopper extends CommandGroup {
   public GearPlusFarHopper() {
@@ -13,13 +12,13 @@ public class GearPlusFarHopper extends CommandGroup {
 
     if (alliance == alliance.Blue){
       addSequential(new BoilerLiftInner(1.0, true));
-      addSequential(new TiltGearIntakeCommand(), 2.0);
+     // addSequential(new TiltGearIntakeCommand(), 2.0);
       addSequential(new DriveBackwardsFromRLToFarHopper(1.0, false));
       addSequential(new DriveToFarHopperFromRightLift(1.0, false));
     }
     else if (alliance == alliance.Red){
       addSequential(new BoilerLiftInner(1.0, false));
-      addSequential(new TiltGearIntakeCommand(), 2.0);
+     // addSequential(new TiltGearIntakeCommand(), 2.0);
       addSequential(new DriveBackwardsFromRLToFarHopper(1.0, true));
       addSequential(new DriveToFarHopperFromRightLift(1.0, true));
     }

@@ -1,11 +1,8 @@
 package org.team2471.frc.steamworks.commands;
 
-import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.Robot;
-import org.team2471.frc.steamworks.subsystems.ActiveGearIntake;
 
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ActiveGearGroundIntakeCommand extends Command{
@@ -22,8 +19,8 @@ public class ActiveGearGroundIntakeCommand extends Command{
 
   @Override
   protected void execute() {
-    Robot.activeGearIntake.down();
-    Robot.activeGearIntake.gearIn();
+    Robot.activeGearIntake.extend();
+    Robot.activeGearIntake.rollIn();
   }
 
   @Override
@@ -33,7 +30,7 @@ public class ActiveGearGroundIntakeCommand extends Command{
 
   @Override
   protected void end() {
-    Robot.activeGearIntake.up();
-    Robot.activeGearIntake.motorStop();
+    Robot.activeGearIntake.retract();
+    Robot.activeGearIntake.rollStop();
   }
 }
