@@ -13,7 +13,7 @@ public class UpdateRPMCommand extends InstantCommand {
 
   @Override
   protected void initialize() {
-    if (Robot.shooter.isHoodUp()) {
+    if (Robot.shooter.isHoodUp() && Robot.coProcessor.getBoilerData().targetPresent()) {
       SmartDashboard.putNumber("Shooter Offset", SmartDashboard.getNumber("Shooter Offset", 0) + step);
     }
     else {

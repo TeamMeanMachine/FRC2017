@@ -38,6 +38,8 @@ public class IOMap {
 
   public static final ControllerButton signalCoDriverButton = driverController.getButton(XboxMap.Buttons.START);
 
+  public static final ControllerButton climbIntakeOverrideButton = driverController.getButton(XboxMap.Buttons.BACK);
+
   //Co-Driver controls
   public static final ControllerButton signalDriverButton = coDriverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
 
@@ -51,6 +53,7 @@ public class IOMap {
   public static final ControllerButton fuelFeedButton = coDriverController.getButton(XboxMap.Buttons.A);
   public static final ControllerButton aimButton = coDriverController.getButton(XboxMap.Buttons.X);
 
+
   public static ControllerButton shootButton = () -> shootAxis.get() > 0.15;
 
   public static final ControllerAxis aimAxis = coDriverController.getAxis(XboxMap.Axes.RIGHT_THUMBSTICK_X)
@@ -63,10 +66,9 @@ public class IOMap {
       .withDeadband(.2)
       .withInvert()
       .withExponentialScaling(2)
-      .map(value -> value * 0.5); // slow it down
+      .withLinearScaling(0.6);
 
   public static void init() {
-    // null checks because subsystems may not be initialized when we are testing
     CommandTrigger fuelIntakeTrigger = new CommandTrigger(toggleIntakeButton::get);
     fuelIntakeTrigger.toggleWhenActive(new FuelIntakeCommand());
 
@@ -77,7 +79,7 @@ public class IOMap {
     feedFuelTrigger.whileActive(new TiltGearIntakeCommand());
 
     CommandTrigger climbTrigger = new CommandTrigger(climbButton::get);
-    climbTrigger.whileActive(new ManualClimbCommandGroup());
+    climbTrigger.toggleWhenActive(new ManualClimbCommandGroup());
 
     CommandTrigger aimTrigger = new CommandTrigger(aimButton::get);
     aimTrigger.toggleWhenActive(new AimCommand());

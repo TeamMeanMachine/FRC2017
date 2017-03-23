@@ -28,6 +28,7 @@ public class Shooter extends Subsystem {
     DashboardUtils.putPersistantNumber("Shooter Left F", 0.072);
     DashboardUtils.putPersistantNumber("Shooter Right F", 0.072);
     DashboardUtils.putPersistantNumber("Shooter Setpoint", 2420);
+    DashboardUtils.putPersistantNumber("Shooter Offset", 0.0);
 
     final int codesPerRev = (int) (250 * 1.8); // encoder ticks * gear ratio
 
@@ -130,6 +131,10 @@ public class Shooter extends Subsystem {
 
   public double getRightSpeed() {
     return this.rightMasterMotor.getSpeed();
+  }
+
+  public boolean onTarget() {
+    return rightMasterMotor.getError()<500 && leftMasterMotor.getError()<500;
   }
 
   public void reset() {

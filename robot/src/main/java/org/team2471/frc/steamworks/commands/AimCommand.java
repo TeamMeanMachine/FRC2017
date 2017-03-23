@@ -1,6 +1,5 @@
 package org.team2471.frc.steamworks.commands;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
@@ -13,8 +12,8 @@ import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.comm.VisionData;
 
 public class AimCommand extends PIDCommand {
-  private final double AGITATOR_DELAY = 1.5; // time between each agitator interval
-  private final double AGITATOR_DURATION = 0.5; // time to extend gear intake while agitation active
+  private final double AGITATOR_DELAY = 0.5; // time between each agitator interval
+  private final double AGITATOR_DURATION = 1.5; // time to extend gear intake while agitation active
   private final double AUTO_SHOOT_DELAY = 0.5;
 
   private final Timer agitatorTimer = new Timer();
@@ -33,24 +32,22 @@ public class AimCommand extends PIDCommand {
   private MotionCurve curveDistanceToRPM;
 
   public AimCommand() {
-    super(0.05, 0, 1.0/25.0);
-    requires(Robot.shooter);
+    super(0.07, 0, 0.1);
     requires(Robot.drive);
     requires(Robot.gearIntake);
     requires(Robot.fuelIntake);
-    SmartDashboard.putData("Aim Controller", turnController);
-
+    requires(Robot.shooter);
     DashboardUtils.putPersistantNumber("Aim Offset", 0);
 
     turnController.setAbsoluteTolerance(2.0);
     turnController.setToleranceBuffer(30);
 
     curveDistanceToRPM = new MotionCurve();
-    curveDistanceToRPM.storeValue(0.0, 2650.0);
-    curveDistanceToRPM.storeValue(5.5, 2650.0);
+    curveDistanceToRPM.storeValue(0.0, 2640.0);
+    curveDistanceToRPM.storeValue(5.5, 2640.0);
     curveDistanceToRPM.storeValue(8.5, 2910.0);
     curveDistanceToRPM.storeValue(10.25, 3160.0);
-    curveDistanceToRPM.storeValue(12.5, 4000.0);
+    curveDistanceToRPM.storeValue(12.5, 3160.0);
   }
 
   protected void initialize() {
@@ -66,26 +63,29 @@ public class AimCommand extends PIDCommand {
   }
 
   protected void execute() {
+    boolean autonomous = DriverStation.getInstance().isAutonomous();
+
     Robot.fuelIntake.retract();
 
     double angle = returnPIDInput();
-    if(SmartDashboard.getBoolean("Auto Aim", false)) {
+    if (SmartDashboard.getBoolean("Auto Aim", false) || autonomous) {
       VisionData boilerData = Robot.coProcessor.getBoilerData();
       if(boilerData.targetPresent()) {
-        angle -= boilerData.getError() * 0.7;
+        angle -= boilerData.getError() * 0.6;
         targetFound = true;
-      }
-//      offset += IOMap.turnAxis.get() * (30/50); // 30 degrees per second (50 samples)
-//      angle += offset;
-//      SmartDashboard.putNumber("Aim Offset", offset);
-      // set rpms
-      if (Robot.shooter.isHoodUp()){
-        //double rpm = curveDistanceToRPM.getValue(boilerData.getDistance());
-        double rpm = 2650;
-        System.out.println("Distance: " + boilerData.getDistance() + " RPM: " + rpm);
-        Robot.shooter.setSetpoint(rpm + SmartDashboard.getNumber("Shooter OffSet", 0.0));
+
+        if (Robot.shooter.isHoodUp()){
+          double rpm = curveDistanceToRPM.getValue(boilerData.getDistance()) + SmartDashboard.getNumber("Shooter OffSet", 0.0);
+          System.out.println("Distance: " + boilerData.getDistance() + " RPM: " + rpm);
+          Robot.shooter.setSetpoint(rpm);
+        }
+        else {
+          angle += IOMap.aimAxis.get() * 7.5;
+          Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
+        }
       }
       else {
+        angle += IOMap.aimAxis.get() * 7.5;
         Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
       }
 
@@ -97,14 +97,13 @@ public class AimCommand extends PIDCommand {
     turnController.setSetpoint(angle);
 
     // shooting and agitator
-    boolean autonomous = DriverStation.getInstance().isAutonomous();
 
     if(autonomous) {
-//      Robot.shooter.extendHood();
+      Robot.shooter.extendHood();
     }
 
     boolean shoot = autonomous ?
-        turnController.getAvgError() < 2 : // && targetFound :  // auto aim condition
+        turnController.getAvgError() < 2  && targetFound && Robot.shooter.onTarget() :  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();
@@ -124,14 +123,17 @@ public class AimCommand extends PIDCommand {
       if(agitatorTimer.get() > AGITATOR_DELAY + AGITATOR_DURATION) {
         agitatorTimer.reset();
       } else if(agitatorTimer.get() > AGITATOR_DELAY) {
-        Robot.gearIntake.retract();
-      } else {
         Robot.gearIntake.extend();
+      } else {
+        Robot.gearIntake.retract();
       }
-    } else if(shootingTimer.get() < 0.2){
-      Robot.shooter.setIntake(0, 0);
-      Robot.fuelIntake.stopRoll();
-      agitatorTimer.reset();
+    } else {
+      Robot.gearIntake.retract();
+      if(shootingTimer.get() < 0.2){
+        Robot.shooter.setIntake(0, 0);
+        Robot.fuelIntake.stopRoll();
+        agitatorTimer.reset();
+      }
     }
 
     // Output necessary data to dashboard
