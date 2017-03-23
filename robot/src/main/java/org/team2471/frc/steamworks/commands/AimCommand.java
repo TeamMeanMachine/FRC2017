@@ -9,7 +9,7 @@ import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.lib.motion_profiling.MotionCurve;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
-import org.team2471.frc.steamworks.comm.VisionData;
+import org.team2471.frc.steamworks.subsystems.UPBoard;
 
 public class AimCommand extends PIDCommand {
   private final double AGITATOR_DELAY = 0.5; // time between each agitator interval
@@ -37,6 +37,10 @@ public class AimCommand extends PIDCommand {
     requires(Robot.gearIntake);
     requires(Robot.fuelIntake);
     requires(Robot.shooter);
+    requires(Robot.coProcessor);
+
+    Robot.coProcessor.setState(UPBoard.State.BOILER);
+
     DashboardUtils.putPersistantNumber("Aim Offset", 0);
 
     turnController.setAbsoluteTolerance(2.0);
@@ -67,15 +71,16 @@ public class AimCommand extends PIDCommand {
 
     double angle = returnPIDInput();
     if(SmartDashboard.getBoolean("Auto Aim", false)) {
-      VisionData boilerData = Robot.coProcessor.getBoilerData();
-      if(boilerData.targetPresent()) {
-        angle -= boilerData.getError() * 0.7;
+      if(Robot.coProcessor.isDataPresent()) {
+        double error = Robot.coProcessor.getError().getAsDouble();
+        double distance = Robot.coProcessor.getDistance().getAsDouble();
+        angle -= error * 0.7;
         targetFound = true;
 
         if (Robot.shooter.isHoodUp()){
-          double rpm = curveDistanceToRPM.getValue(boilerData.getDistance());
+          double rpm = curveDistanceToRPM.getValue(distance);
           //double rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
-          System.out.println("Distance: " + boilerData.getDistance() + " RPM: " + rpm);
+          System.out.println("Distance: " + distance + " RPM: " + rpm);
           Robot.shooter.setSetpoint(rpm + SmartDashboard.getNumber("Shooter OffSet", 0.0));
         }
         else {
@@ -171,6 +176,8 @@ public class AimCommand extends PIDCommand {
     } else {
       Robot.fuelIntake.retract();
     }
+
+    Robot.coProcessor.setState(UPBoard.State.IDLE);
   }
 
   @Override

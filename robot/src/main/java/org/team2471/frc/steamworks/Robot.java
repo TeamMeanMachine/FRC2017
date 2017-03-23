@@ -2,14 +2,11 @@ package org.team2471.frc.steamworks;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.*;
 import org.team2471.frc.steamworks.autonomousroutines.*;
 import org.team2471.frc.steamworks.autonomousroutines.FortyKPAAuto;
-import org.team2471.frc.steamworks.comm.CoProcessor;
-import org.team2471.frc.steamworks.comm.VisionData;
 import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.ZeroGyroCommand;
 import org.team2471.frc.steamworks.subsystems.*;
@@ -17,10 +14,12 @@ import org.team2471.frc.steamworks.subsystems.*;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
+import java.util.OptionalDouble;
+
 public class Robot extends IterativeRobot {
   public static final boolean COMPETITION = false;
 
-  public static CoProcessor coProcessor;
+  public static UPBoard coProcessor;
   public static Drive drive;
   public static GearIntake gearIntake;
   public static FuelIntake fuelIntake;
@@ -40,7 +39,7 @@ public class Robot extends IterativeRobot {
     ledController = new LEDController();
     HardwareMap.init();
 
-    coProcessor = new CoProcessor();
+    coProcessor = new UPBoard();
     IOMap.init();
 
     autoChooser = new SendableChooser();
@@ -85,19 +84,14 @@ public class Robot extends IterativeRobot {
 
     SmartDashboard.putNumber("FakeGyro", drive.getAngle());
 
-    VisionData boilerData = coProcessor.getBoilerData();
-    SmartDashboard.putString("Boiler Error", boilerData.targetPresent() ? Double.toString(boilerData.getError()) : "NONE"); // don't use this number for real stuff
-    SmartDashboard.putString("Boiler Distance", boilerData.targetPresent() ? Double.toString(boilerData.getDistance()) : "NONE");
+    OptionalDouble error = coProcessor.getError();
+    OptionalDouble distance = coProcessor.getDistance();
+    SmartDashboard.putString("Boiler Error", error.isPresent() ? Double.toString(error.getAsDouble()) : "NONE"); // don't use this number for real stuff
+    SmartDashboard.putString("Boiler Distance", distance.isPresent() ? Double.toString(distance.getAsDouble()) : "NONE");
     Scheduler.getInstance().run();
 
 //    SmartDashboard.putNumber("Shooter Left Speed", HardwareMap.TwinShooterMap.masterLeft.getSpeed());
 //    SmartDashboard.putNumber("Shooter Right Speed", HardwareMap.TwinShooterMap.masterRight.getSpeed());
-  }
-
-  @Override
-  public void disabledPeriodic() {
-    VisionData boilerData = coProcessor.getBoilerData();
-    SmartDashboard.putString("Boiler", boilerData.targetPresent() ? Double.toString(boilerData.getError()) : "NONE"); // don't use this number for real stuff
   }
 
   @Override
