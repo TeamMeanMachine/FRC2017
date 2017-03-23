@@ -74,7 +74,7 @@ public class AimCommand extends PIDCommand {
         angle -= boilerData.getError() * 0.6;
         targetFound = true;
 
-        if (Robot.shooter.isHoodUp() && boilerData.targetPresent()){
+        if (Robot.shooter.isHoodUp()){
           double rpm = curveDistanceToRPM.getValue(boilerData.getDistance()) + SmartDashboard.getNumber("Shooter OffSet", 0.0);
           System.out.println("Distance: " + boilerData.getDistance() + " RPM: " + rpm);
           Robot.shooter.setSetpoint(rpm);
