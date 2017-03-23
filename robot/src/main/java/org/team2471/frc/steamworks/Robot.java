@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.*;
+import org.team2471.frc.steamworks.autonomouscommands.FortyKPAAuto;
 import org.team2471.frc.steamworks.autonomousroutines.*;
 import org.team2471.frc.steamworks.comm.CoProcessor;
 import org.team2471.frc.steamworks.comm.VisionData;
@@ -44,7 +45,7 @@ public class Robot extends IterativeRobot {
 
     autoChooser = new SendableChooser();
     autoChooser.addObject("Don't Move", new DoNothingAuto());
-    autoChooser.addObject("Hopper", new DriveToHopperAuto());
+    autoChooser.addObject("40 KPA Forward", new DriveToHopperAuto());
     autoChooser.addObject("Drive Eight Feet", new DriveEightFeet());
     autoChooser.addObject("Feeder Lift", new FeederLiftAuto());
     autoChooser.addObject("Boiler Lift", new BoilerLiftAuto());
@@ -53,7 +54,7 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Just Shoot Auto", new AimCommand());
     autoChooser.addObject("Short fuel and gear", new BoilerGearAuto());
     autoChooser.addObject("Gear plus ten fuel", new GearTenAuto());
-    autoChooser.addObject("40 KPA", new FortyKPAAuto());
+    autoChooser.addObject("40 KPA Backwards", new FortyKPAAuto());
 
     SmartDashboard.putData("AutoChooser", autoChooser);
     SmartDashboard.putData(new ZeroGyroCommand());
