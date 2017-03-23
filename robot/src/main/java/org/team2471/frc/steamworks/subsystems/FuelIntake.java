@@ -18,6 +18,7 @@ public class FuelIntake extends Subsystem {
 
   private final Logger logger = new Logger("FuelIntake");
   private final Timer amperageTimer = new Timer();
+  private static boolean overLimit = false;
 
   private CANTalon intakeMotor = HardwareMap.FuelIntakeMap.intakeMotor;
   private CANTalon leftWindshieldMotor = HardwareMap.FuelIntakeMap.leftWindshieldMotor;
@@ -82,11 +83,17 @@ public class FuelIntake extends Subsystem {
     double current = intakeDrawSensor.getCurrent();
     logger.debug("Current: " + current, 1);
     if(current > INTAKE_CURRENT_LIMIT) {
-      amperageTimer.reset();
-      logger.warn("Current limit exceeded!", 1);
+      if (!overLimit) {
+        overLimit = true;
+        amperageTimer.reset();
+        logger.warn("Current limit exceeded!", 1);
+      }
+    }
+    else {
+      overLimit = false;
     }
 
-    boolean stalled = amperageTimer.get() < 0.15;
+    boolean stalled = overLimit && amperageTimer.get() > 1.0;
     intakeMotor.set(stalled ? 0 : 0.8);
   }
 
@@ -100,7 +107,21 @@ public class FuelIntake extends Subsystem {
   }
 
   public void rollOut() {
-    intakeMotor.set(-0.8);
+    double current = intakeDrawSensor.getCurrent();
+    logger.debug("Current: " + current, 1);
+    if(current > INTAKE_CURRENT_LIMIT) {
+      if (!overLimit) {
+        overLimit = true;
+        amperageTimer.reset();
+        logger.warn("Current limit exceeded!", 1);
+      }
+    }
+    else {
+      overLimit = false;
+    }
+
+    boolean stalled = overLimit && amperageTimer.get() > 1.0;
+    intakeMotor.set(stalled ? 0 : -0.8);
   }
 
 
