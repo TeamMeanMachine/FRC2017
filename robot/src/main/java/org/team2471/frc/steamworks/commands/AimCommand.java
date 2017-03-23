@@ -47,8 +47,8 @@ public class AimCommand extends PIDCommand {
     turnController.setToleranceBuffer(30);
 
     curveDistanceToRPM = new MotionCurve();
-    curveDistanceToRPM.storeValue(0.0, 2650.0);
-    curveDistanceToRPM.storeValue(5.5, 2650.0);
+    curveDistanceToRPM.storeValue(0.0, 2640.0);
+    curveDistanceToRPM.storeValue(5.5, 2640.0);
     curveDistanceToRPM.storeValue(8.5, 2910.0);
     curveDistanceToRPM.storeValue(10.25, 3160.0);
     curveDistanceToRPM.storeValue(12.5, 3160.0);
@@ -67,6 +67,8 @@ public class AimCommand extends PIDCommand {
   }
 
   protected void execute() {
+    boolean autonomous = DriverStation.getInstance().isAutonomous();
+
     Robot.fuelIntake.retract();
 
     double angle = returnPIDInput();
@@ -92,10 +94,6 @@ public class AimCommand extends PIDCommand {
         angle += IOMap.aimAxis.get() * 7.5;
         Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
       }
-//      offset += IOMap.turnAxis.get() * (30/50); // 30 degrees per second (50 samples)
-//      angle += offset;
-//      SmartDashboard.putNumber("Aim Offset", offset);
-      // set rpms
 
     } else {
       // manual aim
@@ -105,14 +103,13 @@ public class AimCommand extends PIDCommand {
     turnController.setSetpoint(angle);
 
     // shooting and agitator
-    boolean autonomous = DriverStation.getInstance().isAutonomous();
 
     if(autonomous) {
       Robot.shooter.extendHood();
     }
 
     boolean shoot = autonomous ?
-        turnController.getAvgError() < 2  && targetFound :  // auto aim condition
+        turnController.getAvgError() < 2  && targetFound && Robot.shooter.onTarget() :  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();
