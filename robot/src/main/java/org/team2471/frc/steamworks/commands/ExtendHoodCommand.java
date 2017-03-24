@@ -5,7 +5,7 @@ import org.team2471.frc.steamworks.Robot;
 
 public class ExtendHoodCommand extends InstantCommand {
   @Override
-  protected void initialize() {
+  protected void execute() {
     Robot.shooter.extendHood();
   }
 }

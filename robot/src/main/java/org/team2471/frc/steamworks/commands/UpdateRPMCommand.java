@@ -2,6 +2,7 @@ package org.team2471.frc.steamworks.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team2471.frc.steamworks.Robot;
 
 public class UpdateRPMCommand extends InstantCommand {
   private final double step;
@@ -12,6 +13,11 @@ public class UpdateRPMCommand extends InstantCommand {
 
   @Override
   protected void initialize() {
-    SmartDashboard.putNumber("Shooter Setpoint", SmartDashboard.getNumber("Shooter Setpoint", 6000) + step);
+    if (Robot.shooter.isHoodUp() && Robot.coProcessor.isDataPresent()) {
+      SmartDashboard.putNumber("Shooter Offset", SmartDashboard.getNumber("Shooter Offset", 0) + step);
+    }
+    else {
+      SmartDashboard.putNumber("Shooter Setpoint", SmartDashboard.getNumber("Shooter Setpoint", 2500) + step);
+    }
   }
 }

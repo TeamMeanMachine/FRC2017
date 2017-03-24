@@ -9,6 +9,7 @@ import org.team2471.frc.lib.io.maps.XboxMap;
 import org.team2471.frc.steamworks.commandgroups.ManualClimbCommandGroup;
 import org.team2471.frc.steamworks.commands.*;
 
+@SuppressWarnings("WeakerAccess")
 public class IOMap {
   private static Controller driverController = new Controller(0);
   private static Controller coDriverController = new Controller(1);
@@ -40,6 +41,8 @@ public class IOMap {
   public static final ControllerButton signalCoDriverButton = driverController.getButton(XboxMap.Buttons.RIGHT_THUMBSTICK);
 
 
+  public static final ControllerButton climbIntakeOverrideButton = driverController.getButton(XboxMap.Buttons.BACK);
+
   //Co-Driver controls
   public static final ControllerButton signalDriverButton = coDriverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
 
@@ -48,7 +51,8 @@ public class IOMap {
 
   public static final ControllerButton toggleIntakeButton = coDriverController.getButton(XboxMap.Buttons.B);
   public static final ControllerButton useIntakeButton = coDriverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
-  public static final ControllerButton spitButton = coDriverController.getButton(XboxMap.Axes.LEFT_TRIGGER);
+  public static final ControllerAxis spitAxis = coDriverController.getAxis(XboxMap.Axes.LEFT_TRIGGER);
+  public static final ControllerButton spitButton = () -> spitAxis.get() > 0.2;
   public static final ControllerButton fuelFeedButton = coDriverController.getButton(XboxMap.Buttons.A);
   public static final ControllerButton aimButton = coDriverController.getButton(XboxMap.Buttons.X);
 
@@ -65,10 +69,9 @@ public class IOMap {
       .withDeadband(.2)
       .withInvert()
       .withExponentialScaling(2)
-      .map(value -> value * 0.5); // slow it extend
+      .withLinearScaling(0.6);
 
   public static void init() {
-    // null checks because subsystems may not be initialized when we are testing
     CommandTrigger fuelIntakeTrigger = new CommandTrigger(toggleIntakeButton::get);
     fuelIntakeTrigger.toggleWhenActive(new FuelIntakeCommand());
 
@@ -82,7 +85,7 @@ public class IOMap {
     gearGroundPickupTrigger.whenActive(new ActiveGearGroundIntakeCommand());
 
     CommandTrigger climbTrigger = new CommandTrigger(climbButton::get);
-    climbTrigger.whileActive(new ManualClimbCommandGroup());
+    climbTrigger.toggleWhenActive(new ManualClimbCommandGroup());
 
     CommandTrigger aimTrigger = new CommandTrigger(aimButton::get);
     aimTrigger.toggleWhenActive(new AimCommand());
@@ -100,10 +103,10 @@ public class IOMap {
     retractHoodTrigger.whenActive(new RetractHoodCommand());
 
     CommandTrigger incrementRPMTrigger = new CommandTrigger(shooterDPad::isRight);
-    incrementRPMTrigger.whenActive(new UpdateRPMCommand(50));
+    incrementRPMTrigger.whenActive(new UpdateRPMCommand(10));
 
     CommandTrigger decrementRPMTrigger = new CommandTrigger(shooterDPad::isLeft);
-    decrementRPMTrigger.whenActive(new UpdateRPMCommand(-50));
+    decrementRPMTrigger.whenActive(new UpdateRPMCommand(-10));
   }
 
   public static Controller getDriverController() {

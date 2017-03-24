@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.steamworks.HardwareMap;
+import org.team2471.frc.steamworks.Robot;
 
 public class Shooter extends Subsystem {
   private final CANTalon rightMasterMotor = HardwareMap.TwinShooterMap.masterRight;
@@ -23,49 +24,54 @@ public class Shooter extends Subsystem {
   public Shooter() {
     DashboardUtils.putPersistantNumber("Shooter P", 0.05);
     DashboardUtils.putPersistantNumber("Shooter I", 0);
-    DashboardUtils.putPersistantNumber("Shooter D", 1.0);
-    DashboardUtils.putPersistantNumber("Shooter Left F", 0.07);
-    DashboardUtils.putPersistantNumber("Shooter Right F", 0.07);
-    DashboardUtils.putPersistantNumber("Shooter Setpoint", 6000);
+    DashboardUtils.putPersistantNumber("Shooter D", 0.1);
+    DashboardUtils.putPersistantNumber("Shooter Left F", 0.072);
+    DashboardUtils.putPersistantNumber("Shooter Right F", 0.072);
+    DashboardUtils.putPersistantNumber("Shooter Setpoint", 2420);
+    DashboardUtils.putPersistantNumber("Shooter Offset", 0.0);
 
-    rightMasterMotor.configEncoderCodesPerRev(205);
+    final int codesPerRev = (int) (250 * 1.8); // encoder ticks * gear ratio
+
+    rightMasterMotor.configEncoderCodesPerRev(codesPerRev);
     rightMasterMotor.changeControlMode(TalonControlMode.Speed);
     rightMasterMotor.setProfile(0);
-//    rightMasterMotor.reverseSensor(true);
-    rightMasterMotor.reverseSensor(false);
     rightMasterMotor.enableBrakeMode(false);
+    rightMasterMotor.setInverted(true);
+    rightMasterMotor.reverseOutput(false);
     rightSlaveMotor.changeControlMode(TalonControlMode.Follower);
     rightSlaveMotor.set((double)this.rightMasterMotor.getDeviceID());
     rightSlaveMotor.reverseOutput(false);
     rightSlaveMotor.enableBrakeMode(false);
 
-    // set ramp rates
-    leftMasterMotor.setVoltageRampRate(64);
-    leftSlaveMotor.setVoltageRampRate(64);
-    rightMasterMotor.setVoltageRampRate(64);
-    rightSlaveMotor.setVoltageRampRate(64);
-
-
-    leftMasterMotor.configEncoderCodesPerRev(205);
+    //leftMasterMotor.configEncoderCodesPerRev(205);
+    leftMasterMotor.configEncoderCodesPerRev(codesPerRev);
     leftMasterMotor.changeControlMode(TalonControlMode.Speed);
     leftMasterMotor.setProfile(0);
-//    leftMasterMotor.reverseSensor(true);
-    leftMasterMotor.reverseSensor(false);
     leftMasterMotor.enableBrakeMode(false);
-    leftSlaveMotor.changeControlMode(TalonControlMode.Follower);
-    leftSlaveMotor.set(this.leftMasterMotor.getDeviceID());
-
     leftMasterMotor.setInverted(false);
     leftMasterMotor.reverseOutput(false);
-
+    leftSlaveMotor.changeControlMode(TalonControlMode.Follower);
+    leftSlaveMotor.set(this.leftMasterMotor.getDeviceID());
     leftSlaveMotor.reverseOutput(false);
     leftSlaveMotor.enableBrakeMode(false);
 
-    rightMasterMotor.setInverted(true);
-    rightMasterMotor.reverseOutput(false);
+    // set ramp rates
+    leftMasterMotor.setVoltageRampRate(32);
+    leftSlaveMotor.setVoltageRampRate(32);
+    rightMasterMotor.setVoltageRampRate(32);
+    rightSlaveMotor.setVoltageRampRate(32);
 
     cycloneMotor.setInverted(false);
     elevatorMotor.setInverted(true);
+
+    if (Robot.COMPETITION) {
+      leftMasterMotor.reverseSensor(false);
+      rightMasterMotor.reverseSensor(false);
+    }
+    else {
+      leftMasterMotor.reverseSensor(true);  // the weird one
+      rightMasterMotor.reverseSensor(false);
+    }
   }
 
   public void setPID(double p, double i, double d, double leftF, double rightF) {
@@ -127,6 +133,10 @@ public class Shooter extends Subsystem {
     return this.rightMasterMotor.getSpeed();
   }
 
+  public boolean onTarget() {
+    return rightMasterMotor.getError()<500 && leftMasterMotor.getError()<500;
+  }
+
   public void reset() {
     rightMasterMotor.set(0.0);
     leftMasterMotor.set(0.0);
@@ -139,11 +149,17 @@ public class Shooter extends Subsystem {
   }
 
   public void extendHood() {
+    System.out.println("Extend");
     hoodSolenoid.set(true);
   }
 
   public void retractHood() {
+    System.out.println("Retract");
     hoodSolenoid.set(false);
+  }
+
+  public boolean isHoodUp(){
+    return hoodSolenoid.get();
   }
 
   protected void initDefaultCommand() {
