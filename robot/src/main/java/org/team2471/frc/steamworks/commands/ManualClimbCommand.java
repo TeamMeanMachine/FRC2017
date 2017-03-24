@@ -68,14 +68,18 @@ public class ManualClimbCommand extends PlayAnimationCommand {
     double distance = Math.abs(Robot.drive.getDistance() - startDistance);
     if (automaticIntake) {
       if (distance > 18) {
-        Robot.fuelIntake.extend();
+        Robot.gearIntake.extend();
       } else {
-        Robot.fuelIntake.retract();
+        Robot.gearIntake.retract();
       }
     }
 
     if (climbIntakeOverrideButton.get() && !intakePressed) {
-      Robot.fuelIntake.toggle();
+      if(Robot.gearIntake.isExtended()) {
+        Robot.gearIntake.retract();
+      } else {
+        Robot.gearIntake.extend();
+      }
       automaticIntake = false;
       intakePressed = true;
     } else if(!climbIntakeOverrideButton.get()) {

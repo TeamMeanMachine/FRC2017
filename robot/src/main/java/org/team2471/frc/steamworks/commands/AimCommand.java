@@ -69,8 +69,6 @@ public class AimCommand extends PIDCommand {
   protected void execute() {
     boolean autonomous = DriverStation.getInstance().isAutonomous();
 
-    Robot.fuelIntake.retract();
-
     double angle = returnPIDInput();
     if(SmartDashboard.getBoolean("Auto Aim", false)) {
       if(Robot.coProcessor.isDataPresent()) {
@@ -166,12 +164,6 @@ public class AimCommand extends PIDCommand {
     agitatorTimer.stop();
     turnController.disable();
     Robot.shooter.reset();
-
-    if(wasExtended) {
-      Robot.fuelIntake.extend();
-    } else {
-      Robot.fuelIntake.retract();
-    }
 
     Robot.coProcessor.setState(UPBoard.State.IDLE);
   }

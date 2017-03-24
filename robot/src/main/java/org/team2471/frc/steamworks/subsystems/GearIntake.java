@@ -23,6 +23,10 @@ public class GearIntake extends Subsystem{
     gearSolenoid.set(false);
   }
 
+  public boolean isExtended() {
+    return gearSolenoid.get();
+  }
+
   /**Runs the wheely motor in.**/
   public void rollIn() {
     wheelMotor.set(.5);

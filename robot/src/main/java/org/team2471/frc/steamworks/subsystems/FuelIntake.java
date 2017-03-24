@@ -21,7 +21,6 @@ public class FuelIntake extends Subsystem {
   private static boolean overLimit = false;
 
   private CANTalon intakeMotor = HardwareMap.FuelIntakeMap.intakeMotor;
-  private Solenoid intakeSolenoid = HardwareMap.FuelIntakeMap.intakeSolenoid;
   private PDPDrawSensor intakeDrawSensor = HardwareMap.FuelIntakeMap.intakeMotorDrawSensor;
 
 
@@ -33,33 +32,10 @@ public class FuelIntake extends Subsystem {
     LiveWindow.addActuator("FuelIntake", "Intake Motor", intakeMotor);
     LiveWindow.addActuator("FuelIntake", "Left Windshield Motor", intakeMotor);
     LiveWindow.addActuator("FuelIntake", "Right Windshield Motor", intakeMotor);
-    LiveWindow.addActuator("FuelIntake", "Solenoid", intakeSolenoid);
   }
 
   public double getCurrent() {
     return intakeDrawSensor.getCurrent();
-  }
-
-  public boolean isExtended() {
-    return intakeSolenoid.get();
-  }
-
-  /**
-   * Push intake out
-   **/
-  public void extend() {
-    intakeSolenoid.set(true);
-  }
-
-  /**
-   * Pull intake in
-   **/
-  public void retract() {
-    intakeSolenoid.set(false);
-  }
-
-  public void toggle(){
-    intakeSolenoid.set(!intakeSolenoid.get());
   }
 
   /**
