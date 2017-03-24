@@ -2,34 +2,34 @@ package org.team2471.frc.steamworks.commands;
 
 import org.team2471.frc.steamworks.Robot;
 
-
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ActiveGearGroundIntakeCommand extends Command{
+public class PlaceGearCommand extends Command{
 
-  public ActiveGearGroundIntakeCommand() {
-    requires(Robot.gearIntake);
-    return;
-  }
-
+  private Timer activeGearTimer = new Timer();
   @Override
   protected void initialize() {
-
+    activeGearTimer.start();
   }
 
   @Override
   protected void execute() {
     Robot.gearIntake.extend();
-    Robot.gearIntake.rollIn();
+    if(activeGearTimer.get() > .25) {
+      Robot.gearIntake.rollOut();
+      activeGearTimer.reset();
+    }
   }
 
   @Override
   protected boolean isFinished() {
-    return Robot.gearIntake.hasGear();
+    return isTimedOut();
   }
 
   @Override
   protected void end() {
+    activeGearTimer.stop();
     Robot.gearIntake.retract();
     Robot.gearIntake.rollStop();
   }

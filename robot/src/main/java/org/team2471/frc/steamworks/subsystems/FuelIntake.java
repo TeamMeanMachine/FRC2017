@@ -21,8 +21,6 @@ public class FuelIntake extends Subsystem {
   private static boolean overLimit = false;
 
   private CANTalon intakeMotor = HardwareMap.FuelIntakeMap.intakeMotor;
-  private CANTalon leftWindshieldMotor = HardwareMap.FuelIntakeMap.leftWindshieldMotor;
-  private CANTalon rightWindshieldMotor = HardwareMap.FuelIntakeMap.rightWindshieldMotor;
   private Solenoid intakeSolenoid = HardwareMap.FuelIntakeMap.intakeSolenoid;
   private PDPDrawSensor intakeDrawSensor = HardwareMap.FuelIntakeMap.intakeMotorDrawSensor;
 
@@ -30,8 +28,6 @@ public class FuelIntake extends Subsystem {
   public FuelIntake() {
     intakeMotor.enableBrakeMode(false);
     intakeMotor.setInverted(true);
-    leftWindshieldMotor.setInverted(false);
-    rightWindshieldMotor.setInverted(true);
 
     amperageTimer.start();
     LiveWindow.addActuator("FuelIntake", "Intake Motor", intakeMotor);
@@ -67,16 +63,6 @@ public class FuelIntake extends Subsystem {
   }
 
   /**
-   * Run teh poly cords in
-   * -> <-
-   **/
-  public void windshieldsIn() {
-    leftWindshieldMotor.set(0.8);
-    rightWindshieldMotor.set(0.8);
-  }
-
-
-  /**
    * Run intake motors in
    **/
   public void rollIn() {
@@ -95,11 +81,6 @@ public class FuelIntake extends Subsystem {
 
     boolean stalled = overLimit && amperageTimer.get() > 1.0;
     intakeMotor.set(stalled ? 0 : 0.8);
-  }
-
-  public void windShieldsStop() {
-    leftWindshieldMotor.set(0);
-    rightWindshieldMotor.set(0);
   }
 
   public void stopRoll() {

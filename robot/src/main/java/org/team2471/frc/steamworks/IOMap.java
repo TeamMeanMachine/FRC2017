@@ -32,8 +32,8 @@ public class IOMap {
   public static final ControllerAxis reverseAnimationAxis = driverController.getAxis(XboxMap.Axes.RIGHT_TRIGGER)
       .withExponentialScaling(2);
 
-  public static final ControllerButton gearGroundPickupButton = driverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
-  public static final ControllerButton gearPegButton = driverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
+  public static final ControllerButton pickupGearButton = driverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
+  public static final ControllerButton placeGearButton = driverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
 
   public static final ControllerButton climbButton = driverController.getButton(XboxMap.Buttons.Y);
 
@@ -78,11 +78,11 @@ public class IOMap {
 
     CommandTrigger feedFuelTrigger = new CommandTrigger(fuelFeedButton::get);
 
-    CommandTrigger gearPegTrigger = new CommandTrigger(gearPegButton::get);
-    gearPegTrigger.whileActive(new ActiveGearPegCommand());
+    CommandTrigger pickupGearTrigger = new CommandTrigger(pickupGearButton::get);
+    pickupGearTrigger.whileActive(new PickupGearCommand());
 
-    CommandTrigger gearGroundPickupTrigger = new CommandTrigger(gearGroundPickupButton::get);
-    gearGroundPickupTrigger.whenActive(new ActiveGearGroundIntakeCommand());
+    CommandTrigger placeGearTrigger = new CommandTrigger(placeGearButton::get);
+    placeGearTrigger.whileActive(new PlaceGearCommand());
 
     CommandTrigger climbTrigger = new CommandTrigger(climbButton::get);
     climbTrigger.toggleWhenActive(new ManualClimbCommandGroup());
@@ -96,8 +96,8 @@ public class IOMap {
     CommandTrigger signalCoDriverTrigger = new CommandTrigger(signalCoDriverButton::get);
     signalCoDriverTrigger.whileActive(new RumbleCommand(coDriverController, 1, RumbleCommand.StickSide.LEFT));
 
-    CommandTrigger extendHoodTrgger = new CommandTrigger(shooterDPad::isUp);
-    extendHoodTrgger.whenActive(new ExtendHoodCommand());
+    CommandTrigger extendHoodTrigger = new CommandTrigger(shooterDPad::isUp);
+    extendHoodTrigger.whenActive(new ExtendHoodCommand());
 
     CommandTrigger retractHoodTrigger = new CommandTrigger(shooterDPad::isDown);
     retractHoodTrigger.whenActive(new RetractHoodCommand());
