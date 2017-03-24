@@ -30,7 +30,7 @@ public class Shooter extends Subsystem {
     DashboardUtils.putPersistantNumber("Shooter Right F", 0.072);
     DashboardUtils.putPersistantNumber("Shooter Setpoint", 2420);
     DashboardUtils.putPersistantNumber("Shooter Offset", 0.0);
-    
+
     DashboardUtils.putPersistantNumber("Dist1", 5.5);
     DashboardUtils.putPersistantNumber("Dist2", 8.25);
     DashboardUtils.putPersistantNumber("Dist3", 10.25);

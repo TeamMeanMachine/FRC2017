@@ -75,22 +75,21 @@ public class AimCommand extends PIDCommand {
     double angle = returnPIDInput();
     if (SmartDashboard.getBoolean("Auto Aim", false)) {
 
-        if (Robot.shooter.isHoodUp()){
+      if(Robot.coProcessor.isDataPresent()) {
+        double error = Robot.coProcessor.getError().getAsDouble();
+        double distance = Robot.coProcessor.getDistance().getAsDouble();
+        angle -= error * 0.7;
+        targetFound = true;
+
+        if (Robot.shooter.isHoodUp()) {
           double rpm = curveDistanceToRPM.getValue(distance);
-          //double rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
           System.out.println("Distance: " + distance + " RPM: " + rpm);
           Robot.shooter.setSetpoint(rpm + SmartDashboard.getNumber("Shooter OffSet", 0.0));
-        }
-        else {
+        } else {
           angle += IOMap.aimAxis.get() * 7.5;
           Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
         }
       }
-      else {
-        angle += IOMap.aimAxis.get() * 7.5;
-        Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
-      }
-
     } else {
       // manual aim
       angle += IOMap.aimAxis.get() * 7.5;
