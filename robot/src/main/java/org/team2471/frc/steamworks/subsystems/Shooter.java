@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.Robot;
+import org.team2471.frc.steamworks.commands.RPMPresetCommand;
 
 public class Shooter extends Subsystem {
   private final CANTalon rightMasterMotor = HardwareMap.TwinShooterMap.masterRight;
@@ -29,6 +30,26 @@ public class Shooter extends Subsystem {
     DashboardUtils.putPersistantNumber("Shooter Right F", 0.072);
     DashboardUtils.putPersistantNumber("Shooter Setpoint", 2420);
     DashboardUtils.putPersistantNumber("Shooter Offset", 0.0);
+    
+    DashboardUtils.putPersistantNumber("Dist1", 5.5);
+    DashboardUtils.putPersistantNumber("Dist2", 8.25);
+    DashboardUtils.putPersistantNumber("Dist3", 10.25);
+    DashboardUtils.putPersistantNumber("Dist4", 13.5);
+
+    DashboardUtils.putPersistantNumber("RPM0", 2420);
+    DashboardUtils.putPersistantNumber("RPM1", 2640);
+    DashboardUtils.putPersistantNumber("RPM2", 2910);
+    DashboardUtils.putPersistantNumber("RPM3", 3160);
+    DashboardUtils.putPersistantNumber("RPM4", 4160);
+
+    DashboardUtils.putPersistantNumber("BoilerMaxFeed", 0.75);
+
+    SmartDashboard.putData("Boiler", new RPMPresetCommand(0));
+    SmartDashboard.putData("Hopper", new RPMPresetCommand(1));
+    SmartDashboard.putData("1 Bot Back", new RPMPresetCommand(2));
+    SmartDashboard.putData("Peg", new RPMPresetCommand(3));
+    SmartDashboard.putData("Loading Station", new RPMPresetCommand(4));
+
 
     final int codesPerRev = (int) (250 * 1.8); // encoder ticks * gear ratio
 
