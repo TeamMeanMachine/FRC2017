@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.*;
-import org.team2471.frc.steamworks.autonomouscommands.FortyKPAAuto;
 import org.team2471.frc.steamworks.autonomousroutines.*;
 import org.team2471.frc.steamworks.autonomousroutines.FortyKPAAuto;
 import org.team2471.frc.steamworks.commands.AimCommand;
@@ -24,7 +23,7 @@ public class Robot extends IterativeRobot {
   public static Drive drive;
   public static FuelIntake fuelIntake;
   public static Shooter shooter;
-  public static ActiveGearIntake activeGearIntake;
+  public static GearIntake gearIntake;
   public static LEDController ledController;
 
   public static SendableChooser autoChooser;
@@ -36,6 +35,7 @@ public class Robot extends IterativeRobot {
     shooter = new Shooter();
     drive = new Drive();
     fuelIntake = new FuelIntake();
+    gearIntake = new GearIntake();
     ledController = new LEDController();
     HardwareMap.init();
 

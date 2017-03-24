@@ -48,10 +48,10 @@ public class HardwareMap {
   }
 
 
-  public static final class ActiveGearIntakeMap {
+  public static final class GearIntakeMap {
     public static final Solenoid gearSolenoid = new Solenoid(1);
-    public static final CANTalon wheelMotor = new CANTalon(9); //or 8. Whichever is most convenient
-    public static final AnalogInput gearSensor = new AnalogInput(10000000);
+    public static final CANTalon wheelMotor = new CANTalon(9);
+    public static final AnalogInput gearSensor = new AnalogInput(0);
   }
 
   public static void init() {

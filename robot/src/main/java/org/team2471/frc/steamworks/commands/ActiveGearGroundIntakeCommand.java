@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ActiveGearGroundIntakeCommand extends Command{
 
   public ActiveGearGroundIntakeCommand() {
-    requires(Robot.activeGearIntake);
+    requires(Robot.gearIntake);
     return;
   }
 
@@ -19,18 +19,18 @@ public class ActiveGearGroundIntakeCommand extends Command{
 
   @Override
   protected void execute() {
-    Robot.activeGearIntake.extend();
-    Robot.activeGearIntake.rollIn();
+    Robot.gearIntake.extend();
+    Robot.gearIntake.rollIn();
   }
 
   @Override
   protected boolean isFinished() {
-    return Robot.activeGearIntake.hasGear();
+    return Robot.gearIntake.hasGear();
   }
 
   @Override
   protected void end() {
-    Robot.activeGearIntake.retract();
-    Robot.activeGearIntake.rollStop();
+    Robot.gearIntake.retract();
+    Robot.gearIntake.rollStop();
   }
 }

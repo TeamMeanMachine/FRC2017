@@ -8,13 +8,10 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class ActiveGearIntake extends Subsystem{
-  private final Solenoid gearSolenoid = HardwareMap.ActiveGearIntakeMap.gearSolenoid;
-  private final CANTalon wheelMotor = HardwareMap.ActiveGearIntakeMap.wheelMotor;
-  private final AnalogInput gearSensor = HardwareMap.ActiveGearIntakeMap.gearSensor;
-
-  public ActiveGearIntake() {
-  }
+public class GearIntake extends Subsystem{
+  private final Solenoid gearSolenoid = HardwareMap.GearIntakeMap.gearSolenoid;
+  private final CANTalon wheelMotor = HardwareMap.GearIntakeMap.wheelMotor;
+  private final AnalogInput gearSensor = HardwareMap.GearIntakeMap.gearSensor;
 
   /**Tilts the gear intake extend.**/
   public void extend() {
@@ -43,7 +40,8 @@ public class ActiveGearIntake extends Subsystem{
 
   /**Gear sensor thingymabobber**/
   public boolean hasGear() {
-    return gearSensor.getValue() < 123456789;
+//    return gearSensor.getValue() < 123456789; // TODO: Find value
+    return false;
   }
   @Override
   protected void initDefaultCommand() {

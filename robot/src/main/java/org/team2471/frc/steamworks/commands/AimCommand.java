@@ -166,7 +166,6 @@ public class AimCommand extends PIDCommand {
     agitatorTimer.stop();
     turnController.disable();
     Robot.shooter.reset();
-    Robot.gearIntake.retract();
 
     if(wasExtended) {
       Robot.fuelIntake.extend();

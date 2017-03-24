@@ -15,9 +15,9 @@ public class ActiveGearPegCommand extends Command{
 
   @Override
   protected void execute() {
-    Robot.activeGearIntake.extend();
+    Robot.gearIntake.extend();
     if(activeGearTimer.get() > .25) {
-      Robot.activeGearIntake.rollOut();
+      Robot.gearIntake.rollOut();
       activeGearTimer.reset();
     }
   }
@@ -30,7 +30,7 @@ public class ActiveGearPegCommand extends Command{
   @Override
   protected void end() {
     activeGearTimer.stop();
-    Robot.activeGearIntake.retract();
-    Robot.activeGearIntake.rollStop();
+    Robot.gearIntake.retract();
+    Robot.gearIntake.rollStop();
   }
 }
