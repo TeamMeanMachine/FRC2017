@@ -50,7 +50,7 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Boiler Lift", new BoilerLiftAuto());
     autoChooser.addObject("Middle lift", new DriveToMiddleLift());
     autoChooser.addObject("One Hundred point Auto", new OneHundredPointAuto());
-    autoChooser.addObject("Just Shoot Auto", new AimCommand());
+    autoChooser.addObject("Just Shoot Auto", new AimCommand(0));
     autoChooser.addObject("Short fuel and gear", new BoilerGearAuto());
     autoChooser.addObject("Gear plus ten fuel", new GearTenAuto());
     autoChooser.addObject("40 KPA Backwards", new FortyKPAAuto());

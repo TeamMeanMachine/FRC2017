@@ -22,6 +22,7 @@ public class AimCommand extends PIDCommand {
 
   private boolean wasExtended;
   private double offset;
+  private double gyroAngle;
 
   private boolean targetFound;
 
@@ -31,13 +32,15 @@ public class AimCommand extends PIDCommand {
 
   private MotionCurve curveDistanceToRPM;
 
-  public AimCommand() {
+  public AimCommand(double gyroAngle) {
     super(0.07, 0, 0.1);
     requires(Robot.drive);
     requires(Robot.gearIntake);
     requires(Robot.fuelIntake);
     requires(Robot.shooter);
     requires(Robot.coProcessor);
+
+    this.gyroAngle = gyroAngle;
 
     Robot.coProcessor.setState(UPBoard.State.BOILER);
 
@@ -87,6 +90,9 @@ public class AimCommand extends PIDCommand {
           angle += IOMap.aimAxis.get() * 7.5;
           Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
         }
+      }
+      else if (autonomous) { // auto Aim is on, but camera is not present - use gyro
+        //angle += gyroAngle - Robot.shooter.gyro.getAngle();  // todo: add a gyro
       }
     } else {
       // manual aim

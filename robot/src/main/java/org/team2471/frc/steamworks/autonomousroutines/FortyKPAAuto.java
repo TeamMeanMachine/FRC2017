@@ -18,13 +18,13 @@ public class FortyKPAAuto extends CommandGroup {
       addSequential(new FortyKPA(1.0, true));
       addSequential(new ForwardForFortyKPA(1.0, true));
       addSequential(new ExtendHoodCommand());
-      addSequential(new AimCommand());
+      addSequential(new AimCommand(0));
     }
     if (alliance == alliance.Blue) {
       addSequential(new FortyKPA(1.0, false));
       addSequential(new ForwardForFortyKPA(1.0, false));
       addSequential(new ExtendHoodCommand());
-      addSequential(new AimCommand());
+      addSequential(new AimCommand(0));
     }
   }
 }

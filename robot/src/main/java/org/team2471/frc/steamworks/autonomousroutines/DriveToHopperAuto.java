@@ -18,7 +18,7 @@ public class DriveToHopperAuto extends CommandGroup {
     addSequential(new DriveToHopperAutoBlue(1.0, mirrored));
     addSequential(new WaitCommand(2));
     addSequential(new FaceBoilerFromHopper(1.0, mirrored));
-    addSequential(new AimCommand());
+    addSequential(new AimCommand(0));
     addSequential(new RetractHoodCommand());
   }
 }
