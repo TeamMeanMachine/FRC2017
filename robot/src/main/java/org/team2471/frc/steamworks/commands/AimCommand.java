@@ -148,6 +148,15 @@ public class AimCommand extends PIDCommand {
         SmartDashboard.getNumber("Shooter I", 0.0D), SmartDashboard.getNumber("Shooter D", 0.0D),
         SmartDashboard.getNumber("Shooter Left F", 0.0D), SmartDashboard.getNumber("Shooter Right F", 0));
     SmartDashboard.putNumber("Aim Error", turnController.getError());
+
+    // rumble and on target calculation
+    boolean onTarget = Math.abs(Robot.shooter.getLeftError())<300.0 &&
+            Math.abs(Robot.shooter.getRightError())<300.0 &&
+            turnController.onTarget();
+    SmartDashboard.putBoolean("Shooter On Target", onTarget);
+    float rumbleValue = onTarget ? 0.5f : 0.0f;
+    IOMap.getGunnerController().rumbleLeft(rumbleValue);
+    IOMap.getGunnerController().rumbleRight(rumbleValue);
   }
 
   protected boolean isFinished() {
