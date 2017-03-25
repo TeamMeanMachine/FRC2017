@@ -63,6 +63,7 @@ public class FuelIntake extends Subsystem {
   public void stopRoll() {
     intakeMotor.set(0);
   }
+
   public void extendFlap() {
     flapSolenoid1.set(true);
     flapSolenoid2.set(true);

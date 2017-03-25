@@ -12,11 +12,8 @@ import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.subsystems.UPBoard;
 
 public class AimCommand extends PIDCommand {
-  private final double AGITATOR_DELAY = 0.5; // time between each agitator interval
-  private final double AGITATOR_DURATION = 1.5; // time to extend gear intake while agitation active
   private final double AUTO_SHOOT_DELAY = 0.5;
 
-  private final Timer agitatorTimer = new Timer();
   private final Timer shootingTimer = new Timer();
   private final PIDController turnController = getPIDController();
 
@@ -49,7 +46,6 @@ public class AimCommand extends PIDCommand {
 
   protected void initialize() {
     Robot.shooter.enable();
-    agitatorTimer.start();
     shootingTimer.start();
 
     startTime = Timer.getFPGATimestamp();
@@ -95,8 +91,6 @@ public class AimCommand extends PIDCommand {
     }
     turnController.setSetpoint(angle);
 
-    // shooting and agitator
-
     if(autonomous) {
       Robot.shooter.extendHood();
     }
@@ -119,19 +113,11 @@ public class AimCommand extends PIDCommand {
       Robot.shooter.setIntake(speed * 0.8, speed);
       Robot.fuelIntake.rollIn();
 
-      if(agitatorTimer.get() > AGITATOR_DELAY + AGITATOR_DURATION) {
-        agitatorTimer.reset();
-      } else if(agitatorTimer.get() > AGITATOR_DELAY) {
-        Robot.gearIntake.extend();
-      } else {
-        Robot.gearIntake.retract();
-      }
     } else {
       Robot.gearIntake.retract();
       if(shootingTimer.get() < 0.2){
         Robot.shooter.setIntake(0, 0);
         Robot.fuelIntake.stopRoll();
-        agitatorTimer.reset();
       }
     }
 
@@ -156,7 +142,6 @@ public class AimCommand extends PIDCommand {
 
   protected void end() {
     Robot.shooter.disable();
-    agitatorTimer.stop();
     turnController.disable();
     Robot.shooter.reset();
 
