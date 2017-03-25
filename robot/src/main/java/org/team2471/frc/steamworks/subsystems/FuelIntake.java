@@ -22,7 +22,8 @@ public class FuelIntake extends Subsystem {
 
   private CANTalon intakeMotor = HardwareMap.FuelIntakeMap.intakeMotor;
   private PDPDrawSensor intakeDrawSensor = HardwareMap.FuelIntakeMap.intakeMotorDrawSensor;
-
+  private Solenoid flapSolenoid1 = HardwareMap.FuelIntakeMap.flapSolenoid1;
+  private Solenoid flapSolenoid2 = HardwareMap.FuelIntakeMap.flapSolenoid2;
 
   public FuelIntake() {
     intakeMotor.enableBrakeMode(false);
@@ -61,6 +62,15 @@ public class FuelIntake extends Subsystem {
 
   public void stopRoll() {
     intakeMotor.set(0);
+  }
+  public void extendFlap() {
+    flapSolenoid1.set(true);
+    flapSolenoid2.set(true);
+  }
+
+  public void retractFlap(){
+    flapSolenoid1.set(false);
+    flapSolenoid2.set(false);
   }
 
   public void rollOut() {

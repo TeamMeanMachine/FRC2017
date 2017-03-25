@@ -21,6 +21,7 @@ public class Shooter extends Subsystem {
   private final CANTalon elevatorMotor = HardwareMap.TwinShooterMap.ballFeeder;
 
   private final Solenoid hoodSolenoid = HardwareMap.TwinShooterMap.hoodSolenoid;
+  private int RPMPreset = -1;
 
   public Shooter() {
     DashboardUtils.putPersistantNumber("Shooter P", 0.05);
@@ -184,6 +185,14 @@ public class Shooter extends Subsystem {
   }
 
   protected void initDefaultCommand() {
+  }
+
+  public int getRPMPreset() {
+    return RPMPreset;
+  }
+
+  public void setRPMPreset(int RPMPreset) {
+    this.RPMPreset = RPMPreset;
   }
 }
 
