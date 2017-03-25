@@ -47,7 +47,7 @@ public class HardwareMap {
 
   public static final class GearIntakeMap {
     public static final Solenoid gearSolenoid = new Solenoid(1);
-    public static final CANTalon wheelMotor = new CANTalon(9);
+    public static final CANTalon wheelMotor = new CANTalon(8);
     public static final AnalogInput gearSensor = new AnalogInput(0);
   }
 

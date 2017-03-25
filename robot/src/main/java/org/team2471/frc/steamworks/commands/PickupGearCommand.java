@@ -9,7 +9,6 @@ public class PickupGearCommand extends Command{
 
   public PickupGearCommand() {
     requires(Robot.gearIntake);
-    return;
   }
 
   @Override

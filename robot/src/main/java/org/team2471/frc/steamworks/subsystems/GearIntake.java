@@ -29,12 +29,12 @@ public class GearIntake extends Subsystem{
 
   /**Runs the wheely motor in.**/
   public void rollIn() {
-    wheelMotor.set(.5);
+    wheelMotor.set(1);
   }
 
   /**Runs the wheely motor out.**/
   public void rollOut() {
-    wheelMotor.set(-.5);
+    wheelMotor.set(-1);
   }
 
   /**Stops wheely motors.**/
