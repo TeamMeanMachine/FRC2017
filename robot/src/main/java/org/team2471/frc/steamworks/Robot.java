@@ -14,6 +14,7 @@ import org.team2471.frc.steamworks.subsystems.*;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import org.team2471.frc.util.net.ClockServer;
 
 import java.util.OptionalDouble;
 
@@ -61,8 +62,8 @@ public class Robot extends IterativeRobot {
 
     SmartDashboard.putData("AutoChooser", autoChooser);
     SmartDashboard.putData(new ZeroGyroCommand());
-
     drive.disableClimbing();
+    ClockServer.spawnClockServer(5802);
   }
 
     @Override
