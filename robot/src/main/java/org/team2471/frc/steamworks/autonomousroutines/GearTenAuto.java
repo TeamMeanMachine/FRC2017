@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 import org.team2471.frc.steamworks.autonomouscommands.BoilerLiftInner;
 import org.team2471.frc.steamworks.autonomouscommands.FaceBoilerFromBoilerLift;
 import org.team2471.frc.steamworks.commands.ExtendHoodCommand;
+import org.team2471.frc.steamworks.commands.PlaceGearCommand;
 import org.team2471.frc.steamworks.commands.RetractHoodCommand;
 import org.team2471.frc.util.DelayedCommand;
 
@@ -24,6 +25,7 @@ public class GearTenAuto extends CommandGroup {
 
     addSequential(new ExtendHoodCommand());
     addSequential(new BoilerLiftInner(1.0, mirrored));
+    addSequential(new PlaceGearCommand());
    // addParallel(new TiltGearIntakeCommand(), 5);
     addSequential(new WaitCommand(2.7));
     addSequential(new FaceBoilerFromBoilerLift(1.0, mirrored));
