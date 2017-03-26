@@ -38,8 +38,8 @@ public class CircularDataFilter {
     return sum / currentSize;
   }
 
-  public double getValueAt(int index) {  // 0 is current position, 2 is two samples ago
-    int pos = currentPos - index;
+  public double getValueAt(int samplesBack) {  // 0 is current position, 2 is two samples ago
+    int pos = currentPos - samplesBack;
     if (pos>=currentSize) {
       pos = currentSize - 1;
     }
@@ -50,5 +50,19 @@ public class CircularDataFilter {
     else  {
       return values.get( capacity + pos );  // pos represents how far from end to sample
     }
+  }
+
+  public double getValueAt(double samplesBack) {  // supports partial samples and lerps them
+    if (samplesBack == (double)(int)samplesBack) {
+      return getValueAt((int) samplesBack);
+    }
+
+    double sample1 = Math.floor(samplesBack);
+    double sample2 = Math.ceil(samplesBack);
+    double value1 = getValueAt(sample1);
+    double value2 = getValueAt(sample2);
+    double alpha = samplesBack - sample2;  // how far from sample 2
+
+    return (alpha) * value1 + (1.0-alpha) * value2;
   }
 }
