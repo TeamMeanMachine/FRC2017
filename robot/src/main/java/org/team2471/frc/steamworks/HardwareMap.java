@@ -41,8 +41,7 @@ public class HardwareMap {
 
   public static final class FuelIntakeMap {
     public static final CANTalon intakeMotor = new CANTalon(3);
-    public static final Solenoid flapSolenoid1 = new Solenoid(3);
-    public static final Solenoid flapSolenoid2 = new Solenoid(2);
+    public static final Solenoid flapSolenoid = new Solenoid(3);
     public static final PDPDrawSensor intakeMotorDrawSensor = () -> pdp.getCurrent(3);
   }
 

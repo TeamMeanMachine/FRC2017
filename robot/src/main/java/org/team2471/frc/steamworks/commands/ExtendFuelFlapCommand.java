@@ -5,9 +5,13 @@ import org.team2471.frc.steamworks.Robot;
 
 public class ExtendFuelFlapCommand extends Command {
 
+  public ExtendFuelFlapCommand() {
+    requires(Robot.flap);
+  }
+
   @Override
   protected void execute() {
-    Robot.fuelIntake.extendFlap();
+    Robot.flap.extend();
   }
 
   @Override
@@ -17,6 +21,6 @@ public class ExtendFuelFlapCommand extends Command {
 
   @Override
   protected void end() {
-    Robot.fuelIntake.retractFlap();
+    Robot.flap.retract();
   }
 }

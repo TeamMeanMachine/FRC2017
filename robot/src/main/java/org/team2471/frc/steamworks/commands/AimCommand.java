@@ -36,6 +36,7 @@ public class AimCommand extends PIDCommand {
     requires(Robot.fuelIntake);
     requires(Robot.shooter);
     requires(Robot.coProcessor);
+    requires(Robot.flap);
 
     this.gyroAngle = gyroAngle;
 
@@ -45,6 +46,10 @@ public class AimCommand extends PIDCommand {
 
     turnController.setAbsoluteTolerance(2.0);
     turnController.setToleranceBuffer(30);
+  }
+
+  public AimCommand() {
+    this(0);
   }
 
   protected void initialize() {

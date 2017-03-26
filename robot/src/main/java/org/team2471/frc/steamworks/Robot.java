@@ -25,6 +25,7 @@ public class Robot extends IterativeRobot {
   public static FuelIntake fuelIntake;
   public static Shooter shooter;
   public static GearIntake gearIntake;
+  public static FuelFlap flap;
   public static LEDController ledController;
 
   public static SendableChooser autoChooser;
@@ -38,6 +39,7 @@ public class Robot extends IterativeRobot {
     fuelIntake = new FuelIntake();
     gearIntake = new GearIntake();
     ledController = new LEDController();
+    flap = new FuelFlap();
     HardwareMap.init();
 
     coProcessor = new UPBoard();
