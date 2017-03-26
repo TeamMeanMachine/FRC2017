@@ -12,7 +12,7 @@ import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.subsystems.UPBoard;
 
 public class AimCommand extends PIDCommand {
-  private final double AUTO_SHOOT_DELAY = 0.5;
+  private final double AUTO_SHOOT_DELAY = 0.05;
 
   private final Timer shootingTimer = new Timer();
   private final PIDController turnController = getPIDController();
