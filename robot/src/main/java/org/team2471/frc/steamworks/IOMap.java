@@ -77,6 +77,7 @@ public class IOMap {
 
 
     CommandTrigger feedFuelTrigger = new CommandTrigger(fuelFeedButton::get);
+    feedFuelTrigger.toggleWhenActive(new ExtendFuelFlapCommand());
 
     CommandTrigger pickupGearTrigger = new CommandTrigger(pickupGearButton::get);
     pickupGearTrigger.whileActive(new PickupGearCommand());
