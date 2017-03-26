@@ -9,8 +9,8 @@ import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.ExtendHoodCommand;
 import org.team2471.frc.steamworks.commands.SpinUpShooterCommand;
 
-public class BackwardFourtyKPAAuto extends CommandGroup {
-  public BackwardFourtyKPAAuto() {
+public class BackwardFortyKPAAuto extends CommandGroup {
+  public BackwardFortyKPAAuto() {
     DriverStation driverStation = DriverStation.getInstance();
 
     DriverStation.Alliance alliance = driverStation.getAlliance();
@@ -18,9 +18,9 @@ public class BackwardFourtyKPAAuto extends CommandGroup {
     boolean mirrored = alliance == DriverStation.Alliance.Red;
 
     addSequential(new FortyKPA(1.0, mirrored));
-    addParallel(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM1", 2550)));
-    addSequential(new ForwardForFortyKPA(1.0, mirrored));
-    addParallel(new ExtendHoodCommand());
-    addSequential(new AimCommand(0));
+//    addParallel(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM1", 2550)));
+//    addSequential(new ForwardForFortyKPA(1.0, mirrored));
+//    addParallel(new ExtendHoodCommand());
+//    addSequential(new AimCommand(0));
   }
 }
