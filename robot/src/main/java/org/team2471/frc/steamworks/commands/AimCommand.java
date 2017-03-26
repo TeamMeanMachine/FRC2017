@@ -12,16 +12,14 @@ import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.subsystems.UPBoard;
 
 public class AimCommand extends PIDCommand {
-  private final double AGITATOR_DELAY = 0.5; // time between each agitator interval
-  private final double AGITATOR_DURATION = 1.5; // time to extend gear intake while agitation active
-  private final double AUTO_SHOOT_DELAY = 0.5;
+  private final double AUTO_SHOOT_DELAY = 0.05;
 
-  private final Timer agitatorTimer = new Timer();
   private final Timer shootingTimer = new Timer();
   private final PIDController turnController = getPIDController();
 
   private boolean wasExtended;
   private double offset;
+  private double gyroAngle;
 
   private boolean targetFound;
 
@@ -31,13 +29,16 @@ public class AimCommand extends PIDCommand {
 
   private MotionCurve curveDistanceToRPM;
 
-  public AimCommand() {
+  public AimCommand(double gyroAngle) {
     super(0.07, 0, 0.1);
     requires(Robot.drive);
     requires(Robot.gearIntake);
     requires(Robot.fuelIntake);
     requires(Robot.shooter);
     requires(Robot.coProcessor);
+    requires(Robot.flap);
+
+    this.gyroAngle = gyroAngle;
 
     Robot.coProcessor.setState(UPBoard.State.BOILER);
 
@@ -47,9 +48,12 @@ public class AimCommand extends PIDCommand {
     turnController.setToleranceBuffer(30);
   }
 
+  public AimCommand() {
+    this(0);
+  }
+
   protected void initialize() {
     Robot.shooter.enable();
-    agitatorTimer.start();
     shootingTimer.start();
 
     startTime = Timer.getFPGATimestamp();
@@ -70,8 +74,6 @@ public class AimCommand extends PIDCommand {
   protected void execute() {
     boolean autonomous = DriverStation.getInstance().isAutonomous();
 
-    Robot.fuelIntake.retract();
-
     double angle = returnPIDInput();
     if (SmartDashboard.getBoolean("Auto Aim", false)) {
 
@@ -90,14 +92,15 @@ public class AimCommand extends PIDCommand {
           Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
         }
       }
+      else if (autonomous) { // auto Aim is on, but camera is not present - use gyro
+        //angle += gyroAngle - Robot.shooter.gyro.getAngle();  // todo: add a gyro
+      }
     } else {
       // manual aim
       angle += IOMap.aimAxis.get() * 7.5;
       Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
     }
     turnController.setSetpoint(angle);
-
-    // shooting and agitator
 
     if(autonomous) {
       Robot.shooter.extendHood();
@@ -121,19 +124,11 @@ public class AimCommand extends PIDCommand {
       Robot.shooter.setIntake(speed * 0.8, speed);
       Robot.fuelIntake.rollIn();
 
-      if(agitatorTimer.get() > AGITATOR_DELAY + AGITATOR_DURATION) {
-        agitatorTimer.reset();
-      } else if(agitatorTimer.get() > AGITATOR_DELAY) {
-        Robot.gearIntake.extend();
-      } else {
-        Robot.gearIntake.retract();
-      }
     } else {
       Robot.gearIntake.retract();
       if(shootingTimer.get() < 0.2){
         Robot.shooter.setIntake(0, 0);
         Robot.fuelIntake.stopRoll();
-        agitatorTimer.reset();
       }
     }
 
@@ -150,6 +145,15 @@ public class AimCommand extends PIDCommand {
         SmartDashboard.getNumber("Shooter I", 0.0D), SmartDashboard.getNumber("Shooter D", 0.0D),
         SmartDashboard.getNumber("Shooter Left F", 0.0D), SmartDashboard.getNumber("Shooter Right F", 0));
     SmartDashboard.putNumber("Aim Error", turnController.getError());
+
+    // rumble and on target calculation
+    boolean onTarget = Math.abs(Robot.shooter.getLeftError())<300.0 &&
+            Math.abs(Robot.shooter.getRightError())<300.0 &&
+            turnController.onTarget();
+    SmartDashboard.putBoolean("Shooter On Target", onTarget);
+    float rumbleValue = onTarget ? 0.5f : 0.0f;
+    IOMap.getGunnerController().rumbleLeft(rumbleValue);
+    IOMap.getGunnerController().rumbleRight(rumbleValue);
   }
 
   protected boolean isFinished() {
@@ -158,16 +162,8 @@ public class AimCommand extends PIDCommand {
 
   protected void end() {
     Robot.shooter.disable();
-    agitatorTimer.stop();
     turnController.disable();
     Robot.shooter.reset();
-    Robot.gearIntake.retract();
-
-    if(wasExtended) {
-      Robot.fuelIntake.extend();
-    } else {
-      Robot.fuelIntake.retract();
-    }
 
     Robot.coProcessor.setState(UPBoard.State.IDLE);
   }

@@ -13,11 +13,14 @@ public class UpdateRPMCommand extends InstantCommand {
 
   @Override
   protected void initialize() {
-    if (Robot.shooter.isHoodUp() && Robot.coProcessor.isDataPresent()) {
+    if (SmartDashboard.getBoolean("Auto Aim", false)) {
       SmartDashboard.putNumber("Shooter Offset", SmartDashboard.getNumber("Shooter Offset", 0) + step);
     }
-    else {
-      SmartDashboard.putNumber("Shooter Setpoint", SmartDashboard.getNumber("Shooter Setpoint", 2500) + step);
+    else if (Robot.shooter.getRPMPreset()>= 0) {
+      String name = "RPM" + Robot.shooter.getRPMPreset();
+      double rpm = SmartDashboard.getNumber(name, 2500) + step;
+      SmartDashboard.putNumber(name, rpm);
+      SmartDashboard.putNumber("Shooter Setpoint", rpm);
     }
   }
 }

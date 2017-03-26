@@ -1,61 +1,62 @@
 package org.team2471.frc.steamworks.subsystems;
 
+import com.ctre.CANTalon;
+
+import org.team2471.frc.steamworks.HardwareMap;
+
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.team2471.frc.steamworks.HardwareMap;
-import org.team2471.frc.util.WaitingOnHardware;
 
-public class GearIntake extends Subsystem {
-
-  private final Solenoid tiltSolenoid = HardwareMap.GearIntakeMap.tiltSolenoid;
-  private final Solenoid flapSolenoid = HardwareMap.GearIntakeMap.flapSolenoid;
+public class GearIntake extends Subsystem{
+  private final Solenoid gearSolenoid = HardwareMap.GearIntakeMap.gearSolenoid;
+  private final CANTalon wheelMotor = HardwareMap.GearIntakeMap.wheelMotor;
   private final AnalogInput gearSensor = HardwareMap.GearIntakeMap.gearSensor;
 
-  public GearIntake() {
-    LiveWindow.addActuator("GearIntake", "Tilt Solenoid", tiltSolenoid);
-    LiveWindow.addActuator("GearIntake", "Flap Solenoid", flapSolenoid);
-    LiveWindow.addSensor("GearIntake", "Gear Sensor", gearSensor);
-  }
-
-  /**
-   * TiltGearIntakeCommand gear intake forward
-   */
+  /**Tilts the gear intake extend.**/
   public void extend() {
-    tiltSolenoid.set(true);
+    gearSolenoid.set(true);
   }
 
-  /**
-   * TiltGearIntakeCommand back gear intake
-   */
+  /**Tilts the gear intake retract.**/
   public void retract() {
-    tiltSolenoid.set(false);
+    gearSolenoid.set(false);
   }
 
-  /**
-   * Put flaps forward
-   */
-  public void openFlaps() {
-    flapSolenoid.set(true);
+  public boolean isExtended() {
+    return gearSolenoid.get();
   }
 
-  /**
-   * Put flaps back
-   */
-  public void closeFlaps() {
-    flapSolenoid.set(false);
+  public void rollIn(double speed) {
+    wheelMotor.set(speed);
   }
 
-  /**
-   * Has the gear
-   */
-  @WaitingOnHardware
+  /**Runs the wheely motor in.**/
+  public void rollIn() {
+    rollIn(1);
+  }
+
+
+  /**Runs the wheely motor out.**/
+  public void rollOut(double speed) {
+    wheelMotor.set(-speed);
+  }
+
+  /**Runs the wheely motor out.**/
+  public void rollOut() {
+    rollOut(1);
+  }
+
+  /**Stops wheely motors.**/
+  public void rollStop() {
+    wheelMotor.set(0);
+  }
+
+  /**Gear sensor thingymabobber**/
   public boolean hasGear() {
-    return gearSensor.getValue() < 1500;
+//    return gearSensor.getValue() < 123456789; // TODO: Find value
+    return false;
   }
-
   @Override
   protected void initDefaultCommand() {
 

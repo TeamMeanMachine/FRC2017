@@ -9,10 +9,10 @@ import static org.team2471.frc.steamworks.HardwareMap.DriveMap.shiftPTO;
 import static org.team2471.frc.steamworks.Robot.drive;
 
 //This auto only works for the blue alliance
-public class FaceBoilerFromBoilerLift extends FollowPathTankDriveCommand {
+public class FaceBoilerFromMiddleLift extends FollowPathTankDriveCommand {
   Path2D m_path;
 
-  public FaceBoilerFromBoilerLift(double speed, boolean mirror) {
+  public FaceBoilerFromMiddleLift(double speed, boolean mirror) {
 
     requires(drive);
 
@@ -24,8 +24,8 @@ public class FaceBoilerFromBoilerLift extends FollowPathTankDriveCommand {
     m_path = new Path2D();
     m_path.setTravelDirection(-1.0);
 
-    m_path.addPointAndTangent(0.0, 0.0, -6.0, -3.0);
-    m_path.addPointAndTangent(-4.0, 3.0, 2.0, 5.0);
+    m_path.addPointAndTangent(0.0, 0.0, 0.0, 3.0);
+    m_path.addPointAndTangent(2.0, -3.5, -3.0, 1.5);
 
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(2.0, 1.0);

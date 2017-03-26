@@ -21,60 +21,21 @@ public class FuelIntake extends Subsystem {
   private static boolean overLimit = false;
 
   private CANTalon intakeMotor = HardwareMap.FuelIntakeMap.intakeMotor;
-  private CANTalon leftWindshieldMotor = HardwareMap.FuelIntakeMap.leftWindshieldMotor;
-  private CANTalon rightWindshieldMotor = HardwareMap.FuelIntakeMap.rightWindshieldMotor;
-  private Solenoid intakeSolenoid = HardwareMap.FuelIntakeMap.intakeSolenoid;
   private PDPDrawSensor intakeDrawSensor = HardwareMap.FuelIntakeMap.intakeMotorDrawSensor;
-
 
   public FuelIntake() {
     intakeMotor.enableBrakeMode(false);
     intakeMotor.setInverted(true);
-    leftWindshieldMotor.setInverted(false);
-    rightWindshieldMotor.setInverted(true);
 
     amperageTimer.start();
     LiveWindow.addActuator("FuelIntake", "Intake Motor", intakeMotor);
     LiveWindow.addActuator("FuelIntake", "Left Windshield Motor", intakeMotor);
     LiveWindow.addActuator("FuelIntake", "Right Windshield Motor", intakeMotor);
-    LiveWindow.addActuator("FuelIntake", "Solenoid", intakeSolenoid);
   }
 
   public double getCurrent() {
     return intakeDrawSensor.getCurrent();
   }
-
-  public boolean isExtended() {
-    return intakeSolenoid.get();
-  }
-
-  /**
-   * Push intake out
-   **/
-  public void extend() {
-    intakeSolenoid.set(true);
-  }
-
-  /**
-   * Pull intake in
-   **/
-  public void retract() {
-    intakeSolenoid.set(false);
-  }
-
-  public void toggle(){
-    intakeSolenoid.set(!intakeSolenoid.get());
-  }
-
-  /**
-   * Run teh poly cords in
-   * -> <-
-   **/
-  public void windshieldsIn() {
-    leftWindshieldMotor.set(0.8);
-    rightWindshieldMotor.set(0.8);
-  }
-
 
   /**
    * Run intake motors in
@@ -95,11 +56,6 @@ public class FuelIntake extends Subsystem {
 
     boolean stalled = overLimit && amperageTimer.get() > 1.0;
     intakeMotor.set(stalled ? 0 : 0.8);
-  }
-
-  public void windShieldsStop() {
-    leftWindshieldMotor.set(0);
-    rightWindshieldMotor.set(0);
   }
 
   public void stopRoll() {

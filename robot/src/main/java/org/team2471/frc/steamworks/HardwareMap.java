@@ -41,16 +41,15 @@ public class HardwareMap {
 
   public static final class FuelIntakeMap {
     public static final CANTalon intakeMotor = new CANTalon(3);
+    public static final Solenoid flapSolenoid = new Solenoid(3);
     public static final PDPDrawSensor intakeMotorDrawSensor = () -> pdp.getCurrent(3);
-    public static final CANTalon leftWindshieldMotor = new CANTalon(9);
-    public static final CANTalon rightWindshieldMotor = new CANTalon(8);
-    public static final Solenoid intakeSolenoid = new Solenoid(1);
   }
 
+
   public static final class GearIntakeMap {
-    public static final Solenoid flapSolenoid = new Solenoid(3);
-    public static final Solenoid tiltSolenoid = new Solenoid(2);
-    public static final AnalogInput gearSensor = new AnalogInput(3);
+    public static final Solenoid gearSolenoid = new Solenoid(1);
+    public static final CANTalon wheelMotor = new CANTalon(8);
+    public static final AnalogInput gearSensor = new AnalogInput(0);
   }
 
   public static void init() {
@@ -59,6 +58,7 @@ public class HardwareMap {
     TwinShooterMap.ballFeeder.get();
     DriveMap.rightMotor1.get();
     FuelIntakeMap.intakeMotor.get();
-    GearIntakeMap.flapSolenoid.get();
   }
+
+
 }

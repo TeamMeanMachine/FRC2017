@@ -2,13 +2,13 @@ plugins {
   id "java"
   id "eclipse"
   id "idea"
-  id "jaci.openrio.gradle.GradleRIO" version "2017.1.1"
+  id "jaci.openrio.gradle.GradleRIO" version "2017.1.5"
 }
 
 frc {
   team = "2471"
   robotClass = "org.team2471.frc.steamworks.Robot"
-//  rioIP = "10.24.71.100"
+  rioIP = "10.24.71.100"
 //  robotClass = "org.team2471.frc.carbonknight.Robot"
 //  rioIP = "10.24.71.52"
 //  robotClass = "org.team2471.frc.TestRobot"

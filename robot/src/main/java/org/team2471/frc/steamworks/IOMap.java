@@ -32,18 +32,21 @@ public class IOMap {
   public static final ControllerAxis reverseAnimationAxis = driverController.getAxis(XboxMap.Axes.RIGHT_TRIGGER)
       .withExponentialScaling(2);
 
+  public static final ControllerButton pickupGearButton = driverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
+  public static final ControllerButton placeGearButton = driverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
 
   public static final ControllerButton climbButton = driverController.getButton(XboxMap.Buttons.Y);
-  public static final ControllerButton gearButton = driverController.getButton(XboxMap.Buttons.A);
 
-  public static final ControllerButton signalCoDriverButton = driverController.getButton(XboxMap.Buttons.START);
+
+  public static final ControllerButton signalCoDriverButton = driverController.getButton(XboxMap.Buttons.RIGHT_THUMBSTICK);
+
 
   public static final ControllerButton climbIntakeOverrideButton = driverController.getButton(XboxMap.Buttons.BACK);
 
   //Co-Driver controls
   public static final ControllerButton signalDriverButton = coDriverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
 
-  public static final ControllerButton gearFeedButton = coDriverController.getButton(XboxMap.Buttons.Y);
+
   public static ControllerAxis shootAxis = coDriverController.getAxis(3);
 
   public static final ControllerButton toggleIntakeButton = coDriverController.getButton(XboxMap.Buttons.B);
@@ -72,17 +75,21 @@ public class IOMap {
     CommandTrigger fuelIntakeTrigger = new CommandTrigger(toggleIntakeButton::get);
     fuelIntakeTrigger.toggleWhenActive(new FuelIntakeCommand());
 
-    CommandTrigger feedGearTrigger = new CommandTrigger(gearFeedButton::get);
-    feedGearTrigger.whileActive(new FeedGearCommand());
 
     CommandTrigger feedFuelTrigger = new CommandTrigger(fuelFeedButton::get);
-    feedFuelTrigger.whileActive(new TiltGearIntakeCommand());
+    feedFuelTrigger.toggleWhenActive(new ExtendFuelFlapCommand());
+
+    CommandTrigger pickupGearTrigger = new CommandTrigger(pickupGearButton::get);
+    pickupGearTrigger.whileActive(new PickupGearCommand());
+
+    CommandTrigger placeGearTrigger = new CommandTrigger(placeGearButton::get);
+    placeGearTrigger.whileActive(new PlaceGearCommand());
 
     CommandTrigger climbTrigger = new CommandTrigger(climbButton::get);
     climbTrigger.toggleWhenActive(new ManualClimbCommandGroup());
 
     CommandTrigger aimTrigger = new CommandTrigger(aimButton::get);
-    aimTrigger.toggleWhenActive(new AimCommand());
+    aimTrigger.toggleWhenActive(new AimCommand(0));
 
     CommandTrigger signalDriverTrigger = new CommandTrigger(signalDriverButton::get);
     signalDriverTrigger.whileActive(new RumbleCommand(driverController, 1, RumbleCommand.StickSide.RIGHT));
@@ -90,8 +97,8 @@ public class IOMap {
     CommandTrigger signalCoDriverTrigger = new CommandTrigger(signalCoDriverButton::get);
     signalCoDriverTrigger.whileActive(new RumbleCommand(coDriverController, 1, RumbleCommand.StickSide.LEFT));
 
-    CommandTrigger extendHoodTrgger = new CommandTrigger(shooterDPad::isUp);
-    extendHoodTrgger.whenActive(new ExtendHoodCommand());
+    CommandTrigger extendHoodTrigger = new CommandTrigger(shooterDPad::isUp);
+    extendHoodTrigger.whenActive(new ExtendHoodCommand());
 
     CommandTrigger retractHoodTrigger = new CommandTrigger(shooterDPad::isDown);
     retractHoodTrigger.whenActive(new RetractHoodCommand());
@@ -105,5 +112,8 @@ public class IOMap {
 
   public static Controller getDriverController() {
     return driverController;
+  }
+  public static Controller getGunnerController() {
+    return coDriverController;
   }
 }

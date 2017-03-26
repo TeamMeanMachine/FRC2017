@@ -21,23 +21,18 @@ public class FuelIntakeCommand extends Command {
 
   @Override
   protected void execute() {
-    Robot.fuelIntake.extend();
     if(IOMap.spitButton.get() && !Robot.drive.isClimbing()) {
       Robot.fuelIntake.rollOut();
     } else if (IOMap.useIntakeButton.get() && !Robot.drive.isClimbing() ) {
       Robot.fuelIntake.rollIn();
-      Robot.fuelIntake.windshieldsIn();
     } else {
       Robot.fuelIntake.stopRoll();
-      Robot.fuelIntake.windShieldsStop();
     }
   }
 
   @Override
   protected void end() {
-    Robot.fuelIntake.windShieldsStop();
     Robot.fuelIntake.stopRoll();
-    Robot.fuelIntake.retract();
     timer.stop();
   }
 

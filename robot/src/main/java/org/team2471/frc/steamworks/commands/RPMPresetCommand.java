@@ -15,5 +15,6 @@ public class RPMPresetCommand extends InstantCommand {
   protected void initialize() {
     String name = "RPM" + presetNumber;
     SmartDashboard.putNumber("Shooter Setpoint", SmartDashboard.getNumber(name, 2500));
+    Robot.shooter.setRPMPreset(presetNumber);
   }
 }
