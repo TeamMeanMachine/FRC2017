@@ -20,6 +20,7 @@ public class AimCommand extends PIDCommand {
   private boolean wasExtended;
   private double offset;
   private double gyroAngle;
+  private double rpm;
 
   private boolean targetFound;
 
@@ -29,7 +30,7 @@ public class AimCommand extends PIDCommand {
 
   private MotionCurve curveDistanceToRPM;
 
-  public AimCommand(double gyroAngle) {
+  public AimCommand(double gyroAngle, double rpm) {
     super(0.07, 0, 0.1);
     requires(Robot.drive);
     requires(Robot.gearIntake);
@@ -39,6 +40,7 @@ public class AimCommand extends PIDCommand {
     requires(Robot.flap);
 
     this.gyroAngle = gyroAngle;
+    this.rpm = rpm;
 
     Robot.coProcessor.setState(UPBoard.State.BOILER);
 
@@ -49,7 +51,7 @@ public class AimCommand extends PIDCommand {
   }
 
   public AimCommand() {
-    this(0);
+    this(0, 2500);
   }
 
   protected void initialize() {
@@ -76,20 +78,21 @@ public class AimCommand extends PIDCommand {
 
     double angle = returnPIDInput();
     if (SmartDashboard.getBoolean("Auto Aim", false)) {
-
       if(Robot.coProcessor.isDataPresent()) {
         double error = Robot.coProcessor.getError().getAsDouble();
         double distance = Robot.coProcessor.getDistance().getAsDouble();
         angle -= error * 0.7;
         targetFound = true;
 
-        if (Robot.shooter.isHoodUp()) {
-          double rpm = curveDistanceToRPM.getValue(distance);
-          System.out.println("Distance: " + distance + " RPM: " + rpm);
-          Robot.shooter.setSetpoint(rpm + SmartDashboard.getNumber("Shooter OffSet", 0.0));
-        } else {
-          angle += IOMap.aimAxis.get() * 7.5;
-          Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
+        if (!autonomous) {
+          if (Robot.shooter.isHoodUp()) {
+            rpm = curveDistanceToRPM.getValue(distance);
+            System.out.println("Distance: " + distance + " RPM: " + rpm);
+            Robot.shooter.setSetpoint(rpm + SmartDashboard.getNumber("Shooter OffSet", 0.0));
+          } else {
+            angle += IOMap.aimAxis.get() * 7.5;
+            Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
+          }
         }
       }
       else if (autonomous) { // auto Aim is on, but camera is not present - use gyro
@@ -98,8 +101,10 @@ public class AimCommand extends PIDCommand {
     } else {
       // manual aim
       angle += IOMap.aimAxis.get() * 7.5;
-      Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
+      rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
     }
+
+    Robot.shooter.setSetpoint(rpm);
     turnController.setSetpoint(angle);
 
     if(autonomous) {
@@ -164,6 +169,9 @@ public class AimCommand extends PIDCommand {
     Robot.shooter.disable();
     turnController.disable();
     Robot.shooter.reset();
+
+    IOMap.getGunnerController().rumbleLeft(0.0f);
+    IOMap.getGunnerController().rumbleRight(0.0f);
 
     Robot.coProcessor.setState(UPBoard.State.IDLE);
   }

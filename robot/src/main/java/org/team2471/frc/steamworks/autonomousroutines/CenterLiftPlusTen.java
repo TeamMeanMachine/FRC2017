@@ -2,6 +2,7 @@ package org.team2471.frc.steamworks.autonomousroutines;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.FaceBoilerFromMiddleLift;
 import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.ExtendHoodCommand;
@@ -21,7 +22,7 @@ public class CenterLiftPlusTen extends CommandGroup {
 //      addSequential(new TiltGearIntakeCommand());
       addSequential(new FaceBoilerFromMiddleLift(1.0, true));
       addSequential(new ExtendHoodCommand());
-      addSequential(new AimCommand(0));
+      addSequential(new AimCommand(0, SmartDashboard.getNumber("RPM3", 3000)));
     }
     if (alliance == alliance.Blue){
       addSequential(new DriveToMiddleLift());
@@ -29,7 +30,7 @@ public class CenterLiftPlusTen extends CommandGroup {
 //      addSequential(new TiltGearIntakeCommand());
       addSequential(new FaceBoilerFromMiddleLift(1.0, false));
       addSequential(new ExtendHoodCommand());
-      addSequential(new AimCommand(0));
+      addSequential(new AimCommand(0, SmartDashboard.getNumber("RPM3", 3000)));
     }
   }
 }

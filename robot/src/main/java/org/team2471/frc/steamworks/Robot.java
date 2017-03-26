@@ -56,7 +56,7 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Boiler Lift", new BoilerLiftAuto());
     autoChooser.addObject("Middle lift", new DriveToMiddleLift());
     autoChooser.addObject("One Hundred point Auto", new OneHundredPointAuto());
-    autoChooser.addObject("Just Shoot Auto", new AimCommand(0));
+    autoChooser.addObject("Just Shoot Auto", new AimCommand(0, SmartDashboard.getNumber("RPM0", 2400)));
     autoChooser.addObject("Short fuel and gear", new BoilerGearAuto());
     autoChooser.addObject("Gear plus ten fuel", new GearTenAuto());
     autoChooser.addObject("40 KPA Backwards", new BackwardFortyKPAAuto());
@@ -105,7 +105,7 @@ public class Robot extends IterativeRobot {
 //    SmartDashboard.putNumber("Shooter Left Speed", HardwareMap.TwinShooterMap.masterLeft.getSpeed());
 //    SmartDashboard.putNumber("Shooter Right Speed", HardwareMap.TwinShooterMap.masterRight.getSpeed());
     double endTime = Timer.getFPGATimestamp();
-    double dt = startTime - endTime;
+    double dt = endTime - startTime;
     SmartDashboard.putNumber("Latency Quotient", 1/20 / dt * 100);
   }
 

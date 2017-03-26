@@ -89,7 +89,7 @@ public class IOMap {
     climbTrigger.toggleWhenActive(new ManualClimbCommandGroup());
 
     CommandTrigger aimTrigger = new CommandTrigger(aimButton::get);
-    aimTrigger.toggleWhenActive(new AimCommand(0));
+    aimTrigger.toggleWhenActive(new AimCommand());
 
     CommandTrigger signalDriverTrigger = new CommandTrigger(signalDriverButton::get);
     signalDriverTrigger.whileActive(new RumbleCommand(driverController, 1, RumbleCommand.StickSide.RIGHT));

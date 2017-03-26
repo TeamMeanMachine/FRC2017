@@ -23,7 +23,7 @@ public class ForwardFortyKPAAuto extends CommandGroup {
     addSequential(new WaitCommand(2));
     addParallel(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM1", 2550)));
     addSequential(new FaceBoilerFromHopper(1.0, mirrored));
-    addSequential(new AimCommand(0));
+    addSequential(new AimCommand(0, SmartDashboard.getNumber("RPM1", 2550)));
     addSequential(new RetractHoodCommand());
   }
 }
