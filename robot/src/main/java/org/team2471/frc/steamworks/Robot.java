@@ -1,13 +1,14 @@
 package org.team2471.frc.steamworks;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.*;
-//import org.team2471.frc.steamworks.autonomouscommands.BackwardFourtyKPAAuto;
+//import org.team2471.frc.steamworks.autonomouscommands.BackwardFortyKPAAuto;
 import org.team2471.frc.steamworks.autonomousroutines.*;
-import org.team2471.frc.steamworks.autonomousroutines.BackwardFourtyKPAAuto;
+import org.team2471.frc.steamworks.autonomousroutines.BackwardFortyKPAAuto;
 import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.ZeroGyroCommand;
 import org.team2471.frc.steamworks.subsystems.*;
@@ -31,8 +32,9 @@ public class Robot extends IterativeRobot {
 
   public static SendableChooser autoChooser;
 
-  @SuppressWarnings("unchecked")
+  private double startTime = Timer.getFPGATimestamp();
 
+  @SuppressWarnings("unchecked")
   @Override
   public void robotInit() {
     shooter = new Shooter();
@@ -57,7 +59,7 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Just Shoot Auto", new AimCommand(0));
     autoChooser.addObject("Short fuel and gear", new BoilerGearAuto());
     autoChooser.addObject("Gear plus ten fuel", new GearTenAuto());
-    autoChooser.addObject("40 KPA Backwards", new BackwardFourtyKPAAuto());
+    autoChooser.addObject("40 KPA Backwards", new BackwardFortyKPAAuto());
     autoChooser.addObject("Middle Lift + 10", new CenterLiftPlusTen());
 
     SmartDashboard.putData("AutoChooser", autoChooser);
@@ -78,8 +80,13 @@ public class Robot extends IterativeRobot {
     }
 
   @Override
+  public void teleopPeriodic() {
+    startTime = Timer.getFPGATimestamp();
+  }
+
+  @Override
   public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
+    startTime = Timer.getFPGATimestamp();
   }
 
   @Override
@@ -97,6 +104,9 @@ public class Robot extends IterativeRobot {
 
 //    SmartDashboard.putNumber("Shooter Left Speed", HardwareMap.TwinShooterMap.masterLeft.getSpeed());
 //    SmartDashboard.putNumber("Shooter Right Speed", HardwareMap.TwinShooterMap.masterRight.getSpeed());
+    double endTime = Timer.getFPGATimestamp();
+    double dt = startTime - endTime;
+    SmartDashboard.putNumber("Latency Quotient", 1/20 / dt * 100);
   }
 
   @Override
@@ -105,6 +115,7 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void testPeriodic() {
+    startTime = Timer.getFPGATimestamp();
     LiveWindow.run();
   }
 }
