@@ -44,7 +44,7 @@ public class AimCommand extends PIDCommand {
 
     Robot.coProcessor.setState(UPBoard.State.BOILER);
 
-    DashboardUtils.putPersistantNumber("Aim Offset", 0);
+    DashboardUtils.putPersistentNumber("Aim Offset", 0);
 
     turnController.setAbsoluteTolerance(2.0);
     turnController.setToleranceBuffer(30);

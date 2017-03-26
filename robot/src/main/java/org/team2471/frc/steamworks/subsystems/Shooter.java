@@ -24,34 +24,35 @@ public class Shooter extends Subsystem {
   private int RPMPreset = -1;
 
   public Shooter() {
-    DashboardUtils.putPersistantNumber("Shooter P", 0.05);
-    DashboardUtils.putPersistantNumber("Shooter I", 0);
-    DashboardUtils.putPersistantNumber("Shooter D", 0.1);
-    DashboardUtils.putPersistantNumber("Shooter Left F", 0.072);
-    DashboardUtils.putPersistantNumber("Shooter Right F", 0.072);
-    DashboardUtils.putPersistantNumber("Shooter Setpoint", 2420);
-    DashboardUtils.putPersistantNumber("Shooter Offset", 0.0);
+    DashboardUtils.putPersistentNumber("Shooter P", 0.05);
+    DashboardUtils.putPersistentNumber("Shooter I", 0);
+    DashboardUtils.putPersistentNumber("Shooter D", 0.1);
+    DashboardUtils.putPersistentNumber("Shooter Left F", 0.072);
+    DashboardUtils.putPersistentNumber("Shooter Right F", 0.072);
+    DashboardUtils.putPersistentNumber("Shooter Setpoint", 2420);
+    DashboardUtils.putPersistentNumber("Shooter Offset", 0.0);
 
-    DashboardUtils.putPersistantNumber("Dist1", 5.5);
-    DashboardUtils.putPersistantNumber("Dist2", 8.25);
-    DashboardUtils.putPersistantNumber("Dist3", 10.25);
-    DashboardUtils.putPersistantNumber("Dist4", 13.5);
+    DashboardUtils.putPersistentNumber("Dist1", 5.5);
+    DashboardUtils.putPersistentNumber("Dist2", 8.25);
+    DashboardUtils.putPersistentNumber("Dist3", 10.25);
+    DashboardUtils.putPersistentNumber("Dist4", 13.5);
     DashboardUtils.putPersistantNumber("Dist4", 9.3);
 
-    DashboardUtils.putPersistantNumber("RPM0", 2420);
-    DashboardUtils.putPersistantNumber("RPM1", 2640);
-    DashboardUtils.putPersistantNumber("RPM2", 2910);
-    DashboardUtils.putPersistantNumber("RPM3", 3160);
-    DashboardUtils.putPersistantNumber("RPM4", 2700);
+    DashboardUtils.putPersistentNumber("RPM0", 2420);
+    DashboardUtils.putPersistentNumber("RPM1", 2640);
+    DashboardUtils.putPersistentNumber("RPM2", 2910);
+    DashboardUtils.putPersistentNumber("RPM3", 3160);
+    DashboardUtils.putPersistentNumber("RPM4", 4160);
+    DashboardUtils.putPersistentNumber("RPM5", 4160);
 
-    DashboardUtils.putPersistantNumber("BoilerMaxFeed", 0.75);
+    DashboardUtils.putPersistentNumber("BoilerMaxFeed", 0.75);
 
     SmartDashboard.putData("Boiler Preset", new RPMPresetCommand(0));
     SmartDashboard.putData("Hopper", new RPMPresetCommand(1));
     SmartDashboard.putData("1 Bot Back", new RPMPresetCommand(2));
     SmartDashboard.putData("Peg", new RPMPresetCommand(3));
     SmartDashboard.putData("Loading Station", new RPMPresetCommand(4));
-    SmartDashboard.putData("Forward Hopper Preset", new RPMPresetCommand(5));
+
 
     final int codesPerRev = (int) (250 * 1.8); // encoder ticks * gear ratio
 
