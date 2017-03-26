@@ -18,7 +18,9 @@ public class UpdateRPMCommand extends InstantCommand {
     }
     else if (Robot.shooter.getRPMPreset()>= 0) {
       String name = "RPM" + Robot.shooter.getRPMPreset();
-      SmartDashboard.putNumber(name, SmartDashboard.getNumber(name, 2500) + step);
+      double rpm = SmartDashboard.getNumber(name, 2500) + step;
+      SmartDashboard.putNumber(name, rpm);
+      SmartDashboard.putNumber("Shooter Setpoint", rpm);
     }
   }
 }
