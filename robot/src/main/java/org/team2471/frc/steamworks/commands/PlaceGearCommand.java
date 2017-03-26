@@ -10,7 +10,7 @@ public class PlaceGearCommand extends Command{
   @Override
   protected void execute() {
     Robot.gearIntake.extend();
-    Robot.gearIntake.rollOut();
+    Robot.gearIntake.rollOut(0.4);
   }
 
   @Override
