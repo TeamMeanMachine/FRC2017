@@ -36,14 +36,14 @@ public class Shooter extends Subsystem {
     DashboardUtils.putPersistentNumber("Dist2", 8.25);
     DashboardUtils.putPersistentNumber("Dist3", 10.25);
     DashboardUtils.putPersistentNumber("Dist4", 13.5);
-    DashboardUtils.putPersistantNumber("Dist4", 9.3);
+    DashboardUtils.putPersistentNumber("Dist5", 9.3);
 
     DashboardUtils.putPersistentNumber("RPM0", 2420);
     DashboardUtils.putPersistentNumber("RPM1", 2640);
     DashboardUtils.putPersistentNumber("RPM2", 2910);
     DashboardUtils.putPersistentNumber("RPM3", 3160);
     DashboardUtils.putPersistentNumber("RPM4", 4160);
-    DashboardUtils.putPersistentNumber("RPM5", 4160);
+    DashboardUtils.putPersistentNumber("RPM5", 2800);
 
     DashboardUtils.putPersistentNumber("BoilerMaxFeed", 0.75);
 
@@ -52,7 +52,7 @@ public class Shooter extends Subsystem {
     SmartDashboard.putData("1 Bot Back", new RPMPresetCommand(2));
     SmartDashboard.putData("Peg", new RPMPresetCommand(3));
     SmartDashboard.putData("Loading Station", new RPMPresetCommand(4));
-
+    SmartDashboard.putData("Forward 40 KPA", new RPMPresetCommand(5));
 
     final int codesPerRev = (int) (250 * 1.8); // encoder ticks * gear ratio
 
