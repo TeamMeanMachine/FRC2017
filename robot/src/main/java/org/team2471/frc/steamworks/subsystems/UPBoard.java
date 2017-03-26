@@ -19,7 +19,7 @@ public class UPBoard extends Subsystem {
   private boolean dataPresent = false;
   private OptionalDouble error = OptionalDouble.empty();
   private OptionalDouble distance = OptionalDouble.empty();
-  private OptionalInt imageNumber = OptionalInt.empty();
+  private OptionalDouble timestamp = OptionalDouble.empty();
 
   public UPBoard() {
     networkTable.putString("Mode", "IDLE");
@@ -38,8 +38,8 @@ public class UPBoard extends Subsystem {
     return distance;
   }
 
-  public OptionalInt getImageNumber() {
-    return imageNumber;
+  public OptionalDouble getTimestamp() {
+    return timestamp;
   }
 
   public void setState(State state) {
@@ -77,15 +77,13 @@ public class UPBoard extends Subsystem {
 
         try {
           String[] splitMessage = message.split(";");
-          String context = splitMessage[0]; // TODO: remove context
 
-          int imageNumber = Integer.parseInt(splitMessage[1]);
-          String errorString = splitMessage[2];
-          double error = Double.parseDouble(errorString);
-          double distance = Double.parseDouble(splitMessage[3]);
+          double timestamp = Integer.parseInt(splitMessage[0]);
+          double error = Double.parseDouble(splitMessage[1]);
+          double distance = Double.parseDouble(splitMessage[2]);
 
           dataPresent = true;
-          this.imageNumber = OptionalInt.of(imageNumber);
+          this.timestamp = OptionalDouble.of(timestamp);
           this.error = OptionalDouble.of(error);
           this.distance = OptionalDouble.of(distance);
         } catch (RuntimeException ignored) {
