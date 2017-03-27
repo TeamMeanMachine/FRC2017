@@ -10,7 +10,7 @@ import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.commands.RPMPresetCommand;
 
-=CANTalon.VelocityMeasurementPeriod.Period_25Ms'public class Shooter extends Subsystem {
+public class Shooter extends Subsystem {
   private final CANTalon rightMasterMotor = HardwareMap.TwinShooterMap.masterRight;
   private final CANTalon rightSlaveMotor = HardwareMap.TwinShooterMap.slaveRight;
 
