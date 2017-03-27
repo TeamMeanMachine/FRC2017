@@ -10,7 +10,7 @@ import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.commands.RPMPresetCommand;
 
-public class Shooter extends Subsystem {
+=CANTalon.VelocityMeasurementPeriod.Period_25Ms'public class Shooter extends Subsystem {
   private final CANTalon rightMasterMotor = HardwareMap.TwinShooterMap.masterRight;
   private final CANTalon rightSlaveMotor = HardwareMap.TwinShooterMap.slaveRight;
 
@@ -87,6 +87,12 @@ public class Shooter extends Subsystem {
 
     cycloneMotor.setInverted(false);
     elevatorMotor.setInverted(true);
+
+    // Velocity filtering
+    HardwareMap.TwinShooterMap.masterLeft.SetVelocityMeasurementPeriod(CANTalon.VelocityMeasurementPeriod.Period_25Ms);  // default 100
+    HardwareMap.TwinShooterMap.masterLeft.SetVelocityMeasurementWindow(32);  // default 64
+    HardwareMap.TwinShooterMap.masterRight.SetVelocityMeasurementPeriod(CANTalon.VelocityMeasurementPeriod.Period_25Ms);
+    HardwareMap.TwinShooterMap.masterRight.SetVelocityMeasurementWindow(32);
 
     if (Robot.COMPETITION) {
       leftMasterMotor.reverseSensor(false);
