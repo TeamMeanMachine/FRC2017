@@ -32,10 +32,9 @@ public class Robot extends IterativeRobot {
 
   public static SendableChooser autoChooser;
 
-  @SuppressWarnings("unchecked")
-
   private double startTime;
 
+  @SuppressWarnings("unchecked")
   @Override
   public void robotInit() {
     shooter = new Shooter();
@@ -116,7 +115,7 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void testPeriodic() {
-    startTime = Timer.getFPGATimestamp()
+    startTime = Timer.getFPGATimestamp();
     LiveWindow.run();
   }
 }
