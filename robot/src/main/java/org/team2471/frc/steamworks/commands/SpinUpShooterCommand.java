@@ -12,6 +12,11 @@ public class SpinUpShooterCommand extends Command {
   }
 
   @Override
+  protected void initialize() {
+    Robot.shooter.enable();
+  }
+
+  @Override
   protected void execute() {
     Robot.shooter.setSetpoint(setpoint);
   }

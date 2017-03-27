@@ -47,7 +47,7 @@ public class AimCommand extends PIDCommand {
     DashboardUtils.putPersistentNumber("Aim Offset", 0);
 
     turnController.setAbsoluteTolerance(2.0);
-    turnController.setToleranceBuffer(30);
+    turnController.setToleranceBuffer(60);
   }
 
   public AimCommand() {
@@ -75,6 +75,7 @@ public class AimCommand extends PIDCommand {
 
   protected void execute() {
     boolean autonomous = DriverStation.getInstance().isAutonomous();
+    Robot.shooter.enableFlashlight();
 
     double angle = returnPIDInput();
     if (SmartDashboard.getBoolean("Auto Aim", false) || autonomous) {
@@ -88,7 +89,7 @@ public class AimCommand extends PIDCommand {
           if (Robot.shooter.isHoodUp()) {
             rpm = curveDistanceToRPM.getValue(distance);
             System.out.println("Distance: " + distance + " RPM: " + rpm);
-            Robot.shooter.setSetpoint(rpm + SmartDashboard.getNumber("Shooter OffSet", 0.0));
+            rpm += SmartDashboard.getNumber("Shooter OffSet", 0.0);
           } else {
             angle += IOMap.aimAxis.get() * 7.5;
             Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
@@ -105,6 +106,7 @@ public class AimCommand extends PIDCommand {
       rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
     }
 
+    SmartDashboard.putNumber("Shooter Setpoint", rpm);
     Robot.shooter.setSetpoint(rpm);
     turnController.setSetpoint(angle);
 
@@ -119,7 +121,7 @@ public class AimCommand extends PIDCommand {
       shootingTimer.reset();
       double speed = autonomous ?
           // auto
-          Timer.getFPGATimestamp() > startTime + AUTO_SHOOT_DELAY ? 0.9 : 0
+          Timer.getFPGATimestamp() > startTime + AUTO_SHOOT_DELAY ? 1.0 : 0
           // teleop
           : (IOMap.shootAxis.get() - 0.15) * 1/(1 - 0.15);
 
@@ -170,6 +172,7 @@ public class AimCommand extends PIDCommand {
     Robot.shooter.disable();
     turnController.disable();
     Robot.shooter.reset();
+    Robot.shooter.disableFlashlight();
 
     IOMap.getGunnerController().rumbleLeft(0.0f);
     IOMap.getGunnerController().rumbleRight(0.0f);

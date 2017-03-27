@@ -20,6 +20,8 @@ public class Shooter extends Subsystem {
   private final CANTalon cycloneMotor = HardwareMap.TwinShooterMap.cycloneMotor;
   private final CANTalon elevatorMotor = HardwareMap.TwinShooterMap.ballFeeder;
 
+  private final CANTalon flashlight = HardwareMap.TwinShooterMap.flashlight;
+
   private final Solenoid hoodSolenoid = HardwareMap.TwinShooterMap.hoodSolenoid;
   private int RPMPreset = -1;
 
@@ -188,6 +190,14 @@ public class Shooter extends Subsystem {
     hoodSolenoid.set(false);
   }
 
+  public void enableFlashlight() {
+    flashlight.set(1);
+  }
+
+  public void disableFlashlight() {
+    flashlight.set(0);
+  }
+
   public boolean isHoodUp(){
     return hoodSolenoid.get();
   }
@@ -199,8 +209,9 @@ public class Shooter extends Subsystem {
     return RPMPreset;
   }
 
-  public void setRPMPreset(int RPMPreset) {
-    this.RPMPreset = RPMPreset;
+  public void setRPMPreset(int rpmPreset) {
+    SmartDashboard.putNumber("RPM Preset", rpmPreset);
+    this.RPMPreset = rpmPreset;
   }
 }
 

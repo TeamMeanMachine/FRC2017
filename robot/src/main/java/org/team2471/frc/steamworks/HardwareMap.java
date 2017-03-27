@@ -23,6 +23,7 @@ public class HardwareMap {
     public static final CANTalon ballFeeder = new CANTalon(6);
     public static final CANTalon cycloneMotor = new CANTalon(12);
     public static final Solenoid hoodSolenoid = new Solenoid(4);
+    public static final CANTalon flashlight = new CANTalon(9);
   }
 
   public static final class DriveMap {
