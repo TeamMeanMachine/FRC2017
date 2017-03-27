@@ -106,7 +106,7 @@ public class Robot extends IterativeRobot {
 //    SmartDashboard.putNumber("Shooter Right Speed", HardwareMap.TwinShooterMap.masterRight.getSpeed());
     double endTime = Timer.getFPGATimestamp();
     double dt = startTime - endTime;
-    SmartDashboard.putNumber("Latency Quotient", dt / 1/20 * 100);
+    SmartDashboard.putNumber("Latency Quotient", 1/20 / dt * 100);
   }
 
   @Override
