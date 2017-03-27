@@ -77,7 +77,7 @@ public class AimCommand extends PIDCommand {
     boolean autonomous = DriverStation.getInstance().isAutonomous();
 
     double angle = returnPIDInput();
-    if (SmartDashboard.getBoolean("Auto Aim", false)) {
+    if (SmartDashboard.getBoolean("Auto Aim", false) || autonomous) {
       if(Robot.coProcessor.isDataPresent()) {
         double error = Robot.coProcessor.getError().getAsDouble();
         double distance = Robot.coProcessor.getDistance().getAsDouble();
@@ -95,9 +95,10 @@ public class AimCommand extends PIDCommand {
           }
         }
       }
-      else if (autonomous) { // auto Aim is on, but camera is not present - use gyro
-        //angle += gyroAngle - Robot.shooter.gyro.getAngle();  // todo: add a gyro
-      }
+      // TODO: finish gyro
+//      else if (autonomous) { // auto Aim is on, but camera is not present - use gyro
+//        //angle += gyroAngle - Robot.shooter.gyro.getAngle();  // todo: add a gyro
+//      }
     } else {
       // manual aim
       angle += IOMap.aimAxis.get() * 7.5;
