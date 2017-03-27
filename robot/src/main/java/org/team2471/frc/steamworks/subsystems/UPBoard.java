@@ -1,5 +1,6 @@
 package org.team2471.frc.steamworks.subsystems;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import org.team2471.frc.lib.io.log.Logger;
@@ -14,6 +15,8 @@ public class UPBoard extends Subsystem {
   private final NetworkTable networkTable = NetworkTable.getTable("Vision");
   private final Logger logger = new Logger("UPBoard");
 
+  private final Timer receiveTimer = new Timer();
+
   private State state = State.IDLE;
 
   private boolean dataPresent = false;
@@ -24,6 +27,7 @@ public class UPBoard extends Subsystem {
   public UPBoard() {
     networkTable.putString("Mode", "IDLE");
     new Thread(this::runThread).start(); // start thread
+    receiveTimer.start();
   }
 
   public boolean isDataPresent() {
@@ -56,6 +60,10 @@ public class UPBoard extends Subsystem {
     BOILER,
   }
 
+  public boolean isConnected() {
+    return receiveTimer.get() < 2;
+  }
+
   private void runThread() {
     try {
       DatagramSocket serverSocket = new DatagramSocket(5800);
@@ -65,6 +73,7 @@ public class UPBoard extends Subsystem {
         DatagramPacket packet = new DatagramPacket(receiveData, receiveData.length);
         logger.trace("Waiting for packet...");
         serverSocket.receive(packet);
+        receiveTimer.reset();
         String message = new String(packet.getData());
         logger.trace("Packet received: " + message);
 
