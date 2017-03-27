@@ -32,7 +32,7 @@ public class Robot extends IterativeRobot {
 
   public static SendableChooser autoChooser;
 
-  private double startTime;
+  private double startTime = Timer.getFPGATimestamp();
 
   @SuppressWarnings("unchecked")
   @Override
