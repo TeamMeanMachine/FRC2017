@@ -12,7 +12,8 @@ import org.team2471.frc.util.control.PDPDrawSensor;
 public class HardwareMap {
   public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
 //  public static final AHRS gyro = new AHRS(SPI.Port.kMXP);
-  public static final Gyro gyro = new FakeGyro();
+  //public static final Gyro gyro = new FakeGyro();
+  public static final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
 
   public static final class TwinShooterMap {
