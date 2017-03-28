@@ -20,7 +20,7 @@ import org.team2471.frc.util.net.ClockServer;
 import java.util.OptionalDouble;
 
 public class Robot extends IterativeRobot {
-  public static final boolean COMPETITION = true;
+  public static boolean COMPETITION = true;
 
   public static UPBoard coProcessor;
   public static Drive drive;
@@ -37,6 +37,9 @@ public class Robot extends IterativeRobot {
   @SuppressWarnings("unchecked")
   @Override
   public void robotInit() {
+    COMPETITION = false;  // SmartDashboard.getString("Robot", "Competition").equals("Competition");
+    //SmartDashboard.putString("Robot", "Practice");
+
     shooter = new Shooter();
     drive = new Drive();
     fuelIntake = new FuelIntake();
@@ -94,7 +97,8 @@ public class Robot extends IterativeRobot {
     SmartDashboard.putNumber("Drive Speed", drive.getSpeed());
     SmartDashboard.putNumber("Gear Sensor", HardwareMap.GearIntakeMap.gearSensor.getValue());
 
-    SmartDashboard.putNumber("FakeGyro", drive.getAngle());
+    SmartDashboard.putNumber("Gyro", HardwareMap.gyro.getAngle());
+
 
     OptionalDouble error = coProcessor.getError();
     OptionalDouble distance = coProcessor.getDistance();
