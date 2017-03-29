@@ -15,9 +15,9 @@ public class AimCommand extends PIDCommand {
   private final double AUTO_SHOOT_DELAY = 0.05;
 
   private final Timer shootingTimer = new Timer();
+  private final Timer aimTimer = new Timer();
   private final PIDController turnController = getPIDController();
 
-  private boolean wasExtended;
   private double offset;
   private double gyroAngle;
   private double rpm;
@@ -48,6 +48,7 @@ public class AimCommand extends PIDCommand {
 
     turnController.setAbsoluteTolerance(2.0);
     turnController.setToleranceBuffer(60);
+    turnController.setOutputRange(-0.4, 0.4);
   }
 
   public AimCommand() {
@@ -63,6 +64,7 @@ public class AimCommand extends PIDCommand {
     targetFound = false;
 
     offset = SmartDashboard.getNumber("Aim Offset", 0);
+    aimTimer.start();
 
     curveDistanceToRPM = new MotionCurve();
     curveDistanceToRPM.storeValue(0.0, SmartDashboard.getNumber("RPM1", 2640.0));
@@ -93,7 +95,7 @@ public class AimCommand extends PIDCommand {
           if (Robot.shooter.isHoodUp()) {
             rpm = curveDistanceToRPM.getValue(distance);
             System.out.println("Distance: " + distance + " RPM: " + rpm);
-            rpm += SmartDashboard.getNumber("Shooter OffSet", 0.0);
+            rpm += SmartDashboard.getNumber("Shooter Offset", 0.0);
           } else {
             angle += IOMap.aimAxis.get() * 7.5;
             Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
@@ -119,7 +121,7 @@ public class AimCommand extends PIDCommand {
     }
 
     boolean shoot = autonomous ?
-        turnController.getAvgError() < 2  && targetFound :  // auto aim condition
+        turnController.getAvgError() < 2  && targetFound && turnController.get() > 1.0:  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();
@@ -177,6 +179,7 @@ public class AimCommand extends PIDCommand {
     turnController.disable();
     Robot.shooter.reset();
     Robot.shooter.disableFlashlight();
+    aimTimer.stop();
 
     IOMap.getGunnerController().rumbleLeft(0.0f);
     IOMap.getGunnerController().rumbleRight(0.0f);

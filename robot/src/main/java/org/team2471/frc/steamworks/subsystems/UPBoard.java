@@ -96,7 +96,7 @@ public class UPBoard extends Subsystem {
           this.error = OptionalDouble.of(error);
           this.distance = OptionalDouble.of(distance);
         } catch (RuntimeException ignored) {
-          logger.warn("Invalid packet received: " + message);
+          //logger.warn("Invalid packet received: " + message);
         }
       }
     } catch (IOException e) {
