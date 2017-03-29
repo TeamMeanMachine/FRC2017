@@ -181,12 +181,10 @@ public class Shooter extends Subsystem {
   }
 
   public void extendHood() {
-    System.out.println("Extend");
     hoodSolenoid.set(true);
   }
 
   public void retractHood() {
-    System.out.println("Retract");
     hoodSolenoid.set(false);
   }
 

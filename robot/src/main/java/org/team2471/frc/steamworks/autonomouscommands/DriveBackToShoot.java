@@ -33,7 +33,6 @@ public class DriveBackToShoot extends FollowPathTankDriveCommand {
   @Override
   protected void initialize() {
     super.initialize();
-    //System.out.println("Got To Drive Six Feet Initialize");
     shiftPTO.set(true);
   }
 }

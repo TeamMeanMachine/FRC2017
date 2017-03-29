@@ -67,7 +67,6 @@ public class ManualClimbCommand extends PlayAnimationCommand {
 
     double startTime = Timer.getFPGATimestamp();
     super.execute();
-    System.out.println(Timer.getFPGATimestamp() - startTime);
 
     double distance = Math.abs(Robot.drive.getDistance() - startDistance);
     if (automaticIntake) {

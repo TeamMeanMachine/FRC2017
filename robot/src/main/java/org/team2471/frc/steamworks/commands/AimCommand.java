@@ -94,7 +94,6 @@ public class AimCommand extends PIDCommand {
         if (!autonomous) {
           if (Robot.shooter.isHoodUp()) {
             rpm = curveDistanceToRPM.getValue(distance);
-            System.out.println("Distance: " + distance + " RPM: " + rpm);
             rpm += SmartDashboard.getNumber("Shooter Offset", 0.0);
           } else {
             angle += IOMap.aimAxis.get() * 7.5;
@@ -137,7 +136,6 @@ public class AimCommand extends PIDCommand {
 
       Robot.shooter.setIntake(speed * 0.8, speed);
       Robot.fuelIntake.rollIn();
-
     } else {
       Robot.gearIntake.retract();
       if(shootingTimer.get() < 0.2){
