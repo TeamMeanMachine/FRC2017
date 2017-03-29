@@ -117,7 +117,7 @@ public class AimCommand extends PIDCommand {
     }
 
     boolean shoot = autonomous ?
-        turnController.getAvgError() < 2  && targetFound && turnController.get() > 1.0:  // auto aim condition
+        turnController.getAvgError() < 2  && targetFound && aimTimer.get() > 1.0:  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();
