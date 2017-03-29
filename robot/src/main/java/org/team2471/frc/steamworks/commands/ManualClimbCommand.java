@@ -33,11 +33,11 @@ public class ManualClimbCommand extends PlayAnimationCommand {
     rightCurve = new MotionProfileCurve(Robot.drive.getRightMotor1(), animation );
 
     leftCurve.storeValue(0.0, 0.0 );
-    leftCurve.storeValue(2.0, 29.0 );
+    leftCurve.storeValue(3.0, 29.0 );
     leftCurve.storeValue(15.0, 40.0 );
 
     rightCurve.storeValue(0.0, 0.0 );
-    rightCurve.storeValue(2.0, 29.0 );
+    rightCurve.storeValue(3.0, 29.0 );
     rightCurve.storeValue(15.0, 40.0 );
 
     setAnimation(animation);
@@ -62,8 +62,12 @@ public class ManualClimbCommand extends PlayAnimationCommand {
 
   @Override
   protected void execute() {
-    setSpeed(IOMap.throttleAxis.get());
+    double speed = IOMap.throttleAxis.get();
+    setSpeed(speed);
+
+    double startTime = Timer.getFPGATimestamp();
     super.execute();
+    System.out.println(Timer.getFPGATimestamp() - startTime);
 
     double distance = Math.abs(Robot.drive.getDistance() - startDistance);
     if (automaticIntake) {
@@ -86,6 +90,8 @@ public class ManualClimbCommand extends PlayAnimationCommand {
       intakePressed = false;
     }
     SmartDashboard.putNumber("Climb Time", timer.get());
+    SmartDashboard.putNumber("Climb Speed", speed);
+    SmartDashboard.putNumber("Climb Setpoint", Robot.drive.getLeftMotor1().getSetpoint());
   }
 
   @Override

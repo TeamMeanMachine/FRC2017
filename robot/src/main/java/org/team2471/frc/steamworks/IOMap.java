@@ -82,10 +82,10 @@ public class IOMap {
 
     CommandTrigger pickupGearTrigger = new CommandTrigger(pickupGearButton::get);
     pickupGearTrigger.whileActive(new PickupGearCommand());
+    pickupGearTrigger.whenInactive(new DelayedCommand(new CenterGearCommand(), 0.6, 1));
 
     CommandTrigger placeGearTrigger = new CommandTrigger(placeGearButton::get);
     placeGearTrigger.whileActive(new PlaceGearCommand());
-    placeGearTrigger.whenInactive(new DelayedCommand(new CenterGearCommand(), 0.6, 1));
 
     CommandTrigger climbTrigger = new CommandTrigger(climbButton::get);
     climbTrigger.toggleWhenActive(new ManualClimbCommandGroup());
