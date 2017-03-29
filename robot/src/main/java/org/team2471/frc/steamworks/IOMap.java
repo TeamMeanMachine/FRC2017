@@ -8,6 +8,7 @@ import org.team2471.frc.lib.io.ControllerDPad;
 import org.team2471.frc.lib.io.maps.XboxMap;
 import org.team2471.frc.steamworks.commandgroups.ManualClimbCommandGroup;
 import org.team2471.frc.steamworks.commands.*;
+import org.team2471.frc.util.DelayedCommand;
 
 @SuppressWarnings("WeakerAccess")
 public class IOMap {
@@ -84,6 +85,7 @@ public class IOMap {
 
     CommandTrigger placeGearTrigger = new CommandTrigger(placeGearButton::get);
     placeGearTrigger.whileActive(new PlaceGearCommand());
+    placeGearTrigger.whenInactive(new DelayedCommand(new CenterGearCommand(), 0.6, 1));
 
     CommandTrigger climbTrigger = new CommandTrigger(climbButton::get);
     climbTrigger.toggleWhenActive(new ManualClimbCommandGroup());
