@@ -73,6 +73,10 @@ public class AimCommand extends PIDCommand {
     curveDistanceToRPM.storeValue(SmartDashboard.getNumber("Dist3", 10.25), SmartDashboard.getNumber("RPM3",3160.0));
     curveDistanceToRPM.storeValue(SmartDashboard.getNumber("Dist4", 13.5), SmartDashboard.getNumber("RPM4",4160.0));
     // RPM0 is for the boiler shot
+    boolean autonomous = DriverStation.getInstance().isAutonomous();
+    if (SmartDashboard.getBoolean("Auto Aim", false) || autonomous) {
+      Robot.shooter.extendHood();
+    }
   }
 
   protected void execute() {
