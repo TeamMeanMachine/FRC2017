@@ -16,5 +16,12 @@ public class RPMPresetCommand extends InstantCommand {
     String name = "RPM" + presetNumber;
     SmartDashboard.putNumber("Shooter Setpoint", SmartDashboard.getNumber(name, 2500));
     Robot.shooter.setRPMPreset(presetNumber);
+    SmartDashboard.putBoolean("Auto Aim", false);
+    if (presetNumber == 0){
+      Robot.shooter.retractHood();
+    }
+    else {
+      Robot.shooter.extendHood();
+    }
   }
 }
