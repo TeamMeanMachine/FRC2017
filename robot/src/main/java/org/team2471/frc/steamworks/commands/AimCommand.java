@@ -50,8 +50,9 @@ public class AimCommand extends PIDCommand {
 
     DashboardUtils.putPersistentNumber("Aim Offset", 0);
     DashboardUtils.putPersistentNumber("Aim P", 0.17);
-    DashboardUtils.putPersistentNumber("Aim D", 0.2);
-    DashboardUtils.putPersistentNumber("Aim Output Range", 0.35);
+    DashboardUtils.putPersistentNumber("Aim D", 0.15);
+    DashboardUtils.putPersistentNumber("Aim Output Range", 0.27);
+    DashboardUtils.putPersistentBoolean("Auto Aim", true);
 
     turnController.setAbsoluteTolerance(0.35);
   }
@@ -128,6 +129,7 @@ public class AimCommand extends PIDCommand {
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();
+      Robot.shooter.setRampRate(0);
       double speed = autonomous ?
           // auto
           Timer.getFPGATimestamp() > startTime + AUTO_SHOOT_DELAY ? 1.0 : 0
@@ -150,6 +152,7 @@ public class AimCommand extends PIDCommand {
       Robot.shooter.setIntake(speed * 0.8, speed);
       Robot.fuelIntake.rollIn();
     } else {
+      Robot.shooter.setRampRate(32);
       Robot.gearIntake.retract();
       if(shootingTimer.get() < 0.2){
         Robot.shooter.setIntake(0, 0);
