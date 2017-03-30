@@ -23,6 +23,6 @@ public class BackwardFortyKPAAuto extends CommandGroup {
     addSequential(new FortyKPA(1.0, mirrored));
     addParallel(new ExtendHoodCommand());
     addSequential(new ForwardForFortyKPA(1.0, mirrored));
-    addSequential(new AimCommand(0, SmartDashboard.getNumber("RPM1", 2550)));
+    addSequential(new AimCommand(13, SmartDashboard.getNumber("RPM1", 2550)));
   }
 }

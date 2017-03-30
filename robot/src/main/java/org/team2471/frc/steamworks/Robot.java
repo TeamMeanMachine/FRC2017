@@ -110,6 +110,7 @@ public class Robot extends IterativeRobot {
 //    SmartDashboard.putNumber("Shooter Right Speed", HardwareMap.TwinShooterMap.masterRight.getSpeed());
     double endTime = Timer.getFPGATimestamp();
     double dt = endTime - startTime;
+    SmartDashboard.putBoolean("Coprocessor Connected", coProcessor.isConnected());
     SmartDashboard.putNumber("Latency Quotient", 1/20 / dt * 100);
   }
 

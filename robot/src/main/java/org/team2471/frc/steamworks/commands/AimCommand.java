@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.lib.motion_profiling.MotionCurve;
+import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.subsystems.UPBoard;
@@ -14,8 +15,11 @@ import org.team2471.frc.steamworks.subsystems.UPBoard;
 public class AimCommand extends PIDCommand {
   private final double AUTO_SHOOT_DELAY = 0.05;
 
+  private final double AGITATOR_DELAY = 3;
+  private final double AGITATOR_DURATION = 0.4;
+
   private final Timer shootingTimer = new Timer();
-  private final Timer aimTimer = new Timer();
+  private final Timer agitatorTimer = new Timer();
   private final PIDController turnController = getPIDController();
 
   private double offset;
@@ -45,10 +49,11 @@ public class AimCommand extends PIDCommand {
     Robot.coProcessor.setState(UPBoard.State.BOILER);
 
     DashboardUtils.putPersistentNumber("Aim Offset", 0);
+    DashboardUtils.putPersistentNumber("Aim P", 0.17);
+    DashboardUtils.putPersistentNumber("Aim D", 0.2);
+    DashboardUtils.putPersistentNumber("Aim Output Range", 0.35);
 
-    turnController.setAbsoluteTolerance(2.0);
-    turnController.setToleranceBuffer(60);
-    turnController.setOutputRange(-0.4, 0.4);
+    turnController.setAbsoluteTolerance(0.35);
   }
 
   public AimCommand() {
@@ -58,13 +63,13 @@ public class AimCommand extends PIDCommand {
   protected void initialize() {
     Robot.shooter.enable();
     shootingTimer.start();
+    agitatorTimer.start();
 
     startTime = Timer.getFPGATimestamp();
 
     targetFound = false;
 
     offset = SmartDashboard.getNumber("Aim Offset", 0);
-    aimTimer.start();
 
     curveDistanceToRPM = new MotionCurve();
     curveDistanceToRPM.storeValue(0.0, SmartDashboard.getNumber("RPM1", 2640.0));
@@ -83,7 +88,12 @@ public class AimCommand extends PIDCommand {
     boolean autonomous = DriverStation.getInstance().isAutonomous();
     Robot.shooter.enableFlashlight();
 
-    double angle = returnPIDInput();
+    // update PID
+    turnController.setPID(SmartDashboard.getNumber("Aim P", 0.07), 0, SmartDashboard.getNumber("Aim D", 0.1));
+    double outputRange = SmartDashboard.getNumber("Aim Output Range", 0.5);
+    turnController.setOutputRange(-outputRange, outputRange);
+
+    double angle = autonomous && !targetFound ? gyroAngle : returnPIDInput();
     if (SmartDashboard.getBoolean("Auto Aim", false) || autonomous) {
       if(Robot.coProcessor.isDataPresent()) {
         double error = Robot.coProcessor.getError().getAsDouble();
@@ -91,21 +101,15 @@ public class AimCommand extends PIDCommand {
         angle -= error * 0.7;
         targetFound = true;
 
-        if (!autonomous) {
-          if (Robot.shooter.isHoodUp()) {
-            rpm = curveDistanceToRPM.getValue(distance);
-            rpm += SmartDashboard.getNumber("Shooter Offset", 0.0);
-          } else {
-            angle += IOMap.aimAxis.get() * 7.5;
-            Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
-          }
+        if (Robot.shooter.isHoodUp()) {
+          rpm = curveDistanceToRPM.getValue(distance);
+          rpm += SmartDashboard.getNumber("Shooter Offset", 0.0);
+        } else {
+          angle += IOMap.aimAxis.get() * 7.5;
+          Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
         }
       }
-      // TODO: finish gyro
-//      else if (autonomous) { // auto Aim is on, but camera is not present - use gyro
-//        //angle += gyroAngle - Robot.shooter.gyro.getAngle();  // todo: add a gyro
-//      }
-    } else {
+    }  else {
       // manual aim
       angle += IOMap.aimAxis.get() * 7.5;
       rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
@@ -120,7 +124,7 @@ public class AimCommand extends PIDCommand {
     }
 
     boolean shoot = autonomous ?
-        turnController.getAvgError() < 2  && targetFound && aimTimer.get() > 1.0:  // auto aim condition
+        turnController.getError() < 2  && targetFound:  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();
@@ -132,6 +136,15 @@ public class AimCommand extends PIDCommand {
 
       if (!Robot.shooter.isHoodUp()) {  // boiler shot
         speed *= SmartDashboard.getNumber("BoilerMaxFeed", 0.75 );
+      }
+
+      // agitator stuff
+      if(agitatorTimer.get() < AGITATOR_DURATION) {
+        Robot.gearIntake.extend();
+      } else if(agitatorTimer.get() > AGITATOR_DELAY + AGITATOR_DURATION) {
+        agitatorTimer.reset();
+      } else {
+        Robot.gearIntake.retract();
       }
 
       Robot.shooter.setIntake(speed * 0.8, speed);
@@ -175,9 +188,12 @@ public class AimCommand extends PIDCommand {
   protected void end() {
     Robot.shooter.disable();
     turnController.disable();
+    agitatorTimer.stop();
+    shootingTimer.stop();
     Robot.shooter.reset();
     Robot.shooter.disableFlashlight();
-    aimTimer.stop();
+
+    Robot.gearIntake.retract();
 
     IOMap.getGunnerController().rumbleLeft(0.0f);
     IOMap.getGunnerController().rumbleRight(0.0f);
@@ -187,7 +203,11 @@ public class AimCommand extends PIDCommand {
 
   @Override
   protected double returnPIDInput() {
-    return Robot.drive.getAngle();
+    if(DriverStation.getInstance().isAutonomous() && !targetFound) {
+      return HardwareMap.gyro.getAngle();
+    } else {
+      return Robot.drive.getAngle();
+    }
   }
 
   @Override

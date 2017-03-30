@@ -81,11 +81,6 @@ public class Shooter extends Subsystem {
     leftSlaveMotor.reverseOutput(false);
     leftSlaveMotor.enableBrakeMode(false);
 
-    // set ramp rates
-    leftMasterMotor.setVoltageRampRate(32);
-    leftSlaveMotor.setVoltageRampRate(32);
-    rightMasterMotor.setVoltageRampRate(32);
-    rightSlaveMotor.setVoltageRampRate(32);
 
     cycloneMotor.setInverted(false);
     elevatorMotor.setInverted(true);
@@ -198,6 +193,13 @@ public class Shooter extends Subsystem {
 
   public boolean isHoodUp(){
     return hoodSolenoid.get();
+  }
+
+  public void setRampRate(double rampRate) {
+    leftMasterMotor.setVoltageRampRate(rampRate);
+    leftSlaveMotor.setVoltageRampRate(rampRate);
+    rightMasterMotor.setVoltageRampRate(rampRate);
+    rightSlaveMotor.setVoltageRampRate(rampRate);
   }
 
   protected void initDefaultCommand() {

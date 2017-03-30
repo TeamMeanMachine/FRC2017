@@ -62,6 +62,7 @@ public class UPBoard extends Subsystem {
 
   public boolean isConnected() {
     return receiveTimer.get() < 2;
+//    return false;
   }
 
   private void runThread() {
