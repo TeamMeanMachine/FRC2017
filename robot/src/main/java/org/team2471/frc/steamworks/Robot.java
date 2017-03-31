@@ -1,12 +1,12 @@
 package org.team2471.frc.steamworks;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.*;
-//import org.team2471.frc.steamworks.autonomouscommands.BackwardFortyKPAAuto;
 import org.team2471.frc.steamworks.autonomousroutines.*;
 import org.team2471.frc.steamworks.autonomousroutines.BackwardFortyKPAAuto;
 import org.team2471.frc.steamworks.commands.AimCommand;
@@ -20,7 +20,9 @@ import org.team2471.frc.util.net.ClockServer;
 import java.util.OptionalDouble;
 
 public class Robot extends IterativeRobot {
-  public static boolean COMPETITION = true;
+  public static final boolean COMPETITION = true;
+
+  public static DriverStation.Alliance alliance;
 
   public static UPBoard coProcessor;
   public static Drive drive;
@@ -29,6 +31,7 @@ public class Robot extends IterativeRobot {
   public static GearIntake gearIntake;
   public static FuelFlap flap;
   public static LEDController ledController;
+  public static HopperWalls walls;
 
   public static SendableChooser autoChooser;
 
@@ -37,8 +40,21 @@ public class Robot extends IterativeRobot {
   @SuppressWarnings("unchecked")
   @Override
   public void robotInit() {
-    COMPETITION = false;  // SmartDashboard.getString("Robot", "Competition").equals("Competition");
+    // SmartDashboard.getString("Robot", "Competition").equals("Competition");
     //SmartDashboard.putString("Robot", "Practice");
+    // wait for alliance color
+    DriverStation ds = DriverStation.getInstance();
+    while(true) {
+      alliance = ds.getAlliance();
+      if(alliance != DriverStation.Alliance.Invalid) {
+        break;
+      }
+      try {
+        Thread.sleep(5);
+      } catch (InterruptedException e) {
+        System.out.println(e.getMessage());
+      }
+    }
 
     shooter = new Shooter();
     drive = new Drive();
@@ -46,6 +62,7 @@ public class Robot extends IterativeRobot {
     gearIntake = new GearIntake();
     ledController = new LEDController();
     flap = new FuelFlap();
+    walls = new HopperWalls();
     HardwareMap.init();
 
     coProcessor = new UPBoard();
@@ -54,6 +71,7 @@ public class Robot extends IterativeRobot {
     autoChooser = new SendableChooser();
     autoChooser.addObject("Don't Move", new DoNothingAuto());
     autoChooser.addObject("40 KPA Forward", new ForwardFortyKPAAuto());
+    autoChooser.addObject("40 KPA Backwards", new BackwardFortyKPAAuto());
     autoChooser.addObject("Drive Eight Feet", new DriveEightFeet());
     autoChooser.addObject("Feeder Lift", new FeederLiftAuto());
     autoChooser.addObject("Boiler Lift", new BoilerLiftAuto());
@@ -62,7 +80,6 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Just Shoot Auto", new AimCommand(0, SmartDashboard.getNumber("RPM0", 2400)));
     autoChooser.addObject("Short fuel and gear", new BoilerGearAuto());
     autoChooser.addObject("Gear plus ten fuel", new GearTenAuto());
-    autoChooser.addObject("40 KPA Backwards", new BackwardFortyKPAAuto());
     autoChooser.addObject("Middle Lift + 10", new CenterLiftPlusTen());
 
     SmartDashboard.putData("AutoChooser", autoChooser);

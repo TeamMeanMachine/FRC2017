@@ -6,11 +6,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.DriveToHopperAutoBlue;
 import org.team2471.frc.steamworks.autonomouscommands.FaceBoilerFromHopper;
-import org.team2471.frc.steamworks.commands.AimCommand;
-import org.team2471.frc.steamworks.commands.ExtendFuelFlapCommand;
-import org.team2471.frc.steamworks.commands.ExtendHoodCommand;
-import org.team2471.frc.steamworks.commands.RetractHoodCommand;
-import org.team2471.frc.steamworks.commands.SpinUpShooterCommand;
+import org.team2471.frc.steamworks.commands.*;
 
 public class ForwardFortyKPAAuto extends CommandGroup {
   public ForwardFortyKPAAuto(){
@@ -20,7 +16,8 @@ public class ForwardFortyKPAAuto extends CommandGroup {
     addParallel(new ExtendFuelFlapCommand(), 15.0);
     addSequential(new ExtendHoodCommand());
     addSequential(new DriveToHopperAutoBlue(1.0, mirrored));
-    addSequential(new WaitCommand(2));
+    addParallel(new ExtendHopperWallsCommand());
+    addSequential(new WaitCommand(3.5));
     addParallel(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM1", 2550)));
     addSequential(new FaceBoilerFromHopper(1.0, mirrored));
     addSequential(new AimCommand(-155, SmartDashboard.getNumber("RPM3", 2950)));

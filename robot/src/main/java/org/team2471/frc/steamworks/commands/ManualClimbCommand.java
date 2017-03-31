@@ -34,11 +34,11 @@ public class ManualClimbCommand extends PlayAnimationCommand {
 
     leftCurve.storeValue(0.0, 0.0 );
     leftCurve.storeValue(3.0, 29.0 );
-    leftCurve.storeValue(15.0, 40.0 );
+    leftCurve.storeValue(15.0, 58.0 );
 
     rightCurve.storeValue(0.0, 0.0 );
     rightCurve.storeValue(3.0, 29.0 );
-    rightCurve.storeValue(15.0, 40.0 );
+    rightCurve.storeValue(15.0, 58.0 );
 
     setAnimation(animation);
   }

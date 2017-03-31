@@ -29,7 +29,7 @@ public class ForwardForFortyKPA extends FollowPathTankDriveCommand{
 //        m_path.addPointAndTangent( 0.0, 0.0, -0.125, -0.5);
 //        m_path.addPointAndTangent( 0.2, 0.5, 0.125, -0.25);
         m_path.addPointAndTangent( 0.0, 0.0, 0.0, -1.0);
-        m_path.addPointAndTangent( 0.0, -0.75, 0.0, -1.0);
+        m_path.addPointAndTangent( 0.0, -0.85, 0.0, -1.0);
 
         m_path.addEasePoint( 0.0, 0.0 );
         m_path.addEasePoint( 0.5, 1.0 );

@@ -56,6 +56,7 @@ public class IOMap {
   public static final ControllerButton spitButton = () -> spitAxis.get() > 0.2;
   public static final ControllerButton fuelFeedButton = coDriverController.getButton(XboxMap.Buttons.A);
   public static final ControllerButton aimButton = coDriverController.getButton(XboxMap.Buttons.X);
+  public static final ControllerButton wallButton = coDriverController.getButton(XboxMap.Buttons.Y);
 
 
   public static ControllerButton shootButton = () -> shootAxis.get() > 0.15;
@@ -110,6 +111,9 @@ public class IOMap {
 
     CommandTrigger decrementRPMTrigger = new CommandTrigger(shooterDPad::isLeft);
     decrementRPMTrigger.whenActive(new UpdateRPMCommand(-10));
+
+    CommandTrigger activateWallsTrigger = new CommandTrigger(wallButton::get);
+    activateWallsTrigger.toggleWhenActive(new ExtendHopperWallsCommand());
   }
 
   public static Controller getDriverController() {

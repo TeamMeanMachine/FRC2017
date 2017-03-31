@@ -8,7 +8,7 @@ import org.team2471.frc.steamworks.Robot;
 
 
 public class FindRopeCommand extends Command {
-  public static final int CURRENT_THRESHOLD = 45;
+  public static final int CURRENT_THRESHOLD = 50;
   private final Logger logger = new Logger("FindRopeCommand");
 
   public FindRopeCommand() {

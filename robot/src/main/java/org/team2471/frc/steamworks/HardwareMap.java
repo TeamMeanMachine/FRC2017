@@ -54,6 +54,10 @@ public class HardwareMap {
     public static final AnalogInput gearSensor = new AnalogInput(0);
   }
 
+  public static final class HopperWallMap {
+    public static final Solenoid solenoid = new Solenoid(2);
+  }
+
   public static void init() {
     // do some call to each static class to force members to be initialized now.
     // this is necessary because initialization takes time, and we want to spend our first 5 seconds of auto moving

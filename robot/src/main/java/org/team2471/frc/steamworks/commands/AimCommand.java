@@ -37,11 +37,11 @@ public class AimCommand extends PIDCommand {
   public AimCommand(double gyroAngle, double rpm) {
     super(0.07, 0, 0.1);
     requires(Robot.drive);
-    requires(Robot.gearIntake);
     requires(Robot.fuelIntake);
     requires(Robot.shooter);
     requires(Robot.coProcessor);
     requires(Robot.flap);
+    requires(Robot.walls);
 
     this.gyroAngle = gyroAngle;
     this.rpm = rpm;
@@ -107,7 +107,7 @@ public class AimCommand extends PIDCommand {
           rpm += SmartDashboard.getNumber("Shooter Offset", 0.0);
         } else {
           angle += IOMap.aimAxis.get() * 7.5;
-          Robot.shooter.setSetpoint(SmartDashboard.getNumber("Shooter Setpoint", 0.0));
+          rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
         }
       }
     }  else {
@@ -142,18 +142,18 @@ public class AimCommand extends PIDCommand {
 
       // agitator stuff
       if(agitatorTimer.get() < AGITATOR_DURATION) {
-        Robot.gearIntake.extend();
+        Robot.walls.retract();
       } else if(agitatorTimer.get() > AGITATOR_DELAY + AGITATOR_DURATION) {
         agitatorTimer.reset();
       } else {
-        Robot.gearIntake.retract();
+        Robot.walls.extend();
       }
 
       Robot.shooter.setIntake(speed * 0.8, speed);
       Robot.fuelIntake.rollIn();
     } else {
       Robot.shooter.setRampRate(32);
-      Robot.gearIntake.retract();
+      Robot.walls.extend();
       if(shootingTimer.get() < 0.2){
         Robot.shooter.setIntake(0, 0);
         Robot.fuelIntake.stopRoll();
@@ -196,7 +196,6 @@ public class AimCommand extends PIDCommand {
     Robot.shooter.reset();
     Robot.shooter.disableFlashlight();
 
-    Robot.gearIntake.retract();
 
     IOMap.getGunnerController().rumbleLeft(0.0f);
     IOMap.getGunnerController().rumbleRight(0.0f);

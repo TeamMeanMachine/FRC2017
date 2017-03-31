@@ -23,7 +23,7 @@ public class FortyKPA extends FollowPathTankDriveCommand {
     m_path.setTravelDirection(-1.0);
 
     m_path.addPointAndTangent(0.0, 0.0, 0.0, 5.0);
-    m_path.addPointAndTangent(-2.8, 7.5, 0.0, 5.0);
+    m_path.addPointAndTangent(-2.9, 7.8, 0.0, 5.0);
 
     m_path.addEasePoint( 0.0, 0.0 );
     m_path.addEasePoint( 3.0, 1.0 );

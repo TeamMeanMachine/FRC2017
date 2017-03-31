@@ -92,10 +92,12 @@ public class Shooter extends Subsystem {
     HardwareMap.TwinShooterMap.masterRight.SetVelocityMeasurementWindow(32);
 
     if (Robot.COMPETITION) {
+      System.out.println("Competition mode");
       leftMasterMotor.reverseSensor(false);
       rightMasterMotor.reverseSensor(false);
     }
     else {
+      System.out.println("Practice mode");
       leftMasterMotor.reverseSensor(true);  // the weird one
       rightMasterMotor.reverseSensor(false);
     }

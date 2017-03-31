@@ -5,10 +5,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.FortyKPA;
 import org.team2471.frc.steamworks.autonomouscommands.ForwardForFortyKPA;
-import org.team2471.frc.steamworks.commands.AimCommand;
-import org.team2471.frc.steamworks.commands.ExtendFuelFlapCommand;
-import org.team2471.frc.steamworks.commands.ExtendHoodCommand;
-import org.team2471.frc.steamworks.commands.SpinUpShooterCommand;
+import org.team2471.frc.steamworks.commands.*;
 import org.team2471.frc.util.DelayedCommand;
 
 public class BackwardFortyKPAAuto extends CommandGroup {
@@ -21,6 +18,9 @@ public class BackwardFortyKPAAuto extends CommandGroup {
 
     addParallel(new DelayedCommand(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM1", 2550)), 3));
     addSequential(new FortyKPA(1.0, mirrored));
+    addParallel(new ExtendHopperWallsCommand());
+    addSequential(new TurnInPlaceCommand(-7, mirrored), 1);
+    addSequential(new TurnInPlaceCommand(7, mirrored), 1);
     addParallel(new ExtendHoodCommand());
     addSequential(new ForwardForFortyKPA(1.0, mirrored));
     addSequential(new AimCommand(13, SmartDashboard.getNumber("RPM1", 2550)));

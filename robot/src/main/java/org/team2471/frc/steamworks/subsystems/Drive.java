@@ -6,6 +6,7 @@ import com.team254.lib.util.DriveSignal;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.io.log.Logger;
 import org.team2471.frc.lib.control.CANController;
@@ -26,11 +27,19 @@ public class Drive extends Subsystem {
 
   private final Logger logger = new Logger("Drive");
 
+  private final SendableChooser<ShiftState> shiftStateChooser = new SendableChooser<>();
+
   private CheesyDriveHelper cheesyDriveHelper;
   public static final double HIGH_SHIFTPOINT = 6.0;
   public static final double LOW_SHIFTPOINT = 2.0;
   public static final int CODES_PER_REV = 216;
   public static final double EDGES_PER_100_MS = CODES_PER_REV * 4.0 / 10.0;
+
+  private enum ShiftState {
+    AUTO,
+    FORCE_HIGH,
+    FORCE_LOW
+  }
 
   public Drive() {
     leftMotor1.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
@@ -82,6 +91,12 @@ public class Drive extends Subsystem {
     rightMotor1.setVoltageRampRate(72);
     rightMotor2.setVoltageRampRate(72);
     rightMotor3.setVoltageRampRate(72);
+
+    shiftStateChooser.addDefault("Automatic", ShiftState.AUTO);
+    shiftStateChooser.addObject("Force High", ShiftState.FORCE_HIGH);
+    shiftStateChooser.addObject("Force Low", ShiftState.FORCE_LOW);
+
+    SmartDashboard.putData("Drive Shifting", shiftStateChooser);
 
     LiveWindow.addActuator("Drive", "Right Motor 1", rightMotor1);
     LiveWindow.addActuator("Drive", "Right Motor 2", rightMotor2);
@@ -137,7 +152,11 @@ public class Drive extends Subsystem {
   }
 
   public void driveStraight(double throttle, boolean highGear) {
-    shiftPTO.set(highGear);
+    if(highGear) {
+      hiGear();
+    } else {
+      lowGear();
+    }
     leftMotor1.set(throttle);
     rightMotor1.set(throttle);
   }
@@ -187,11 +206,22 @@ public class Drive extends Subsystem {
     return (leftMotor1.getPosition() - rightMotor1.getPosition()) / (32.0 / 12.0 * Math.PI) * 158.0;
   }
 
+  private void shift(boolean state) {
+    ShiftState shiftState = shiftStateChooser.getSelected();
+    if(shiftState == ShiftState.AUTO) {
+      shiftPTO.set(state); // should do this 99% of the time
+    } else if(shiftState == ShiftState.FORCE_HIGH) {
+      shiftPTO.set(false);
+    } else {
+      shiftPTO.set(true);
+    }
+  }
+
   public void lowGear() {
-    shiftPTO.set(true);
+    shift(true);
   }
 
   public void hiGear() {
-    shiftPTO.set(false);
+    shift(false);
   }
 }
