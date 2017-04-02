@@ -24,7 +24,7 @@ public class AimCommand extends PIDCommand {
 
   private double offset;
   private double gyroAngle;
-  private double rpm;
+  private final double startRpm;
 
   private boolean targetFound;
 
@@ -44,7 +44,7 @@ public class AimCommand extends PIDCommand {
     requires(Robot.walls);
 
     this.gyroAngle = gyroAngle;
-    this.rpm = rpm;
+    this.startRpm = rpm;
 
     Robot.coProcessor.setState(UPBoard.State.BOILER);
 
@@ -93,6 +93,7 @@ public class AimCommand extends PIDCommand {
     turnController.setPID(SmartDashboard.getNumber("Aim P", 0.07), 0, SmartDashboard.getNumber("Aim D", 0.1));
     double outputRange = SmartDashboard.getNumber("Aim Output Range", 0.5);
     turnController.setOutputRange(-outputRange, outputRange);
+    double rpm = 0;
 
     double angle = autonomous && !targetFound ? gyroAngle : returnPIDInput();
     if (SmartDashboard.getBoolean("Auto Aim", false) || autonomous) {
@@ -102,7 +103,9 @@ public class AimCommand extends PIDCommand {
         angle -= error * 0.7;
         targetFound = true;
 
-        if (Robot.shooter.isHoodUp()) {
+        if(autonomous) {
+          rpm = startRpm;
+        } else if (Robot.shooter.isHoodUp()) {
           rpm = curveDistanceToRPM.getValue(distance);
           rpm += SmartDashboard.getNumber("Shooter Offset", 0.0);
         } else {
@@ -115,6 +118,7 @@ public class AimCommand extends PIDCommand {
       angle += IOMap.aimAxis.get() * 7.5;
       rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
     }
+
 
     SmartDashboard.putNumber("Shooter Setpoint", rpm);
     Robot.shooter.setSetpoint(rpm);
@@ -195,6 +199,7 @@ public class AimCommand extends PIDCommand {
     shootingTimer.stop();
     Robot.shooter.reset();
     Robot.shooter.disableFlashlight();
+    Robot.walls.retract();
 
 
     IOMap.getGunnerController().rumbleLeft(0.0f);

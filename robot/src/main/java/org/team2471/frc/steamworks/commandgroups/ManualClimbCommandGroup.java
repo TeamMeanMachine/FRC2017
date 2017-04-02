@@ -5,12 +5,13 @@ import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.commands.FindRopeCommand;
 import org.team2471.frc.steamworks.commands.ManualClimbCommand;
 import org.team2471.frc.steamworks.commands.RumbleCommand;
+import org.team2471.frc.steamworks.commands.SuperManualClimbCommand;
 
 public class ManualClimbCommandGroup extends CommandGroup {
   public ManualClimbCommandGroup() {
     addSequential(new FindRopeCommand());
     addParallel(new RumbleCommand(IOMap.getDriverController(), 1, RumbleCommand.StickSide.BOTH), 1);
 
-    addSequential(new ManualClimbCommand());
+    addSequential(new SuperManualClimbCommand());
   }
 }

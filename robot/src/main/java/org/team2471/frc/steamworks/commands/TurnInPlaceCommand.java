@@ -11,13 +11,16 @@ public class TurnInPlaceCommand extends PIDCommand {
 
   public TurnInPlaceCommand(double angle, boolean mirrored) {
     super(SmartDashboard.getNumber("Aim P", 0.17), 0, SmartDashboard.getNumber("Aim D", 0.15));
+    double limit = 0.5;
+    getPIDController().setOutputRange(-limit, limit);
 
     if(mirrored) {
       angle = -angle;
     }
     this.angle = angle;
     requires(Robot.drive);
-    getPIDController().setAbsoluteTolerance(2);
+    getPIDController().setAbsoluteTolerance(3);
+
   }
 
   @Override
