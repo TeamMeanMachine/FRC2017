@@ -1,13 +1,9 @@
 package org.team2471.frc.steamworks.defaultcommands;
 
-import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
-
-import static com.ctre.CANTalon.VelocityMeasurementPeriod.Period_1Ms;
 
 public class DriveDefaultCommand extends Command {
 

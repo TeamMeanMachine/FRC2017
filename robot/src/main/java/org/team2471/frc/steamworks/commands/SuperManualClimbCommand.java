@@ -47,14 +47,14 @@ public class SuperManualClimbCommand extends Command {
     }
 
     if (IOMap.climbIntakeOverrideButton.get() && !intakePressed) {
-      if(Robot.gearIntake.isExtended()) {
+      if (Robot.gearIntake.isExtended()) {
         Robot.gearIntake.retract();
       } else {
         Robot.gearIntake.extend();
       }
       automaticIntake = false;
       intakePressed = true;
-    } else if(!IOMap.climbIntakeOverrideButton.get()) {
+    } else if (!IOMap.climbIntakeOverrideButton.get()) {
       intakePressed = false;
     }
   }

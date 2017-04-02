@@ -21,11 +21,9 @@ public class AimCommand extends PIDCommand {
   private final Timer shootingTimer = new Timer();
   private final Timer agitatorTimer = new Timer();
   private final PIDController turnController = getPIDController();
-
+  private final double startRpm;
   private double offset;
   private double gyroAngle;
-  private final double startRpm;
-
   private boolean targetFound;
 
   private int lastImageNumber = 0;
@@ -74,10 +72,10 @@ public class AimCommand extends PIDCommand {
 
     curveDistanceToRPM = new MotionCurve();
     curveDistanceToRPM.storeValue(0.0, SmartDashboard.getNumber("RPM1", 2640.0));
-    curveDistanceToRPM.storeValue(SmartDashboard.getNumber("Dist1", 5.5), SmartDashboard.getNumber("RPM1",2640.0));
-    curveDistanceToRPM.storeValue(SmartDashboard.getNumber("Dist2", 8.25), SmartDashboard.getNumber("RPM2",2910.0));
-    curveDistanceToRPM.storeValue(SmartDashboard.getNumber("Dist3", 10.25), SmartDashboard.getNumber("RPM3",3160.0));
-    curveDistanceToRPM.storeValue(SmartDashboard.getNumber("Dist4", 13.5), SmartDashboard.getNumber("RPM4",4160.0));
+    curveDistanceToRPM.storeValue(SmartDashboard.getNumber("Dist1", 5.5), SmartDashboard.getNumber("RPM1", 2640.0));
+    curveDistanceToRPM.storeValue(SmartDashboard.getNumber("Dist2", 8.25), SmartDashboard.getNumber("RPM2", 2910.0));
+    curveDistanceToRPM.storeValue(SmartDashboard.getNumber("Dist3", 10.25), SmartDashboard.getNumber("RPM3", 3160.0));
+    curveDistanceToRPM.storeValue(SmartDashboard.getNumber("Dist4", 13.5), SmartDashboard.getNumber("RPM4", 4160.0));
     // RPM0 is for the boiler shot
     boolean autonomous = DriverStation.getInstance().isAutonomous();
     if (SmartDashboard.getBoolean("Auto Aim", false) || autonomous) {
@@ -97,13 +95,13 @@ public class AimCommand extends PIDCommand {
 
     double angle = autonomous && !targetFound ? gyroAngle : returnPIDInput();
     if (SmartDashboard.getBoolean("Auto Aim", false) || autonomous) {
-      if(Robot.coProcessor.isDataPresent()) {
+      if (Robot.coProcessor.isDataPresent()) {
         double error = Robot.coProcessor.getError().getAsDouble();
         double distance = Robot.coProcessor.getDistance().getAsDouble();
         angle -= error * 0.7;
         targetFound = true;
 
-        if(autonomous) {
+        if (autonomous) {
           rpm = startRpm;
         } else if (Robot.shooter.isHoodUp()) {
           rpm = curveDistanceToRPM.getValue(distance);
@@ -113,7 +111,7 @@ public class AimCommand extends PIDCommand {
           rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
         }
       }
-    }  else {
+    } else {
       // manual aim
       angle += IOMap.aimAxis.get() * 7.5;
       rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
@@ -124,12 +122,12 @@ public class AimCommand extends PIDCommand {
     Robot.shooter.setSetpoint(rpm);
     turnController.setSetpoint(angle);
 
-    if(autonomous) {
+    if (autonomous) {
       Robot.shooter.extendHood();
     }
 
     boolean shoot = autonomous ?
-        turnController.getError() < 2  && targetFound:  // auto aim condition
+        turnController.getError() < 2 && targetFound :  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();
@@ -138,16 +136,16 @@ public class AimCommand extends PIDCommand {
           // auto
           Timer.getFPGATimestamp() > startTime + AUTO_SHOOT_DELAY ? 1.0 : 0
           // teleop
-          : (IOMap.shootAxis.get() - 0.15) * 1/(1 - 0.15);
+          : (IOMap.shootAxis.get() - 0.15) * 1 / (1 - 0.15);
 
       if (!Robot.shooter.isHoodUp()) {  // boiler shot
-        speed *= SmartDashboard.getNumber("BoilerMaxFeed", 0.75 );
+        speed *= SmartDashboard.getNumber("BoilerMaxFeed", 0.75);
       }
 
       // agitator stuff
-      if(agitatorTimer.get() < AGITATOR_DURATION) {
+      if (agitatorTimer.get() < AGITATOR_DURATION) {
         Robot.walls.retract();
-      } else if(agitatorTimer.get() > AGITATOR_DELAY + AGITATOR_DURATION) {
+      } else if (agitatorTimer.get() > AGITATOR_DELAY + AGITATOR_DURATION) {
         agitatorTimer.reset();
       } else {
         Robot.walls.extend();
@@ -158,7 +156,7 @@ public class AimCommand extends PIDCommand {
     } else {
       Robot.shooter.setRampRate(32);
       Robot.walls.extend();
-      if(shootingTimer.get() < 0.2){
+      if (shootingTimer.get() < 0.2) {
         Robot.shooter.setIntake(0, 0);
         Robot.fuelIntake.stopRoll();
       }
@@ -179,9 +177,9 @@ public class AimCommand extends PIDCommand {
     SmartDashboard.putNumber("Aim Error", turnController.getError());
 
     // rumble and on target calculation
-    boolean onTarget = Math.abs(Robot.shooter.getLeftError())<300.0 &&
-            Math.abs(Robot.shooter.getRightError())<300.0 &&
-            turnController.onTarget();
+    boolean onTarget = Math.abs(Robot.shooter.getLeftError()) < 300.0 &&
+        Math.abs(Robot.shooter.getRightError()) < 300.0 &&
+        turnController.onTarget();
     SmartDashboard.putBoolean("Shooter On Target", onTarget);
     float rumbleValue = onTarget ? 0.5f : 0.0f;
     IOMap.getGunnerController().rumbleLeft(rumbleValue);
@@ -210,7 +208,7 @@ public class AimCommand extends PIDCommand {
 
   @Override
   protected double returnPIDInput() {
-    if(DriverStation.getInstance().isAutonomous() && !targetFound) {
+    if (DriverStation.getInstance().isAutonomous() && !targetFound) {
       return HardwareMap.gyro.getAngle();
     } else {
       return Robot.drive.getAngle();

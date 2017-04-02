@@ -7,15 +7,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // Use this class when you want to test individual hardware pieces without having to comment out a ton of stuff
 public class TestRobot extends IterativeRobot {
-  private static CANTalon[] talons;
   public static Solenoid solenoid;
-
+  private static CANTalon[] talons;
   private static int lastId = 0;
 
   @Override
   public void robotInit() {
     talons = new CANTalon[16];
-    for(int i=0; i<16; i++) {
+    for (int i = 0; i < 16; i++) {
       talons[i] = new CANTalon(i);
     }
 
@@ -35,7 +34,7 @@ public class TestRobot extends IterativeRobot {
   @Override
   public void robotPeriodic() {
     int current = (int) SmartDashboard.getNumber("Test Number", 0);
-    if(current != lastId) {
+    if (current != lastId) {
       talons[lastId].set(0);
     }
     talons[current].set(SmartDashboard.getNumber("Test Power", 0));

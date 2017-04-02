@@ -11,9 +11,9 @@ public class FuelIntakeDefaultCommand extends Command {
 
   @Override
   protected void execute() {
-    if(IOMap.spitButton.get() && !Robot.drive.isClimbing()) {
+    if (IOMap.spitButton.get() && !Robot.drive.isClimbing()) {
       Robot.fuelIntake.rollOut();
-    } else if(IOMap.useIntakeButton.get() && !Robot.drive.isClimbing()) {
+    } else if (IOMap.useIntakeButton.get() && !Robot.drive.isClimbing()) {
       Robot.fuelIntake.rollIn();
     } else {
       Robot.fuelIntake.stopRoll();

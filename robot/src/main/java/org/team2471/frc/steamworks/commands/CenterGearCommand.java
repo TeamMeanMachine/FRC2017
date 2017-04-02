@@ -1,6 +1,5 @@
 package org.team2471.frc.steamworks.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.team2471.frc.steamworks.Robot;
 

@@ -1,12 +1,10 @@
 package org.team2471.frc.steamworks.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import org.team2471.frc.steamworks.Robot;
 
-
-import edu.wpi.first.wpilibj.command.Command;
-
-public class PickupGearCommand extends Command{
+public class PickupGearCommand extends Command {
   private final Timer timer = new Timer();
 
   public PickupGearCommand() {
@@ -21,7 +19,7 @@ public class PickupGearCommand extends Command{
   @Override
   protected void execute() {
     Robot.gearIntake.extend();
-    if(timer.get() > 0.05) {
+    if (timer.get() > 0.05) {
       Robot.gearIntake.rollIn();
     }
   }

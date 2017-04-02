@@ -1,6 +1,5 @@
 package org.team2471.frc.steamworks.autonomouscommands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.team2471.frc.lib.motion_profiling.FollowPathTankDriveCommand;
 import org.team2471.frc.lib.motion_profiling.Path2D;
 import org.team2471.frc.steamworks.HardwareMap;
@@ -11,10 +10,10 @@ import static org.team2471.frc.steamworks.Robot.drive;
 public class DriveAwayFromBoiler extends FollowPathTankDriveCommand {
   Path2D m_path;
 
-  public DriveAwayFromBoiler(double speed, boolean mirror){
+  public DriveAwayFromBoiler(double speed, boolean mirror) {
     requires(drive);
 
-    setSpeed( speed );
+    setSpeed(speed);
     setMirrorPath(mirror);
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
@@ -28,8 +27,9 @@ public class DriveAwayFromBoiler extends FollowPathTankDriveCommand {
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(2.5, 1.0);
 
-    setPath( m_path );
+    setPath(m_path);
   }
+
   @Override
   protected void initialize() {
     super.initialize();

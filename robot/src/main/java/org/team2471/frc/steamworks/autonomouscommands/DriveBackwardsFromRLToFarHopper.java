@@ -10,7 +10,8 @@ import static org.team2471.frc.steamworks.Robot.drive;
 
 public class DriveBackwardsFromRLToFarHopper extends FollowPathTankDriveCommand {
   Path2D m_path;
-//This auto works only on the red alliance
+
+  //This auto works only on the red alliance
   public DriveBackwardsFromRLToFarHopper(double speed, boolean mirror) {
 
     requires(drive);
@@ -30,9 +31,10 @@ public class DriveBackwardsFromRLToFarHopper extends FollowPathTankDriveCommand 
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(4.0, 1.0);
 
-setPath(m_path);
+    setPath(m_path);
 
   }
+
   @Override
   protected void initialize() {
     super.initialize();

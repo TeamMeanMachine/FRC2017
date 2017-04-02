@@ -11,10 +11,10 @@ public class FortyKPA extends FollowPathTankDriveCommand {
 
   Path2D m_path;
 
-  public FortyKPA(double speed, boolean mirror ) {
+  public FortyKPA(double speed, boolean mirror) {
     requires(drive);
 
-    setSpeed( speed );
+    setSpeed(speed);
     setMirrorPath(mirror);
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
@@ -25,10 +25,10 @@ public class FortyKPA extends FollowPathTankDriveCommand {
     m_path.addPointAndTangent(0.0, 0.0, 0.0, 5.0);
     m_path.addPointAndTangent(-3.1, 8.8, -3.0, 5.0);
 
-    m_path.addEasePoint( 0.0, 0.0 );
-    m_path.addEasePoint(2.8, 1.0 );
+    m_path.addEasePoint(0.0, 0.0);
+    m_path.addEasePoint(2.8, 1.0);
 
-    setPath( m_path );
+    setPath(m_path);
   }
 
   @Override

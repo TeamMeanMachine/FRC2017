@@ -12,7 +12,7 @@ public class ClockServer {
       try {
         DatagramSocket socket = new DatagramSocket(port);
         //noinspection InfiniteLoopStatement
-        while(true) {
+        while (true) {
           DatagramPacket packet = new DatagramPacket(new byte[4], 4);
           try {
             socket.receive(packet);

@@ -1,20 +1,18 @@
 package org.team2471.frc.steamworks;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team2471.frc.steamworks.autonomouscommands.*;
+import org.team2471.frc.steamworks.autonomouscommands.DoNothingAuto;
 import org.team2471.frc.steamworks.autonomousroutines.*;
-import org.team2471.frc.steamworks.autonomousroutines.BackwardFortyKPAAuto;
 import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.ZeroGyroCommand;
 import org.team2471.frc.steamworks.subsystems.*;
-
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import org.team2471.frc.util.net.ClockServer;
 
 import java.util.OptionalDouble;
@@ -44,9 +42,9 @@ public class Robot extends IterativeRobot {
     //SmartDashboard.putString("Robot", "Practice");
     // wait for alliance color
     DriverStation ds = DriverStation.getInstance();
-    while(true) {
+    while (true) {
       alliance = ds.getAlliance();
-      if(alliance != DriverStation.Alliance.Invalid) {
+      if (alliance != DriverStation.Alliance.Invalid) {
         break;
       }
       try {
@@ -88,16 +86,16 @@ public class Robot extends IterativeRobot {
     ClockServer.spawnClockServer(5802);
   }
 
-    @Override
-    public void autonomousInit() {
-      if (autoChooser != null) {
-        Command autonomousCommand = (Command) autoChooser.getSelected();
-        if (autonomousCommand != null) {
-          autonomousCommand.start();
-        }
+  @Override
+  public void autonomousInit() {
+    if (autoChooser != null) {
+      Command autonomousCommand = (Command) autoChooser.getSelected();
+      if (autonomousCommand != null) {
+        autonomousCommand.start();
       }
-      HardwareMap.gyro.reset();
     }
+    HardwareMap.gyro.reset();
+  }
 
   @Override
   public void teleopPeriodic() {
@@ -128,7 +126,7 @@ public class Robot extends IterativeRobot {
     double endTime = Timer.getFPGATimestamp();
     double dt = endTime - startTime;
     SmartDashboard.putBoolean("Coprocessor Connected", coProcessor.isConnected());
-    SmartDashboard.putNumber("Latency Quotient", 1/20 / dt * 100);
+    SmartDashboard.putNumber("Latency Quotient", 1 / 20 / dt * 100);
   }
 
   @Override

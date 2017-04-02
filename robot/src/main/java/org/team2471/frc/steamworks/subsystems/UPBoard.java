@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.OptionalDouble;
-import java.util.OptionalInt;
 
 public class UPBoard extends Subsystem {
   private final NetworkTable networkTable = NetworkTable.getTable("Vision");
@@ -55,11 +54,6 @@ public class UPBoard extends Subsystem {
   protected void initDefaultCommand() {
   }
 
-  public enum State {
-    IDLE,
-    BOILER,
-  }
-
   public boolean isConnected() {
     return receiveTimer.get() < 2;
 //    return false;
@@ -78,7 +72,7 @@ public class UPBoard extends Subsystem {
         String message = new String(packet.getData());
         logger.trace("Packet received: " + message);
 
-        if(message.startsWith("NONE")) {
+        if (message.startsWith("NONE")) {
           dataPresent = false;
           error = OptionalDouble.empty();
           error = OptionalDouble.empty();
@@ -103,5 +97,10 @@ public class UPBoard extends Subsystem {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public enum State {
+    IDLE,
+    BOILER,
   }
 }

@@ -29,16 +29,16 @@ public class ManualClimbCommand extends PlayAnimationCommand {
     timer = new Timer();
 
     animation = new MotionProfileAnimation();
-    leftCurve = new MotionProfileCurve(Robot.drive.getLeftMotor1(), animation );
-    rightCurve = new MotionProfileCurve(Robot.drive.getRightMotor1(), animation );
+    leftCurve = new MotionProfileCurve(Robot.drive.getLeftMotor1(), animation);
+    rightCurve = new MotionProfileCurve(Robot.drive.getRightMotor1(), animation);
 
-    leftCurve.storeValue(0.0, 0.0 );
-    leftCurve.storeValue(3.0, 29.0 );
-    leftCurve.storeValue(15.0, 58.0 );
+    leftCurve.storeValue(0.0, 0.0);
+    leftCurve.storeValue(3.0, 29.0);
+    leftCurve.storeValue(15.0, 58.0);
 
-    rightCurve.storeValue(0.0, 0.0 );
-    rightCurve.storeValue(3.0, 29.0 );
-    rightCurve.storeValue(15.0, 58.0 );
+    rightCurve.storeValue(0.0, 0.0);
+    rightCurve.storeValue(3.0, 29.0);
+    rightCurve.storeValue(15.0, 58.0);
 
     setAnimation(animation);
   }
@@ -78,14 +78,14 @@ public class ManualClimbCommand extends PlayAnimationCommand {
     }
 
     if (climbIntakeOverrideButton.get() && !intakePressed) {
-      if(Robot.gearIntake.isExtended()) {
+      if (Robot.gearIntake.isExtended()) {
         Robot.gearIntake.retract();
       } else {
         Robot.gearIntake.extend();
       }
       automaticIntake = false;
       intakePressed = true;
-    } else if(!climbIntakeOverrideButton.get()) {
+    } else if (!climbIntakeOverrideButton.get()) {
       intakePressed = false;
     }
     SmartDashboard.putNumber("Climb Time", timer.get());

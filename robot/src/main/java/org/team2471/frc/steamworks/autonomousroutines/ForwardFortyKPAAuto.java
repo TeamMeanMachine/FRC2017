@@ -9,7 +9,7 @@ import org.team2471.frc.steamworks.autonomouscommands.FaceBoilerFromHopper;
 import org.team2471.frc.steamworks.commands.*;
 
 public class ForwardFortyKPAAuto extends CommandGroup {
-  public ForwardFortyKPAAuto(){
+  public ForwardFortyKPAAuto() {
     boolean mirrored = DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red;
 
 //    addParallel(new TiltGearIntakeCommand(), 5.0);
@@ -23,7 +23,7 @@ public class ForwardFortyKPAAuto extends CommandGroup {
     double angle = 155;
     double josephOffset = -1.5;
     angle += josephOffset;
-    if(mirrored) {
+    if (mirrored) {
       angle = -angle;
     }
     addSequential(new AimCommand(angle, SmartDashboard.getNumber("RPM3", 2950)));

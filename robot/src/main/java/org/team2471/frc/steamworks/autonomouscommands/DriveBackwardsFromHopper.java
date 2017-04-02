@@ -30,9 +30,10 @@ public class DriveBackwardsFromHopper extends FollowPathTankDriveCommand {
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(1.5, 1.0);
 
-setPath(m_path);
+    setPath(m_path);
 
   }
+
   @Override
   protected void initialize() {
     super.initialize();

@@ -16,6 +16,6 @@ public class BoilerGearAuto extends CommandGroup {
     addSequential(new DriveAwayFromBoiler(1, mirrored));
     addSequential(new DriveToLiftFromBoiler(1, mirrored));
     addSequential(new PlaceGearCommand());
-   // addSequential(new TiltGearIntakeCommand(), 7);
+    // addSequential(new TiltGearIntakeCommand(), 7);
   }
 }

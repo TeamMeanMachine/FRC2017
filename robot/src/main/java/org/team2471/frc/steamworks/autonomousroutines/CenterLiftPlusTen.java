@@ -10,13 +10,13 @@ import org.team2471.frc.steamworks.commands.PlaceGearCommand;
 //import org.team2471.frc.steamworks.commands.TiltGearIntakeCommand;
 
 public class CenterLiftPlusTen extends CommandGroup {
-  public CenterLiftPlusTen(){
+  public CenterLiftPlusTen() {
     DriverStation driverStation = DriverStation.getInstance();
 
     DriverStation.Alliance alliance = driverStation.getAlliance();
     int location = driverStation.getLocation();
 
-    if (alliance == alliance.Red){
+    if (alliance == DriverStation.Alliance.Red) {
       addSequential(new DriveToMiddleLift());
       addSequential(new PlaceGearCommand());
 //      addSequential(new TiltGearIntakeCommand());
@@ -24,7 +24,7 @@ public class CenterLiftPlusTen extends CommandGroup {
       addSequential(new ExtendHoodCommand());
       addSequential(new AimCommand(0, SmartDashboard.getNumber("RPM3", 3000)));
     }
-    if (alliance == alliance.Blue){
+    if (alliance == DriverStation.Alliance.Blue) {
       addSequential(new DriveToMiddleLift());
       addSequential(new PlaceGearCommand());
 //      addSequential(new TiltGearIntakeCommand());

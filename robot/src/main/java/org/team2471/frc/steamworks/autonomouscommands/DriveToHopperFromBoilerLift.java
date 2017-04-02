@@ -9,7 +9,8 @@ import static org.team2471.frc.steamworks.Robot.drive;
 
 public class DriveToHopperFromBoilerLift extends FollowPathTankDriveCommand {
   Path2D m_path;
-  public DriveToHopperFromBoilerLift(double speed, boolean mirror){
+
+  public DriveToHopperFromBoilerLift(double speed, boolean mirror) {
     requires(drive);
 
     setSpeed(speed);
@@ -28,6 +29,7 @@ public class DriveToHopperFromBoilerLift extends FollowPathTankDriveCommand {
 
     setPath(m_path);
   }
+
   @Override
   protected void initialize() {
     super.initialize();

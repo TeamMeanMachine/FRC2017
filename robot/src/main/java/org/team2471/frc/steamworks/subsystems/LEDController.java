@@ -10,10 +10,10 @@ public class LEDController extends Subsystem {
 
   public LEDController() {
     new Thread(() -> {
-      while(serialPort == null) {
+      while (serialPort == null) {
         try {
           serialPort = new SerialPort(9600, SerialPort.Port.kUSB1);
-        } catch(RuntimeException ignored) {
+        } catch (RuntimeException ignored) {
           try {
             //logger.warn("Could not establish connection with teensy. Retrying...", 10);
             Thread.sleep(2000);
@@ -27,7 +27,7 @@ public class LEDController extends Subsystem {
   }
 
   public void write(String message) {
-    if(serialPort != null) {
+    if (serialPort != null) {
       serialPort.writeString(message + '\n');
     }
   }

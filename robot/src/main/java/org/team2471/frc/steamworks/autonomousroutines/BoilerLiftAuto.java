@@ -6,13 +6,13 @@ import org.team2471.frc.steamworks.autonomouscommands.BoilerLiftInner;
 import org.team2471.frc.steamworks.commands.PlaceGearCommand;
 
 public class BoilerLiftAuto extends CommandGroup {
-  public BoilerLiftAuto(){
+  public BoilerLiftAuto() {
     DriverStation driverStation = DriverStation.getInstance();
     DriverStation.Alliance alliance = driverStation.getAlliance();
     boolean mirrored = alliance == DriverStation.Alliance.Red;
 
     addSequential(new BoilerLiftInner(1.0, mirrored));
     addSequential(new PlaceGearCommand());
-   // addSequential(new TiltGearIntakeCommand(), 2.0);
+    // addSequential(new TiltGearIntakeCommand(), 2.0);
   }
 }

@@ -14,7 +14,7 @@ public class TurnInPlaceCommand extends PIDCommand {
     double limit = 0.5;
     getPIDController().setOutputRange(-limit, limit);
 
-    if(mirrored) {
+    if (mirrored) {
       angle = -angle;
     }
     this.angle = angle;

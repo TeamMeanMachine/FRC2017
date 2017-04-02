@@ -1,20 +1,26 @@
 package org.team2471.frc.steamworks;
 
-import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.ctre.CANTalon;
-
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Solenoid;
 import org.team2471.frc.lib.control.CANController;
-import org.team2471.frc.util.FakeGyro;
 import org.team2471.frc.util.control.PDPDrawSensor;
 
 public class HardwareMap {
   public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
-//  public static final AHRS gyro = new AHRS(SPI.Port.kMXP);
+  //  public static final AHRS gyro = new AHRS(SPI.Port.kMXP);
   //public static final Gyro gyro = new FakeGyro();
   public static final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
+  public static void init() {
+    // do some call to each static class to force members to be initialized now.
+    // this is necessary because initialization takes time, and we want to spend our first 5 seconds of auto moving
+    TwinShooterMap.ballFeeder.get();
+    DriveMap.rightMotor1.get();
+    FuelIntakeMap.intakeMotor.get();
+  }
 
   public static final class TwinShooterMap {
     public static final CANTalon masterLeft = new CANTalon(5);
@@ -47,7 +53,6 @@ public class HardwareMap {
     public static final PDPDrawSensor intakeMotorDrawSensor = () -> pdp.getCurrent(3);
   }
 
-
   public static final class GearIntakeMap {
     public static final Solenoid gearSolenoid = new Solenoid(1);
     public static final CANTalon wheelMotor = new CANTalon(8);
@@ -56,14 +61,6 @@ public class HardwareMap {
 
   public static final class HopperWallMap {
     public static final Solenoid solenoid = new Solenoid(2);
-  }
-
-  public static void init() {
-    // do some call to each static class to force members to be initialized now.
-    // this is necessary because initialization takes time, and we want to spend our first 5 seconds of auto moving
-    TwinShooterMap.ballFeeder.get();
-    DriveMap.rightMotor1.get();
-    FuelIntakeMap.intakeMotor.get();
   }
 
 

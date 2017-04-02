@@ -65,7 +65,7 @@ public class Shooter extends Subsystem {
     rightMasterMotor.setInverted(true);
     rightMasterMotor.reverseOutput(false);
     rightSlaveMotor.changeControlMode(TalonControlMode.Follower);
-    rightSlaveMotor.set((double)this.rightMasterMotor.getDeviceID());
+    rightSlaveMotor.set((double) this.rightMasterMotor.getDeviceID());
     rightSlaveMotor.reverseOutput(false);
     rightSlaveMotor.enableBrakeMode(false);
 
@@ -95,8 +95,7 @@ public class Shooter extends Subsystem {
       System.out.println("Competition mode");
       leftMasterMotor.reverseSensor(false);
       rightMasterMotor.reverseSensor(false);
-    }
-    else {
+    } else {
       System.out.println("Practice mode");
       leftMasterMotor.reverseSensor(true);  // the weird one
       rightMasterMotor.reverseSensor(false);
@@ -163,7 +162,7 @@ public class Shooter extends Subsystem {
   }
 
   public boolean onTarget() {
-    return rightMasterMotor.getError()<500 && leftMasterMotor.getError()<500;
+    return rightMasterMotor.getError() < 500 && leftMasterMotor.getError() < 500;
   }
 
   public void reset() {
@@ -193,7 +192,7 @@ public class Shooter extends Subsystem {
     flashlight.set(0);
   }
 
-  public boolean isHoodUp(){
+  public boolean isHoodUp() {
     return hoodSolenoid.get();
   }
 

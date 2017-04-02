@@ -6,7 +6,7 @@ import org.team2471.frc.steamworks.autonomouscommands.FeederLiftInner;
 import org.team2471.frc.steamworks.commands.PlaceGearCommand;
 
 public class FeederLiftAuto extends CommandGroup {
-  public FeederLiftAuto(){
+  public FeederLiftAuto() {
     DriverStation driverStation = DriverStation.getInstance();
     DriverStation.Alliance alliance = driverStation.getAlliance();
     boolean mirrored = alliance == DriverStation.Alliance.Red;

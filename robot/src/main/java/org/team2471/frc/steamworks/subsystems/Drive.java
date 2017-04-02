@@ -8,38 +8,27 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team2471.frc.lib.io.log.Logger;
 import org.team2471.frc.lib.control.CANController;
+import org.team2471.frc.lib.io.log.Logger;
 import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.defaultcommands.DriveDefaultCommand;
 
 public class Drive extends Subsystem {
-  private final CANController leftMotor1 = HardwareMap.DriveMap.leftMotor1;
-  private final CANTalon leftMotor2 = HardwareMap.DriveMap.leftMotor2;
-  private final CANTalon leftMotor3 = HardwareMap.DriveMap.leftMotor3;
-
-  private final CANController rightMotor1 = HardwareMap.DriveMap.rightMotor1;
-  private final CANTalon rightMotor2 = HardwareMap.DriveMap.rightMotor2;
-  private final CANTalon rightMotor3 = HardwareMap.DriveMap.rightMotor3;
-
-  private final Solenoid shiftPTO = HardwareMap.DriveMap.shiftPTO;
-  private final Solenoid climbPTO = HardwareMap.DriveMap.climbPTO;
-
-  private final Logger logger = new Logger("Drive");
-
-  private final SendableChooser<ShiftState> shiftStateChooser = new SendableChooser<>();
-
-  private CheesyDriveHelper cheesyDriveHelper;
   public static final double HIGH_SHIFTPOINT = 6.0;
   public static final double LOW_SHIFTPOINT = 2.0;
   public static final int CODES_PER_REV = 216;
   public static final double EDGES_PER_100_MS = CODES_PER_REV * 4.0 / 10.0;
-
-  private enum ShiftState {
-    AUTO,
-    FORCE_HIGH,
-    FORCE_LOW
-  }
+  private final CANController leftMotor1 = HardwareMap.DriveMap.leftMotor1;
+  private final CANTalon leftMotor2 = HardwareMap.DriveMap.leftMotor2;
+  private final CANTalon leftMotor3 = HardwareMap.DriveMap.leftMotor3;
+  private final CANController rightMotor1 = HardwareMap.DriveMap.rightMotor1;
+  private final CANTalon rightMotor2 = HardwareMap.DriveMap.rightMotor2;
+  private final CANTalon rightMotor3 = HardwareMap.DriveMap.rightMotor3;
+  private final Solenoid shiftPTO = HardwareMap.DriveMap.shiftPTO;
+  private final Solenoid climbPTO = HardwareMap.DriveMap.climbPTO;
+  private final Logger logger = new Logger("Drive");
+  private final SendableChooser<ShiftState> shiftStateChooser = new SendableChooser<>();
+  private CheesyDriveHelper cheesyDriveHelper;
 
   public Drive() {
     leftMotor1.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
@@ -132,7 +121,7 @@ public class Drive extends Subsystem {
     double rightPower = signal.rightMotor - turnRight + turnLeft;
 
     double maxPower = Math.max(Math.abs(leftPower), Math.abs(rightPower));
-    if(maxPower > 1) {
+    if (maxPower > 1) {
       leftPower /= maxPower;
       rightPower /= maxPower;
     }
@@ -152,7 +141,7 @@ public class Drive extends Subsystem {
   }
 
   public void driveStraight(double throttle, boolean highGear) {
-    if(highGear) {
+    if (highGear) {
       hiGear();
     } else {
       lowGear();
@@ -189,7 +178,7 @@ public class Drive extends Subsystem {
     return (Math.abs(leftMotor1.getPosition()) + Math.abs(rightMotor1.getPosition())) / 2;
   }
 
-  public void setPID(double p,double i,double d){
+  public void setPID(double p, double i, double d) {
     leftMotor1.setPID(p, i, d);
     rightMotor1.setPID(p, i, d);
   }
@@ -208,9 +197,9 @@ public class Drive extends Subsystem {
 
   private void shift(boolean state) {
     ShiftState shiftState = shiftStateChooser.getSelected();
-    if(shiftState == ShiftState.AUTO) {
+    if (shiftState == ShiftState.AUTO) {
       shiftPTO.set(state); // should do this 99% of the time
-    } else if(shiftState == ShiftState.FORCE_HIGH) {
+    } else if (shiftState == ShiftState.FORCE_HIGH) {
       shiftPTO.set(false);
     } else {
       shiftPTO.set(true);
@@ -223,5 +212,11 @@ public class Drive extends Subsystem {
 
   public void hiGear() {
     shift(false);
+  }
+
+  private enum ShiftState {
+    AUTO,
+    FORCE_HIGH,
+    FORCE_LOW
   }
 }

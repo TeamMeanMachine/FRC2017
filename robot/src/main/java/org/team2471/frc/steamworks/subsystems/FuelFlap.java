@@ -9,7 +9,7 @@ public class FuelFlap extends Subsystem {
     flapSolenoid.set(true);
   }
 
-  public void retract(){
+  public void retract() {
     flapSolenoid.set(false);
   }
 

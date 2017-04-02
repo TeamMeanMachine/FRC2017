@@ -15,8 +15,7 @@ public class UpdateRPMCommand extends InstantCommand {
   protected void initialize() {
     if (SmartDashboard.getBoolean("Auto Aim", false)) {
       SmartDashboard.putNumber("Shooter Offset", SmartDashboard.getNumber("Shooter Offset", 0) + step);
-    }
-    else if (Robot.shooter.getRPMPreset()>= 0) {
+    } else if (Robot.shooter.getRPMPreset() >= 0) {
       String name = "RPM" + Robot.shooter.getRPMPreset();
       double rpm = SmartDashboard.getNumber(name, 2500) + step;
       SmartDashboard.putNumber(name, rpm);

@@ -5,12 +5,12 @@ import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.util.MeanMath;
 
 public class FacePegCommand extends PIDCommand {
+  private double targetAngle = 0;
+
   public FacePegCommand() {
-    super(1.0/45.0, 0, 1.0/45.0);
+    super(1.0 / 45.0, 0, 1.0 / 45.0);
     requires(Robot.drive);
   }
-
-  private double targetAngle = 0;
 
   @Override
   protected void initialize() {

@@ -1,11 +1,9 @@
 package org.team2471.frc.steamworks.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.team2471.frc.steamworks.Robot;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
-
-public class PlaceGearCommand extends Command{
+public class PlaceGearCommand extends Command {
 
   @Override
   protected void execute() {

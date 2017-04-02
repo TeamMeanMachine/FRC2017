@@ -16,9 +16,9 @@ public class RumbleCommand extends Command {
 
   @Override
   protected void execute() {
-    if(side == StickSide.LEFT) {
+    if (side == StickSide.LEFT) {
       controller.rumbleLeft((float) intensity);
-    } else if(side == StickSide.RIGHT) {
+    } else if (side == StickSide.RIGHT) {
       controller.rumbleRight((float) intensity);
     } else {
       controller.rumbleLeft((float) intensity);
@@ -33,9 +33,9 @@ public class RumbleCommand extends Command {
 
   @Override
   protected void end() {
-    if(side == StickSide.LEFT) {
+    if (side == StickSide.LEFT) {
       controller.rumbleLeft(0.0f);
-    } else if(side == StickSide.RIGHT) {
+    } else if (side == StickSide.RIGHT) {
       controller.rumbleRight(0.0f);
     } else {
       controller.rumbleLeft(0.0f);
