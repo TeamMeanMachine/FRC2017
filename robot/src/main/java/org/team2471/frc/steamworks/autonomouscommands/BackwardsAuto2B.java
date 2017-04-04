@@ -1,6 +1,5 @@
 package org.team2471.frc.steamworks.autonomouscommands;
 
-
 import org.team2471.frc.lib.motion_profiling.FollowPathTankDriveCommand;
 import org.team2471.frc.lib.motion_profiling.Path2D;
 import org.team2471.frc.steamworks.HardwareMap;
@@ -8,11 +7,10 @@ import org.team2471.frc.steamworks.HardwareMap;
 import static org.team2471.frc.steamworks.HardwareMap.DriveMap.shiftPTO;
 import static org.team2471.frc.steamworks.Robot.drive;
 
-public class BoilerLiftInner extends FollowPathTankDriveCommand {
+public class BackwardsAuto2B extends FollowPathTankDriveCommand {
+  private Path2D path;
 
-  Path2D m_path;
-
-  public BoilerLiftInner(double speed, boolean mirror) {
+  public BackwardsAuto2B(double speed, boolean mirror) {
     requires(drive);
 
     setSpeed(speed);
@@ -20,16 +18,16 @@ public class BoilerLiftInner extends FollowPathTankDriveCommand {
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
 
-    m_path = new Path2D();
-    m_path.setTravelDirection(1.0);
+    path = new Path2D();
+    path.setTravelDirection(1.0);
 
-    m_path.addPointAndTangent(0.0, 0.0, 0.0, 6.0);
-    m_path.addPointAndTangent(6.2, 6.9, 6.0, 3.0);
+    path.addPointAndTangent(-1.5, 11.5, 0.0, -0.5);
+    path.addPointAndTangent(-3.4, 7.0, -0.2, -1.0);
 
-    m_path.addEasePoint(0.0, 0.0);
-    m_path.addEasePoint(2.7, 1.0);
+    path.addEasePoint(0.0, 0.0);
+    path.addEasePoint(1.5, 1.0);
 
-    setPath(m_path);
+    setPath(path);
   }
 
   @Override
@@ -38,5 +36,3 @@ public class BoilerLiftInner extends FollowPathTankDriveCommand {
     shiftPTO.set(true);
   }
 }
-
-
