@@ -2,7 +2,11 @@ package org.team2471.frc.steamworks.autonomousroutines;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.team2471.frc.lib.motion_profiling.DriveTwoPointCurve;
+import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.autonomouscommands.BoilerLiftInner;
+import org.team2471.frc.steamworks.autonomouscommands.DriveDistanceCommand;
+import org.team2471.frc.steamworks.commands.DrivePathToTarget;
 import org.team2471.frc.steamworks.commands.PlaceGearCommand;
 
 public class BoilerLiftAuto extends CommandGroup {
@@ -12,7 +16,7 @@ public class BoilerLiftAuto extends CommandGroup {
     boolean mirrored = alliance == DriverStation.Alliance.Red;
 
     addSequential(new BoilerLiftInner(1.0, mirrored));
-    addSequential(new PlaceGearCommand());
-    // addSequential(new TiltGearIntakeCommand(), 2.0);
+    addParallel(new PlaceGearCommand(), 1.0);
+    addSequential(new DriveDistanceCommand(-2, 1));
   }
 }

@@ -15,7 +15,7 @@ public class DrivePathToTarget extends FollowPathTankDriveCommand {
 
   Path2D m_path;
 
-  public DrivePathToTarget(double fps, double xPos, double yPos, double xTangent, double yTangent) {  // speed is in FPS
+  public DrivePathToTarget(double fps, double xPos, double yPos, double xTangent, double yTangent, double travelDirection) {  // speed is in FPS
 
     requires(drive);
 
@@ -24,12 +24,12 @@ public class DrivePathToTarget extends FollowPathTankDriveCommand {
     setRightController(HardwareMap.DriveMap.rightMotor1);
 
     m_path = new Path2D();
-    m_path.setTravelDirection(1.0);
+    m_path.setTravelDirection(travelDirection);
 
     double feet = Vector2.length(new Vector2(xPos, yPos));
     double time = feet / fps;
 
-    m_path.addPointAndTangent(0.0, 0.0, 0.0, feet);  // use the full length of path for the tangent
+    m_path.addPointAndTangent(0.0, 0.0, 0.0, feet / 2);  // use the full length of path for the tangent
     m_path.addPointAndTangent(xPos, yPos, xTangent, yTangent);  // should we normalize the tangent vector and determine the length here?
 
     m_path.addEasePoint(0.0, 0.0);

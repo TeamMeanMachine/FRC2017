@@ -1,5 +1,6 @@
 package org.team2471.frc.steamworks;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -69,7 +70,7 @@ public class Robot extends IterativeRobot {
     autoChooser = new SendableChooser();
     autoChooser.addObject("Don't Move", new DoNothingAuto());
     autoChooser.addObject("40 KPA Forward", new ForwardFortyKPAAuto());
-    autoChooser.addObject("40 KPA Backwards", new BackwardFortyKPAAuto());
+    autoChooser.addObject("40 KPA Backwards", new BackwardFortyKPAAuto2());
     autoChooser.addObject("Drive Eight Feet", new DriveEightFeet());
     autoChooser.addObject("Feeder Lift", new FeederLiftAuto());
     autoChooser.addObject("Boiler Lift", new BoilerLiftAuto());
@@ -131,6 +132,7 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void testInit() {
+    HardwareMap.gyro.calibrate();
   }
 
   @Override
