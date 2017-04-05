@@ -1,6 +1,5 @@
 package org.team2471.frc.steamworks;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -19,7 +18,7 @@ import org.team2471.frc.util.net.ClockServer;
 import java.util.OptionalDouble;
 
 public class Robot extends IterativeRobot {
-  public static final boolean COMPETITION = true;
+  public static final boolean COMPETITION = false;
 
   public static DriverStation.Alliance alliance;
 
@@ -80,6 +79,7 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Short fuel and gear", new BoilerGearAuto());
     autoChooser.addObject("Gear plus ten fuel", new GearTenAuto());
     autoChooser.addObject("Middle Lift + 10", new CenterLiftPlusTen());
+    autoChooser.addObject("Gear Coop", new GearTen());
 
     SmartDashboard.putData("AutoChooser", autoChooser);
     SmartDashboard.putData(new ZeroGyroCommand());
