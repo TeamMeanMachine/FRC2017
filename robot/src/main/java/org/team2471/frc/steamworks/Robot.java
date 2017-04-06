@@ -18,7 +18,7 @@ import org.team2471.frc.util.net.ClockServer;
 import java.util.OptionalDouble;
 
 public class Robot extends IterativeRobot {
-  public static final boolean COMPETITION = false;
+  public static final boolean COMPETITION = true;
 
   public static DriverStation.Alliance alliance;
 

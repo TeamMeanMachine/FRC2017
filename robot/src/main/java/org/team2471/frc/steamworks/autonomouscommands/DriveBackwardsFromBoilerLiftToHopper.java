@@ -4,6 +4,7 @@ package org.team2471.frc.steamworks.autonomouscommands;
 import org.team2471.frc.lib.motion_profiling.FollowPathTankDriveCommand;
 import org.team2471.frc.lib.motion_profiling.Path2D;
 import org.team2471.frc.steamworks.HardwareMap;
+import org.team2471.frc.steamworks.Robot;
 
 import static org.team2471.frc.steamworks.HardwareMap.DriveMap.shiftPTO;
 import static org.team2471.frc.steamworks.Robot.drive;
@@ -35,7 +36,7 @@ public class DriveBackwardsFromBoilerLiftToHopper extends FollowPathTankDriveCom
   @Override
   protected void initialize() {
     super.initialize();
-    shiftPTO.set(true);
+    Robot.drive.hiGear();
   }
 }
 

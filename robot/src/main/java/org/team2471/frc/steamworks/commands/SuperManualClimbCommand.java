@@ -31,7 +31,7 @@ public class SuperManualClimbCommand extends Command {
     double leftDistance = leftMotor.getPosition();
     double rightDistance = rightMotor.getPosition();
 
-    double throttle = IOMap.throttleAxis.get() * 0.8;
+    double throttle = IOMap.throttleAxis.get() * 1.5;
 
     leftMotor.setSetpoint(leftDistance + throttle);
     rightMotor.setSetpoint(rightDistance + throttle);
