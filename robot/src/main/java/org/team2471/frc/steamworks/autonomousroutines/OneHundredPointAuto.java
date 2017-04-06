@@ -24,10 +24,10 @@ public class OneHundredPointAuto extends CommandGroup {
     addSequential(new BoilerLiftInner(1.0, mirrored));
     addParallel(new PlaceGearCommand(), 1.0);
     addSequential(new DriveBackwardsFromBoilerLiftToHopper(1.0, mirrored));
-    addParallel(new ExtendHopperWallsCommand());
-    addParallel(new IntakeFuelCommand(), 2.0);
+    addParallel(new IntakeFuelCommand(), 5.0);
 //    addParallel(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM1", 2550)));
     addSequential(new BackwardsAuto2B(1, mirrored));
-//    addSequential(new AimCommand());
+    addParallel(new ExtendHopperWallsCommand());
+    addSequential(new AimCommand(mirrored ? -115 : 155, SmartDashboard.getNumber("RPM1", 2550)));
   }
 }

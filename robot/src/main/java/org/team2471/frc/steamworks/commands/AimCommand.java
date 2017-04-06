@@ -85,6 +85,7 @@ public class AimCommand extends PIDCommand {
 
   protected void execute() {
     boolean autonomous = DriverStation.getInstance().isAutonomous();
+    // PNW DCMP: shooter not working
     Robot.shooter.enableFlashlight();
 
     // update PID

@@ -22,7 +22,7 @@ public class BackwardsAuto2A extends FollowPathTankDriveCommand {
     path.setTravelDirection(-1.0);
 
     path.addPointAndTangent(0.0, 0.0, 0.0, 5.0);
-    path.addPointAndTangent(-1.5, 11.5, 0.0, 5.0);
+    path.addPointAndTangent(-2.5, 11.5, 0.0, 5.0);
 
     path.addEasePoint(0.0, 0.0);
     path.addEasePoint(2.5, 1.0);

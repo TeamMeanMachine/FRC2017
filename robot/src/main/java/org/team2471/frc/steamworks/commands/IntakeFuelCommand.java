@@ -17,4 +17,9 @@ public class IntakeFuelCommand extends Command {
   protected boolean isFinished() {
     return isTimedOut();
   }
+
+  @Override
+  protected void end() {
+    Robot.fuelIntake.stopRoll();
+  }
 }

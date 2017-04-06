@@ -3,6 +3,7 @@ package org.team2471.frc.steamworks.autonomousroutines;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team2471.frc.steamworks.autonomouscommands.DriveDistanceCommand;
 import org.team2471.frc.steamworks.autonomouscommands.FaceBoilerFromMiddleLift;
 import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.ExtendHoodCommand;
@@ -14,23 +15,10 @@ public class CenterLiftPlusTen extends CommandGroup {
     DriverStation driverStation = DriverStation.getInstance();
 
     DriverStation.Alliance alliance = driverStation.getAlliance();
-    int location = driverStation.getLocation();
+    boolean mirrored = alliance == DriverStation.Alliance.Red;
 
-    if (alliance == DriverStation.Alliance.Red) {
-      addSequential(new DriveToMiddleLift());
-      addSequential(new PlaceGearCommand());
-//      addSequential(new TiltGearIntakeCommand());
-      addSequential(new FaceBoilerFromMiddleLift(1.0, true));
-      addSequential(new ExtendHoodCommand());
-      addSequential(new AimCommand(0, SmartDashboard.getNumber("RPM3", 3000)));
-    }
-    if (alliance == DriverStation.Alliance.Blue) {
-      addSequential(new DriveToMiddleLift());
-      addSequential(new PlaceGearCommand());
-//      addSequential(new TiltGearIntakeCommand());
-      addSequential(new FaceBoilerFromMiddleLift(1.0, false));
-      addSequential(new ExtendHoodCommand());
-      addSequential(new AimCommand(0, SmartDashboard.getNumber("RPM3", 3000)));
-    }
+    addSequential(new DriveDistanceCommand(6.5, 2));
+    addParallel(new PlaceGearCommand(), 2);
+    addSequential(new DriveDistanceCommand(-2.0, 1));
   }
 }

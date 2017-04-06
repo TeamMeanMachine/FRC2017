@@ -24,8 +24,8 @@ public class DriveBackwardsFromBoilerLiftToHopper extends FollowPathTankDriveCom
     m_path = new Path2D();
     m_path.setTravelDirection(-1.0);
 
-    m_path.addPointAndTangent(6.5, 6.7, -6.0, -3.0);
-    m_path.addPointAndTangent(0.3, 12, 0.5, 5.0);
+    m_path.addPointAndTangent(6.5, 8.85, -6.0, -3.0);
+    m_path.addPointAndTangent(-0.3, 13.5, 2.5, 8.0);
 
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(2.4, 1.0);

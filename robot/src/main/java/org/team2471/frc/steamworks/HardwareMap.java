@@ -12,8 +12,8 @@ public class HardwareMap {
   public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
   //  public static final AHRS gyro = new AHRS(SPI.Port.kMXP);
 //  public static final Gyro gyro = new FakeGyro();
-//  public static final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-  public static final AnalogGyro gyro = new AnalogGyro(0);
+  public static final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+//  public static final AnalogGyro gyro = new AnalogGyro(0);
 
   public static void init() {
     // do some call to each static class to force members to be initialized now.

@@ -31,11 +31,10 @@ public class Robot extends IterativeRobot {
   public static LEDController ledController;
   public static HopperWalls walls;
 
-  public static SendableChooser autoChooser;
+  public static SendableChooser<Command> autoChooser;
 
   private double startTime = Timer.getFPGATimestamp();
 
-  @SuppressWarnings("unchecked")
   @Override
   public void robotInit() {
     // SmartDashboard.getString("Robot", "Competition").equals("Competition");
@@ -66,7 +65,7 @@ public class Robot extends IterativeRobot {
     coProcessor = new UPBoard();
     IOMap.init();
 
-    autoChooser = new SendableChooser();
+    autoChooser = new SendableChooser<>();
     autoChooser.addObject("Don't Move", new DoNothingAuto());
     autoChooser.addObject("40 KPA Forward", new ForwardFortyKPAAuto());
     autoChooser.addObject("40 KPA Backwards", new BackwardFortyKPAAuto2());

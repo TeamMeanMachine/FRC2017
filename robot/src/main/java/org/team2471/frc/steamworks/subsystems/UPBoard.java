@@ -25,12 +25,13 @@ public class UPBoard extends Subsystem {
 
   public UPBoard() {
     networkTable.putString("Mode", "IDLE");
-    new Thread(this::runThread).start(); // start thread
+//    new Thread(this::runThread).start(); // start thread
     receiveTimer.start();
   }
 
   public boolean isDataPresent() {
-    return dataPresent;
+//    return dataPresent;
+    return false; // force
   }
 
   public OptionalDouble getError() {
