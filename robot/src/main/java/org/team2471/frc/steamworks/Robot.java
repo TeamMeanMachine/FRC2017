@@ -37,8 +37,7 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void robotInit() {
-    // SmartDashboard.getString("Robot", "Competition").equals("Competition");
-    //SmartDashboard.putString("Robot", "Practice");
+    HardwareMap.gyro.calibrate();
     // wait for alliance color
     DriverStation ds = DriverStation.getInstance();
     while (true) {
