@@ -3,6 +3,7 @@ package org.team2471.frc.steamworks.subsystems;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.lib.io.log.Logger;
 
 import java.io.IOException;
@@ -25,13 +26,16 @@ public class UPBoard extends Subsystem {
 
   public UPBoard() {
     networkTable.putString("Mode", "IDLE");
-//    new Thread(this::runThread).start(); // start thread
+    new Thread(this::runThread).start(); // start thread
     receiveTimer.start();
+
+    DashboardUtils.putPersistentNumber(networkTable, "Exposure", 2);
+    DashboardUtils.putPersistentNumber(networkTable, "Gain", 400);
   }
 
   public boolean isDataPresent() {
 //    return dataPresent;
-    return false; // force
+    return dataPresent; // force for now
   }
 
   public OptionalDouble getError() {

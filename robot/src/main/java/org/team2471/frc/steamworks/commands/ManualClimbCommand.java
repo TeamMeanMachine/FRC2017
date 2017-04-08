@@ -1,74 +1,52 @@
 package org.team2471.frc.steamworks.commands;
 
 import com.ctre.CANTalon;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team2471.frc.lib.motion_profiling.MotionProfileAnimation;
-import org.team2471.frc.lib.motion_profiling.MotionProfileCurve;
-import org.team2471.frc.lib.motion_profiling.PlayAnimationCommand;
+import edu.wpi.first.wpilibj.command.Command;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
 
-import static org.team2471.frc.steamworks.IOMap.climbIntakeOverrideButton;
-
-
-public class ManualClimbCommand extends PlayAnimationCommand {
-  private double startDistance;
-  private Timer timer;
-  private boolean automaticIntake;
-
-  private MotionProfileAnimation animation;
-  private MotionProfileCurve leftCurve;
-  private MotionProfileCurve rightCurve;
+public class ManualClimbCommand extends Command {
+  private final CANTalon leftMotor = Robot.drive.getLeftMotor1();
+  private final CANTalon rightMotor = Robot.drive.getRightMotor1();
 
   private boolean intakePressed;
+  private boolean automaticIntake;
+
 
   public ManualClimbCommand() {
     requires(Robot.drive);
     setInterruptible(false);
-    timer = new Timer();
-
-    animation = new MotionProfileAnimation();
-    leftCurve = new MotionProfileCurve(Robot.drive.getLeftMotor1(), animation);
-    rightCurve = new MotionProfileCurve(Robot.drive.getRightMotor1(), animation);
-
-    leftCurve.storeValue(0.0, 0.0);
-    leftCurve.storeValue(3.0, 29.0);
-    leftCurve.storeValue(15.0, 58.0);
-
-    rightCurve.storeValue(0.0, 0.0);
-    rightCurve.storeValue(3.0, 29.0);
-    rightCurve.storeValue(15.0, 58.0);
-
-    setAnimation(animation);
   }
 
   @Override
   protected void initialize() {
-    super.initialize();
-    timer.start();
+    leftMotor.changeControlMode(CANTalon.TalonControlMode.Position);
+    rightMotor.changeControlMode(CANTalon.TalonControlMode.Position);
     Robot.drive.enableClimbing();
-    startDistance = Robot.drive.getDistance();
-
-    Robot.drive.getLeftMotor1().changeControlMode(CANTalon.TalonControlMode.Position);
-    Robot.drive.getRightMotor1().changeControlMode(CANTalon.TalonControlMode.Position);
-    Robot.drive.hiGear();
-
-    leftCurve.setOffset(Robot.drive.getLeftMotor1().getPosition());
-    rightCurve.setOffset(Robot.drive.getRightMotor1().getPosition());
-    automaticIntake = true;
-    intakePressed = true;
+    automaticIntake = false;
   }
 
   @Override
   protected void execute() {
-    double speed = IOMap.throttleAxis.get();
-    setSpeed(speed);
+    double leftDistance = leftMotor.getPosition();
+    double rightDistance = rightMotor.getPosition();
 
-    double startTime = Timer.getFPGATimestamp();
-    super.execute();
+    double throttle = IOMap.throttleAxis.get();
 
-    double distance = Math.abs(Robot.drive.getDistance() - startDistance);
+    if(throttle > 0.2) {
+      Robot.drive.hiGear();
+    } else {
+      Robot.drive.lowGear();
+    }
+
+    throttle *= 16;
+
+
+    leftMotor.setSetpoint(leftDistance + throttle);
+    rightMotor.setSetpoint(rightDistance + throttle);
+
+
+    double distance = Math.abs(leftDistance + rightDistance) / 2;
     if (automaticIntake) {
       if (distance > 18) {
         Robot.gearIntake.extend();
@@ -77,7 +55,7 @@ public class ManualClimbCommand extends PlayAnimationCommand {
       }
     }
 
-    if (climbIntakeOverrideButton.get() && !intakePressed) {
+    if (IOMap.climbIntakeOverrideButton.get() && !intakePressed) {
       if (Robot.gearIntake.isExtended()) {
         Robot.gearIntake.retract();
       } else {
@@ -85,12 +63,9 @@ public class ManualClimbCommand extends PlayAnimationCommand {
       }
       automaticIntake = false;
       intakePressed = true;
-    } else if (!climbIntakeOverrideButton.get()) {
+    } else if (!IOMap.climbIntakeOverrideButton.get()) {
       intakePressed = false;
     }
-    SmartDashboard.putNumber("Climb Time", timer.get());
-    SmartDashboard.putNumber("Climb Speed", speed);
-    SmartDashboard.putNumber("Climb Setpoint", Robot.drive.getLeftMotor1().getSetpoint());
   }
 
   @Override
@@ -100,8 +75,7 @@ public class ManualClimbCommand extends PlayAnimationCommand {
 
   @Override
   protected void end() {
-    timer.stop();
-    Robot.drive.getLeftMotor1().changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-    Robot.drive.getRightMotor1().changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+    leftMotor.changeControlMode(CANTalon.TalonControlMode.Voltage);
+    rightMotor.changeControlMode(CANTalon.TalonControlMode.Voltage);
   }
 }

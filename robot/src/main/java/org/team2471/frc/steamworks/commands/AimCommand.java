@@ -13,7 +13,7 @@ import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.subsystems.UPBoard;
 
 public class AimCommand extends PIDCommand {
-  private final double AUTO_SHOOT_DELAY = 0.50;
+  private final double AUTO_SHOOT_DELAY = 0.75;
 
   private final double AGITATOR_DELAY = 3;
   private final double AGITATOR_DURATION = 0.4;
@@ -44,7 +44,6 @@ public class AimCommand extends PIDCommand {
     this.gyroAngle = gyroAngle;
     this.startRpm = rpm;
 
-    Robot.coProcessor.setState(UPBoard.State.BOILER);
 
     DashboardUtils.putPersistentNumber("Aim Offset", 0);
     DashboardUtils.putPersistentNumber("Aim P", 0.17);
@@ -69,6 +68,7 @@ public class AimCommand extends PIDCommand {
     startTime = Timer.getFPGATimestamp();
 
     targetFound = false;
+    Robot.coProcessor.setState(UPBoard.State.BOILER);
 
     offset = SmartDashboard.getNumber("Aim Offset", 0);
 
@@ -129,14 +129,14 @@ public class AimCommand extends PIDCommand {
     }
 
     boolean shoot = autonomous ?
-        turnController.onTarget() && (targetFound || !Robot.coProcessor.isConnected()) :  // auto aim condition
+        turnController.getError() < 3: //&& (targetFound || !Robot.coProcessor.isConnected()) :  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();
       Robot.shooter.setRampRate(0);
       double speed = autonomous ?
           // auto
-          Timer.getFPGATimestamp() > startTime + AUTO_SHOOT_DELAY ? 1.0 : 0
+          Timer.getFPGATimestamp() > startTime + AUTO_SHOOT_DELAY ? 0.85 : 0
           // teleop
           : (IOMap.shootAxis.get() - 0.15) * 1 / (1 - 0.15);
 
