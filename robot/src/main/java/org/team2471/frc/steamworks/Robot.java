@@ -31,13 +31,18 @@ public class Robot extends IterativeRobot {
   public static LEDController ledController;
   public static HopperWalls walls;
 
+  public static CameraFeed feed;
+
   public static SendableChooser<Command> autoChooser;
 
   private double startTime = Timer.getFPGATimestamp();
 
   @Override
   public void robotInit() {
-    HardwareMap.gyro.calibrate();
+//    System.out.println("Calibrating Gyro...");
+//    HardwareMap.gyro.calibrate();
+//    System.out.println("Gyro calibrated");
+
     // wait for alliance color
     DriverStation ds = DriverStation.getInstance();
     while (true) {
@@ -61,6 +66,8 @@ public class Robot extends IterativeRobot {
     walls = new HopperWalls();
     HardwareMap.init();
 
+    feed = new CameraFeed();
+
     coProcessor = new UPBoard();
     IOMap.init();
 
@@ -73,7 +80,7 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Boiler Lift", new BoilerLiftAuto());
     autoChooser.addObject("Middle lift", new DriveToMiddleLift());
     autoChooser.addObject("One Hundred point Auto", new OneHundredPointAuto());
-    autoChooser.addObject("Just Shoot Auto", new AimCommand(0, SmartDashboard.getNumber("RPM1", 2471)));
+    autoChooser.addObject("Just Shoot Auto", new AimCommand(0, SmartDashboard.getNumber("RPM1", 2471), 1.0));
     autoChooser.addObject("Short fuel and gear", new BoilerGearAuto());
     autoChooser.addObject("Gear plus ten fuel", new GearTenAuto());
     autoChooser.addObject("Middle Lift + 10", new CenterLiftPlusTen());
@@ -118,6 +125,7 @@ public class Robot extends IterativeRobot {
     OptionalDouble distance = coProcessor.getDistance();
     SmartDashboard.putString("Boiler Error", error.isPresent() ? Double.toString(error.getAsDouble()) : "NONE"); // don't use this number for real stuff
     SmartDashboard.putString("Boiler Distance", distance.isPresent() ? Double.toString(distance.getAsDouble()) : "NONE");
+    SmartDashboard.putNumber("Gear Intake Current", gearIntake.getCurrentDraw());
     Scheduler.getInstance().run();
 
 //    SmartDashboard.putNumber("Shooter Left Speed", HardwareMap.TwinShooterMap.masterLeft.getSpeed());

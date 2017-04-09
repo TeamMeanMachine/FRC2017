@@ -23,7 +23,7 @@ public class FortyKPAAuto extends CommandGroup {
       addParallel(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM4", 2700)));
       addSequential(new ForwardForFortyKPA(1.0, true));
       addSequential(new ExtendHoodCommand());
-      addSequential(new AimCommand(0, SmartDashboard.getNumber("RPM4", 2700)));
+      addSequential(new AimCommand(0, SmartDashboard.getNumber("RPM4", 2700), 1.0));
     }
     if (alliance == DriverStation.Alliance.Blue) {
       addParallel(new ExtendFuelFlapCommand(), 15.0);
@@ -31,7 +31,7 @@ public class FortyKPAAuto extends CommandGroup {
       addParallel(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM4", 2700)));
       addSequential(new ForwardForFortyKPA(1.0, false));
       addSequential(new ExtendHoodCommand());
-      addSequential(new AimCommand(0, SmartDashboard.getNumber("RPM4", 2700)));
+      addSequential(new AimCommand(0, SmartDashboard.getNumber("RPM4", 2700), 1.0));
     }
   }
 }

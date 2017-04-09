@@ -16,7 +16,7 @@ public class SecondOneHundredPointAuto extends CommandGroup {
       addSequential(new DriveToHopperAutoBlue(1.0, false));
       addSequential(new WaitCommand(2.0));
       addSequential(new DriveBackwardsFromHopper(1.0, false));
-      //     addSequential(new DriveBackwardsFromBoilerLiftToHopper(1.0, false));
+      //     addSequential(new OneHundredAutoB(1.0, false));
     }
     if (alliance == DriverStation.Alliance.Red) {
       addSequential(new DriveToHopperAutoBlue(1.0, true));

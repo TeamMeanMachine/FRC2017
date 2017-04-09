@@ -7,12 +7,10 @@ import org.team2471.frc.steamworks.Robot;
 
 import static org.team2471.frc.steamworks.Robot.drive;
 
-public class FeederLiftInner extends FollowPathTankDriveCommand {
+public class OneHundredAutoC extends FollowPathTankDriveCommand {
+  private Path2D path;
 
-  Path2D m_path;
-
-  public FeederLiftInner(double speed, boolean mirror) {
-
+  public OneHundredAutoC(double speed, boolean mirror) {
     requires(drive);
 
     setSpeed(speed);
@@ -20,23 +18,21 @@ public class FeederLiftInner extends FollowPathTankDriveCommand {
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
 
-    m_path = new Path2D();
-    m_path.setTravelDirection(1.0);
+    path = new Path2D();
+    path.setTravelDirection(1.0);
 
-    m_path.addPointAndTangent(0.0, 0.0, 0.0, 6.0);
-    m_path.addPointAndTangent(-6.2, 7.6, -9.0, 4.5);
+    path.addPointAndTangent(0, 0, 0.0, -1.0);
+    path.addPointAndTangent(-2.0, -5.5, 0.0, -2.0);
 
-    m_path.addEasePoint(0.0, 0.0);
-    m_path.addEasePoint(2.45, 1.0);
+    path.addEasePoint(0.0, 0.0);
+    path.addEasePoint(2.0, 1.0);
 
-    setPath(m_path);
+    setPath(path);
   }
 
   @Override
   protected void initialize() {
     super.initialize();
-    Robot.drive.hiGear();
+    Robot.drive.lowGear();
   }
 }
-
-

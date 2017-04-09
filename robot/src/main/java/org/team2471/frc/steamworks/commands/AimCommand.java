@@ -13,15 +13,16 @@ import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.subsystems.UPBoard;
 
 public class AimCommand extends PIDCommand {
-  private final double AUTO_SHOOT_DELAY = 0.75;
+  private final double AUTO_SHOOT_DELAY = 1.25;
 
   private final double AGITATOR_DELAY = 3;
-  private final double AGITATOR_DURATION = 0.4;
+  private final double AGITATOR_DURATION = 0.6;
 
   private final Timer shootingTimer = new Timer();
   private final Timer agitatorTimer = new Timer();
   private final PIDController turnController = getPIDController();
   private final double startRpm;
+  private final double autoSpeed;
   private double offset;
   private double gyroAngle;
   private boolean targetFound;
@@ -32,7 +33,7 @@ public class AimCommand extends PIDCommand {
 
   private MotionCurve curveDistanceToRPM;
 
-  public AimCommand(double gyroAngle, double rpm) {
+  public AimCommand(double gyroAngle, double rpm, double autoSpeed) {
     super(0.09, 0, 0.1);
     requires(Robot.drive);
     requires(Robot.fuelIntake);
@@ -41,6 +42,7 @@ public class AimCommand extends PIDCommand {
     requires(Robot.flap);
     requires(Robot.walls);
 
+    this.autoSpeed = autoSpeed;
     this.gyroAngle = gyroAngle;
     this.startRpm = rpm;
 
@@ -56,7 +58,7 @@ public class AimCommand extends PIDCommand {
   }
 
   public AimCommand() {
-    this(0, 2500);
+    this(0, 2500, 1.0);
   }
 
   protected void initialize() {
@@ -136,7 +138,7 @@ public class AimCommand extends PIDCommand {
       Robot.shooter.setRampRate(0);
       double speed = autonomous ?
           // auto
-          Timer.getFPGATimestamp() > startTime + AUTO_SHOOT_DELAY ? 0.85 : 0
+          Timer.getFPGATimestamp() > startTime + AUTO_SHOOT_DELAY ? autoSpeed : 0
           // teleop
           : (IOMap.shootAxis.get() - 0.15) * 1 / (1 - 0.15);
 
@@ -153,7 +155,7 @@ public class AimCommand extends PIDCommand {
         Robot.walls.extend();
       }
 
-      Robot.shooter.setIntake(speed * 0.8, speed);
+      Robot.shooter.setIntake(speed, 1.0);
       Robot.fuelIntake.rollIn();
     } else {
       Robot.shooter.setRampRate(32);

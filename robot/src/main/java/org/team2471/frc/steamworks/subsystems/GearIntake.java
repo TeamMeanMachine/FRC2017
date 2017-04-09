@@ -5,11 +5,17 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team2471.frc.steamworks.HardwareMap;
+import org.team2471.frc.util.control.PDPDrawSensor;
 
 public class GearIntake extends Subsystem {
   private final Solenoid gearSolenoid = HardwareMap.GearIntakeMap.gearSolenoid;
   private final CANTalon wheelMotor = HardwareMap.GearIntakeMap.wheelMotor;
   private final AnalogInput gearSensor = HardwareMap.GearIntakeMap.gearSensor;
+  private final PDPDrawSensor ampMonitor = HardwareMap.GearIntakeMap.ampMonitor;
+
+  public double getCurrentDraw() {
+    return ampMonitor.getCurrent();
+  }
 
   /**
    * Tilts the gear intake extend.

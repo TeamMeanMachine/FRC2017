@@ -25,7 +25,7 @@ public class GearTen extends CommandGroup {
     addSequential(new BoilerLiftInnerFar(1.0, mirrored));
     addParallel(new PlaceGearCommand(), 1.0);
     addSequential(new DriveDistanceCommand(-2, 1));
-//    addSequential(new DriveBackwardsFromBoilerLiftToHopper(1.0, mirrored));
+//    addSequential(new OneHundredAutoB(1.0, mirrored));
 //    addParallel(new ExtendHopperWallsCommand());
 //    addParallel(new IntakeFuelCommand(), 2.0);
 //    addParallel(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM1", 2550)));

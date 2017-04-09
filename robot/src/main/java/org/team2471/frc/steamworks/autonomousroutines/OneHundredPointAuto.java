@@ -2,7 +2,6 @@ package org.team2471.frc.steamworks.autonomousroutines;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.*;
 import org.team2471.frc.steamworks.commands.*;
@@ -20,14 +19,17 @@ public class OneHundredPointAuto extends CommandGroup {
       throw new RuntimeException("Invalid alliance detected");
     }
 
-    addSequential(new ExtendHoodCommand());
-    addSequential(new BoilerLiftInner(1.0, mirrored));
-    addParallel(new PlaceGearCommand(), 1.0);
-    addSequential(new DriveBackwardsFromBoilerLiftToHopper(1.0, mirrored));
-    addParallel(new IntakeFuelCommand(), 5.0);
-    addParallel(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM1", 2550)));
-    addParallel(new ExtendHopperWallsCommand());
-    addSequential(new BackwardsAuto2B(1, mirrored));
-    addSequential(new AimCommand(mirrored ? -188.5 : 182.7, SmartDashboard.getNumber("RPM1", 2550)));
+//    addSequential(new ExtendHoodCommand());
+//    addSequential(new BoilerLiftInner(1.0, mirrored));
+//    addParallel(new PlaceGearCommand(), 1.0);
+//    addSequential(new OneHundredAutoB(1.0, mirrored));
+//    addParallel(new IntakeFuelCommand(), 5.0);
+//    addParallel(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM1", 2550)));
+//    addParallel(new ExtendHopperWallsCommand());
+
+//    addSequential(new BackwardsAuto2B(1.0, mirrored));
+//
+    addSequential(new OneHundredAutoC(1.0, mirrored));
+//    addSequential(new AimCommand(mirrored ? -188.5 : 184.2, SmartDashboard.getNumber("RPM1", 2550)));
   }
 }
