@@ -33,7 +33,7 @@ public class ManualClimbCommand extends Command {
 
     double throttle = IOMap.throttleAxis.get();
 
-    if(throttle > 0.2) {
+    if (throttle > 0.2) {
       Robot.drive.hiGear();
     } else {
       Robot.drive.lowGear();

@@ -2,7 +2,6 @@ package org.team2471.frc.steamworks.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
 
 public class PickupGearCommand extends Command {
@@ -28,7 +27,7 @@ public class PickupGearCommand extends Command {
     }
 
     double current = Robot.gearIntake.getCurrentDraw();
-    if(current < 10.0) {
+    if (current < 10.0) {
       ampTimer.reset();
     }
   }

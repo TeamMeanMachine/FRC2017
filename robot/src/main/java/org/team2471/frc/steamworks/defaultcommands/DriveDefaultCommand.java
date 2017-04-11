@@ -1,7 +1,6 @@
 package org.team2471.frc.steamworks.defaultcommands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
@@ -27,7 +26,7 @@ public class DriveDefaultCommand extends Command {
     double rightDistance = Robot.drive.getRightMotor1().getPosition();
     SmartDashboard.putString("Drive Distances", leftDistance + ":" + rightDistance);
 
-    if(throttle > 0.3 && Robot.fuelIntake.getCurrentCommand() == null) {
+    if (throttle > 0.3 && Robot.fuelIntake.getCurrentCommand() == null) {
       Robot.fuelIntake.rollIn();
     }
 

@@ -2,10 +2,8 @@ package org.team2471.frc.steamworks.autonomousroutines;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.BackwardsAuto2A;
 import org.team2471.frc.steamworks.autonomouscommands.BackwardsAuto2B;
-import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.ExtendFuelFlapCommand;
 import org.team2471.frc.steamworks.commands.ExtendHoodCommand;
 import org.team2471.frc.steamworks.commands.ExtendHopperWallsCommand;

@@ -39,9 +39,9 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void robotInit() {
-//    System.out.println("Calibrating Gyro...");
-//    HardwareMap.gyro.calibrate();
-//    System.out.println("Gyro calibrated");
+    System.out.println("Calibrating Gyro...");
+    HardwareMap.gyro.calibrate();
+    System.out.println("Gyro calibrated");
 
     // wait for alliance color
     DriverStation ds = DriverStation.getInstance();
@@ -78,13 +78,12 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Drive Eight Feet", new DriveEightFeet());
     autoChooser.addObject("Feeder Lift", new FeederLiftAuto());
     autoChooser.addObject("Boiler Lift", new BoilerLiftAuto());
-    autoChooser.addObject("Middle lift", new DriveToMiddleLift());
+    autoChooser.addObject("Middle lift", new CenterLiftPlusTen());
     autoChooser.addObject("One Hundred point Auto", new OneHundredPointAuto());
     autoChooser.addObject("Just Shoot Auto", new AimCommand(0, SmartDashboard.getNumber("RPM1", 2471), 1.0));
     autoChooser.addObject("Short fuel and gear", new BoilerGearAuto());
     autoChooser.addObject("Gear plus ten fuel", new GearTenAuto());
     autoChooser.addObject("Middle Lift + 10", new CenterLiftPlusTen());
-    autoChooser.addObject("Gear Coop", new GearTen());
 
     SmartDashboard.putData("AutoChooser", autoChooser);
     SmartDashboard.putData(new ZeroGyroCommand());

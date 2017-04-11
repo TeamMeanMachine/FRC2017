@@ -131,7 +131,7 @@ public class AimCommand extends PIDCommand {
     }
 
     boolean shoot = autonomous ?
-        turnController.getError() < 3: //&& (targetFound || !Robot.coProcessor.isConnected()) :  // auto aim condition
+        turnController.getError() < 3 : //&& (targetFound || !Robot.coProcessor.isConnected()) :  // auto aim condition
         IOMap.shootButton.get(); // manual aim condition
     if (shoot) {
       shootingTimer.reset();

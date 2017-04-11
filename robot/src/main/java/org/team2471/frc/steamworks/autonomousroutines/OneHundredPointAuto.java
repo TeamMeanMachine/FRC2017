@@ -2,9 +2,7 @@ package org.team2471.frc.steamworks.autonomousroutines;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team2471.frc.steamworks.autonomouscommands.*;
-import org.team2471.frc.steamworks.commands.*;
+import org.team2471.frc.steamworks.autonomouscommands.OneHundredAutoC;
 
 import static edu.wpi.first.wpilibj.DriverStation.Alliance;
 

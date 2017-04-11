@@ -3,8 +3,8 @@ package org.team2471.frc.steamworks.commandgroups;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.commands.FindRopeCommand;
-import org.team2471.frc.steamworks.commands.RumbleCommand;
 import org.team2471.frc.steamworks.commands.ManualClimbCommand;
+import org.team2471.frc.steamworks.commands.RumbleCommand;
 
 public class ManualClimbCommandGroup extends CommandGroup {
   public ManualClimbCommandGroup() {

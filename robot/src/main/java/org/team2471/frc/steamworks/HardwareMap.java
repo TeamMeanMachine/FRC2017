@@ -1,11 +1,11 @@
 package org.team2471.frc.steamworks;
 
 import com.ctre.CANTalon;
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Solenoid;
 import org.team2471.frc.lib.control.CANController;
-import org.team2471.frc.steamworks.subsystems.GearIntake;
-import org.team2471.frc.util.FakeGyro;
 import org.team2471.frc.util.control.PDPDrawSensor;
 
 public class HardwareMap {

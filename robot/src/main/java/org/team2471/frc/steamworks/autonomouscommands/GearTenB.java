@@ -6,7 +6,6 @@ import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.Robot;
 
 import static org.team2471.frc.steamworks.Robot.drive;
-import static org.team2471.frc.steamworks.Robot.walls;
 
 public class GearTenB extends FollowPathTankDriveCommand {
   Path2D m_path;

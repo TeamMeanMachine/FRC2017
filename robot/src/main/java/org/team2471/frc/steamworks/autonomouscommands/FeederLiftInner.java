@@ -24,7 +24,7 @@ public class FeederLiftInner extends FollowPathTankDriveCommand {
     m_path.setTravelDirection(1.0);
 
     m_path.addPointAndTangent(0.0, 0.0, 0.0, 6.0);
-    m_path.addPointAndTangent(-6.2, 7.6, -9.0, 4.5);
+    m_path.addPointAndTangent(-6.2, 7.9, -9.0, 4.5);
 
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(2.45, 1.0);

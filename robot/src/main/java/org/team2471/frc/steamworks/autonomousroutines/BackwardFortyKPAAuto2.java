@@ -5,7 +5,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.BackwardsAuto2A;
 import org.team2471.frc.steamworks.autonomouscommands.BackwardsAuto2B;
-import org.team2471.frc.steamworks.commands.*;
+import org.team2471.frc.steamworks.commands.AimCommand;
+import org.team2471.frc.steamworks.commands.ExtendHoodCommand;
+import org.team2471.frc.steamworks.commands.ExtendHopperWallsCommand;
+import org.team2471.frc.steamworks.commands.SpinUpShooterCommand;
 
 public class BackwardFortyKPAAuto2 extends CommandGroup {
   public BackwardFortyKPAAuto2() {

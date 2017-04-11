@@ -33,17 +33,17 @@ public class CameraFeed {
     new Thread(() -> {
       int i = 0;
 
-      while(true) {
+      while (true) {
         long time = cvSink.grabFrame(image);
 
-        if(time == 0) {
+        if (time == 0) {
           continue;
         }
 
         Imgproc.line(image, new Point(width / 2, 0), new Point(width / 2, height), new Scalar(0, 255, 255), 2);
         processedSource.putFrame(image);
 
-        if(i % 3 == 0) {
+        if (i % 3 == 0) {
           camera.setExposureManual((int) SmartDashboard.getNumber("Camera Exposure", 20));
         }
         i++;
