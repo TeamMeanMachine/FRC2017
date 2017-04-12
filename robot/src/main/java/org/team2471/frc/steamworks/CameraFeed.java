@@ -1,6 +1,7 @@
 package org.team2471.frc.steamworks;
 
 import edu.wpi.cscore.*;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -11,12 +12,12 @@ import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 @SuppressWarnings("InfiniteLoopStatement")
 public class CameraFeed {
   public CameraFeed() {
-    final int width = 640;
-    final int height = 480;
-    final int fps = 15;
+    final int width = 1920;
+    final int height = 1080;
+    final int fps = 30;
 
     final UsbCamera camera = new UsbCamera("Camera", 0);
-    final MjpegServer server = new MjpegServer("Backup Feed", 5805);
+    final MjpegServer server = new MjpegServer("Camera Feed", 1081);
 
     camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, width, height, fps);
 
