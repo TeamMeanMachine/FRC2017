@@ -2,10 +2,9 @@ package org.team2471.frc.steamworks.autonomousroutines;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import org.team2471.frc.steamworks.autonomouscommands.FaceBoilerFromFeederLift;
-import org.team2471.frc.steamworks.autonomouscommands.FeederLiftB;
-import org.team2471.frc.steamworks.autonomouscommands.FeederLiftC;
-import org.team2471.frc.steamworks.autonomouscommands.FeederLiftInner;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team2471.frc.steamworks.autonomouscommands.*;
+import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.PlaceGearCommand;
 
 public class FeederLiftPlusTen extends CommandGroup {
@@ -18,6 +17,7 @@ public class FeederLiftPlusTen extends CommandGroup {
     addParallel(new PlaceGearCommand(), 2.0);
     addSequential(new FaceBoilerFromFeederLift(1.0, mirrored));
     addSequential(new FaceBoilerFromFeederLift(1.0, mirrored));
+//    addSequential(new AimCommand(-125, SmartDashboard.getNumber("RPM1", 2471), 0.5));
 
     //addSequential(new TiltGearIntakeCommand(), 2.0);
   }
