@@ -44,7 +44,7 @@ android {
         // call regular ndk-build(.cmd) script from app directory
         task ndkBuild(type: Exec) {
             if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-                commandLine 'ndk-build.cmd', '-C', file('src/main').absolutePath
+                commandLine 'C:\\Sdk\\ndk-bundle\\ndk-build.cmd', '-C', file('src/main').absolutePath
             } else {
                 def ndkDir = android.ndkDirectory.getAbsolutePath()
                 commandLine ndkDir + "/ndk-build", '-C', file('src/main').absolutePath
