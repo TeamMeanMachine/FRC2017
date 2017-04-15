@@ -1,6 +1,5 @@
 package org.team2471.frc.steamworks;
 
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -16,14 +15,11 @@ import org.team2471.frc.steamworks.commands.ZeroGyroCommand;
 import org.team2471.frc.steamworks.subsystems.*;
 import org.team2471.frc.util.net.ClockServer;
 
-import java.util.OptionalDouble;
-
 public class Robot extends IterativeRobot {
   public static final boolean COMPETITION = false;
 
   public static DriverStation.Alliance alliance;
 
-  public static UPBoard coProcessor;
   public static Drive drive;
   public static FuelIntake fuelIntake;
   public static Shooter shooter;
@@ -33,6 +29,8 @@ public class Robot extends IterativeRobot {
   public static HopperWalls walls;
 
   public static CameraFeed feed;
+
+  public static ChesDroid cheezDroid;
 
   public static SendableChooser<Command> autoChooser;
 
@@ -65,11 +63,13 @@ public class Robot extends IterativeRobot {
     ledController = new LEDController();
     flap = new FuelFlap();
     walls = new HopperWalls();
+
+    cheezDroid = new ChesDroid();
+
     HardwareMap.init();
 
     feed = new CameraFeed();
 
-    coProcessor = new UPBoard();
     IOMap.init();
 
     autoChooser = new SendableChooser<>();
@@ -96,7 +96,7 @@ public class Robot extends IterativeRobot {
   @Override
   public void autonomousInit() {
     if (autoChooser != null) {
-      Command autonomousCommand = (Command) autoChooser.getSelected();
+      Command autonomousCommand = autoChooser.getSelected();
       if (autonomousCommand != null) {
         autonomousCommand.start();
       }
@@ -122,10 +122,10 @@ public class Robot extends IterativeRobot {
     SmartDashboard.putNumber("Gyro", HardwareMap.gyro.getAngle());
 
 
-    OptionalDouble error = coProcessor.getError();
-    OptionalDouble distance = coProcessor.getDistance();
-    SmartDashboard.putString("Boiler Error", error.isPresent() ? Double.toString(error.getAsDouble()) : "NONE"); // don't use this number for real stuff
-    SmartDashboard.putString("Boiler Distance", distance.isPresent() ? Double.toString(distance.getAsDouble()) : "NONE");
+//    OptionalDouble error = coProcessor.getError();
+//    OptionalDouble distance = coProcessor.getDistance();
+//    SmartDashboard.putString("Boiler Error", error.isPresent() ? Double.toString(error.getAsDouble()) : "NONE"); // don't use this number for real stuff
+//    SmartDashboard.putString("Boiler Distance", distance.isPresent() ? Double.toString(distance.getAsDouble()) : "NONE");
     SmartDashboard.putNumber("Gear Intake Current", gearIntake.getCurrentDraw());
     Scheduler.getInstance().run();
 
@@ -133,7 +133,7 @@ public class Robot extends IterativeRobot {
 //    SmartDashboard.putNumber("Shooter Right Speed", HardwareMap.TwinShooterMap.masterRight.getSpeed());
     double endTime = Timer.getFPGATimestamp();
     double dt = endTime - startTime;
-    SmartDashboard.putBoolean("Coprocessor Connected", coProcessor.isConnected());
+    SmartDashboard.putBoolean("Coprocessor Connected", cheezDroid.hasReceivedPacket());
     SmartDashboard.putNumber("Latency Quotient", 1 / 20 / dt * 100);
   }
 

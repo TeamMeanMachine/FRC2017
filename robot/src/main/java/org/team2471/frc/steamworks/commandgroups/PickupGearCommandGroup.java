@@ -8,6 +8,6 @@ import org.team2471.frc.steamworks.commands.RumbleCommand;
 public class PickupGearCommandGroup extends CommandGroup {
   public PickupGearCommandGroup() {
     addSequential(new PickupGearCommand());
-    addSequential(new RumbleCommand(IOMap.getDriverController(), 0.8, RumbleCommand.StickSide.BOTH));
+//    addSequential(new RumbleCommand(IOMap.getDriverController(), 0.8, RumbleCommand.StickSide.BOTH));
   }
 }
