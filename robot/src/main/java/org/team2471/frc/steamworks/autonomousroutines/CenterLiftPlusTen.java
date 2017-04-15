@@ -16,11 +16,11 @@ public class CenterLiftPlusTen extends CommandGroup {
     DriverStation.Alliance alliance = driverStation.getAlliance();
     boolean mirrored = alliance == DriverStation.Alliance.Red;
 
-    addSequential(new DriveDistanceCommand(5.5, 2.2));
-    addParallel(new PlaceGearCommand(), 2);
-    addSequential(new DriveDistanceCommand(-2.0, 1));
-    addSequential(new TurnInPlaceCommand(-100.0, mirrored));
-    addSequential(new DriveDistanceCommand(8.0, 2));
-    addSequential(new AimCommand(SmartDashboard.getNumber("RPM1",2471), (mirrored ? -1 : 1 )*150, 0.5));
+//    addSequential(new DriveDistanceCommand(5.5, 2.2));
+//    addParallel(new PlaceGearCommand(), 2);
+//    addSequential(new DriveDistanceCommand(-2.0, 1));
+//    addSequential(new TurnInPlaceCommand(-100.0, mirrored));
+//    addSequential(new DriveDistanceCommand(8.0, 2));
+    addSequential(new AimCommand(SmartDashboard.getNumber("RPM1",2471), (mirrored ? -1 : 1 )*150, 0.5, false));
   }
 }

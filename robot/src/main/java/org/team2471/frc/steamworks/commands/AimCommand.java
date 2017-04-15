@@ -26,6 +26,7 @@ public class AimCommand extends PIDCommand {
   private double offset;
   private double gyroAngle;
   private boolean targetFound;
+  private boolean mirrored;
 
   private int lastImageNumber = 0;
   private double lastImageTimestamp = Timer.getFPGATimestamp();
@@ -33,7 +34,7 @@ public class AimCommand extends PIDCommand {
 
   private MotionCurve curveDistanceToRPM;
 
-  public AimCommand(double gyroAngle, double rpm, double autoSpeed) {
+  public AimCommand(double gyroAngle, double rpm, double autoSpeed, boolean mirrored) {
     super(0.09, 0, 0.1);
     requires(Robot.drive);
     requires(Robot.fuelIntake);
@@ -43,9 +44,9 @@ public class AimCommand extends PIDCommand {
     requires(Robot.walls);
 
     this.autoSpeed = autoSpeed;
-    this.gyroAngle = gyroAngle;
+    this.gyroAngle = mirrored ? -gyroAngle : gyroAngle;
     this.startRpm = rpm;
-
+    this.mirrored = mirrored;
 
     DashboardUtils.putPersistentNumber("Aim Offset", 0);
     DashboardUtils.putPersistentNumber("Aim P", 0.17);
@@ -58,7 +59,7 @@ public class AimCommand extends PIDCommand {
   }
 
   public AimCommand() {
-    this(0, 2500, 1.0);
+    this(0, 2500, 1.0, false);
   }
 
   protected void initialize() {
@@ -212,7 +213,7 @@ public class AimCommand extends PIDCommand {
   @Override
   protected double returnPIDInput() {
     if (DriverStation.getInstance().isAutonomous() && !targetFound) {
-      return -HardwareMap.gyro.getAngle();
+      return HardwareMap.gyro.getAngle();
     } else {
       return Robot.drive.getAngle();
     }

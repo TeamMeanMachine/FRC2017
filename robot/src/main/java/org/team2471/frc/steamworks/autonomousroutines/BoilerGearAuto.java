@@ -12,7 +12,7 @@ public class BoilerGearAuto extends CommandGroup {
   public BoilerGearAuto() {
     boolean mirrored = DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red;
 
-    addSequential(new AimCommand(0, SmartDashboard.getNumber("RPM3", 2900), 1.0), 3);
+    addSequential(new AimCommand(0, SmartDashboard.getNumber("RPM3", 2900), 1.0, true), 3);
     addSequential(new DriveAwayFromBoiler(1, mirrored));
     addSequential(new DriveToLiftFromBoiler(1, mirrored));
     addSequential(new PlaceGearCommand());

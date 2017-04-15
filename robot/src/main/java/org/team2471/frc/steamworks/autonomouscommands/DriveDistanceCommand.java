@@ -14,5 +14,6 @@ public class DriveDistanceCommand extends DriveTwoPointCurve {
   protected void initialize() {
     super.initialize();
     Robot.drive.lowGear();
+//    setGyro(HardwareMap.gyro);
   }
 }
