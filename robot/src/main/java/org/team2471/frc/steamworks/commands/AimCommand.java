@@ -158,13 +158,13 @@ public class AimCommand extends PIDCommand {
         Robot.walls.extend();
       }
 
-      Robot.shooter.setIntake(speed, 1.0);
+      Robot.shooter.intake(speed);
       Robot.fuelIntake.rollIn();
     } else {
       Robot.shooter.setRampRate(32);
       Robot.walls.extend();
       if (shootingTimer.get() < 0.2) {
-        Robot.shooter.setIntake(0, 0);
+        Robot.shooter.intake(0);
         Robot.fuelIntake.stopRoll();
       }
     }

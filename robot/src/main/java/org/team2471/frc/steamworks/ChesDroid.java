@@ -22,7 +22,10 @@ public class ChesDroid {
       } else {
         TargetInfo target = targets.get(0);
         data = Optional.of(new VisionData(target.getY(), target.getZ()));
-        data.ifPresent(visionData -> System.out.println(visionData.error));
+        data.ifPresent(visionData -> {
+          SmartDashboard.putNumber("Target Distance", visionData.distance);
+          SmartDashboard.putNumber("Target Error", visionData.error);
+        });
       }
     });
   }
@@ -46,8 +49,6 @@ public class ChesDroid {
     private VisionData(double error, double distance) {
       this.error = error * 59;
       this.distance = distance;
-      SmartDashboard.putNumber("Boiler Error", this.error);
-      SmartDashboard.putNumber("Boiler Distance", this.distance);
     }
   }
 }

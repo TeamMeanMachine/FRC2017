@@ -170,12 +170,12 @@ public class Shooter extends Subsystem {
   public void reset() {
     rightMasterMotor.set(0.0);
     leftMasterMotor.set(0.0);
-    setIntake(0.0, 0.0);
+    intake(0.0);
   }
 
-  public void setIntake(double cycloneSpeed, double elevatorSpeed) {
-    cycloneMotor.set(cycloneSpeed);
-    elevatorMotor.set(elevatorSpeed);
+  public void intake(double speed) {
+    cycloneMotor.set(speed);
+    elevatorMotor.set(speed == 0 ? 0 : 1);
   }
 
   public void extendHood() {
