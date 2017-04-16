@@ -7,9 +7,12 @@ import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.lib.motion_profiling.MotionCurve;
+import org.team2471.frc.steamworks.ChesDroid;
 import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
+
+import java.util.Optional;
 
 public class AimCommand extends PIDCommand {
   private final double AUTO_SHOOT_DELAY = 1.25;
@@ -88,7 +91,7 @@ public class AimCommand extends PIDCommand {
   protected void execute() {
     boolean autonomous = DriverStation.getInstance().isAutonomous();
     // PNW DCMP: shooter not working
-    Robot.shooter.enableFlashlight();
+    Robot.shooter.enableRingLight();
 
     // update PID
     turnController.setPID(SmartDashboard.getNumber("Aim P", 0.07), 0, SmartDashboard.getNumber("Aim D", 0.1));
@@ -99,14 +102,16 @@ public class AimCommand extends PIDCommand {
     double angle = autonomous && !targetFound ? gyroAngle : returnPIDInput();
     boolean autoAim = SmartDashboard.getBoolean("Auto Aim", false);
     if (autoAim || autonomous) {
-      if (Robot.cheezDroid.hasReceivedPacket()) {
-//        double error = Robot.coProcessor.getError().getAsDouble();
-//        double distance = Robot.coProcessor.getDistance().getAsDouble();
-//        angle -= error * 0.7;
+
+
+      Optional<ChesDroid.VisionData> dataOptional = Robot.cheezDroid.getData();
+      if (dataOptional.isPresent()) {
+        ChesDroid.VisionData data = dataOptional.get();
+        angle -= data.error * 0.7;
         targetFound = true;
 
         if (Robot.shooter.isHoodUp()) {
-//          rpm = curveDistanceToRPM.getValue(distance);
+          rpm = curveDistanceToRPM.getValue(data.distance);
           rpm += SmartDashboard.getNumber("Shooter Offset", 0.0);
         } else {
           angle += IOMap.aimAxis.get() * 7.5;
@@ -198,7 +203,7 @@ public class AimCommand extends PIDCommand {
     agitatorTimer.stop();
     shootingTimer.stop();
     Robot.shooter.reset();
-    Robot.shooter.disableFlashlight();
+    Robot.shooter.disableRingLight();
     Robot.walls.retract();
 
     IOMap.getGunnerController().rumbleLeft(0.0f);

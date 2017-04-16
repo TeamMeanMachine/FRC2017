@@ -18,7 +18,7 @@ public class TurnInPlaceCommand extends PIDCommand {
     }
     this.angle = angle;
     requires(Robot.drive);
-    getPIDController().setAbsoluteTolerance(3);
+    getPIDController().setAbsoluteTolerance(2);
 
   }
 

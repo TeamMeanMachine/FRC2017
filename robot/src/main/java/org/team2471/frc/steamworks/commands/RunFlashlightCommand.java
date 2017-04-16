@@ -6,7 +6,7 @@ import org.team2471.frc.steamworks.Robot;
 public class RunFlashlightCommand extends Command {
   @Override
   protected void execute() {
-    Robot.shooter.enableFlashlight();
+    Robot.shooter.enableRingLight();
   }
 
   @Override
@@ -16,6 +16,6 @@ public class RunFlashlightCommand extends Command {
 
   @Override
   protected void end() {
-    Robot.shooter.disableFlashlight();
+    Robot.shooter.disableRingLight();
   }
 }

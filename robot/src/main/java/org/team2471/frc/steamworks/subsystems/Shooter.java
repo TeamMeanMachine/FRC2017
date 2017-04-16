@@ -9,6 +9,7 @@ import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.commands.RPMPresetCommand;
+import org.team2471.frc.util.MeanUtils;
 
 public class Shooter extends Subsystem {
   private final CANTalon rightMasterMotor = HardwareMap.TwinShooterMap.masterRight;
@@ -20,7 +21,7 @@ public class Shooter extends Subsystem {
   private final CANTalon cycloneMotor = HardwareMap.TwinShooterMap.cycloneMotor;
   private final CANTalon elevatorMotor = HardwareMap.TwinShooterMap.ballFeeder;
 
-  private final CANTalon flashlight = HardwareMap.TwinShooterMap.flashlight;
+  private final CANTalon ringLight = HardwareMap.TwinShooterMap.ringLight;
 
   private final Solenoid hoodSolenoid = HardwareMap.TwinShooterMap.hoodSolenoid;
   private int RPMPreset = -1;
@@ -48,6 +49,8 @@ public class Shooter extends Subsystem {
     DashboardUtils.putPersistentNumber("RPM5", 2800);
 
     DashboardUtils.putPersistentNumber("BoilerMaxFeed", 0.75);
+
+    DashboardUtils.putPersistentNumber("Ring Light Power", 0.8);
 
     SmartDashboard.putData("Boiler Preset", new RPMPresetCommand(0));
     SmartDashboard.putData("Hopper", new RPMPresetCommand(1));
@@ -152,7 +155,6 @@ public class Shooter extends Subsystem {
     return rightMasterMotor.getOutputVoltage() / 12.0 + Math.random() / 10000.0;
   }
 
-
   public double getLeftSpeed() {
     return this.leftMasterMotor.getSpeed();
   }
@@ -184,12 +186,12 @@ public class Shooter extends Subsystem {
     hoodSolenoid.set(false);
   }
 
-  public void enableFlashlight() {
-    flashlight.set(1);
+  public void enableRingLight() {
+    ringLight.set(MeanUtils.range(SmartDashboard.getNumber("Ring Light Power", 0.8), 0.0, 1.0));
   }
 
-  public void disableFlashlight() {
-    flashlight.set(0);
+  public void disableRingLight() {
+    ringLight.set(0);
   }
 
   public boolean isHoodUp() {

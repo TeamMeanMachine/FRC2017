@@ -69,9 +69,9 @@ std::vector<TargetInfo> processImpl(int w, int h, int texOut, DisplayMode mode,
   for (auto &contour : contours) {
     auto rect = cv::boundingRect(contour);
     const double minTargetWidth = 20;
-    const double maxTargetWidth = 150;
+    const double maxTargetWidth = 250;
     const double minTargetHeight = 5;
-    const double maxTargetHeight = 30;
+    const double maxTargetHeight = 60;
 
     if(rect.width < minTargetWidth || rect.width > maxTargetWidth ||
        rect.height < minTargetHeight || rect.height > maxTargetHeight) {

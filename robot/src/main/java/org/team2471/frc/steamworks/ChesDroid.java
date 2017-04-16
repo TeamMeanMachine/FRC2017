@@ -11,20 +11,18 @@ public class ChesDroid {
   private final VisionServer server = VisionServer.getInstance();
 
   private boolean receivedPacket = false;
-  private Optional<Double> error = Optional.empty();
+  private Optional<VisionData> data = Optional.empty();
 
   public ChesDroid() {
     server.addVisionUpdateReceiver(update -> {
       receivedPacket = true;
       List<TargetInfo> targets = update.getTargets();
       if(targets.size() == 0) {
-        error = Optional.empty();
+        data = Optional.empty();
       } else {
         TargetInfo target = targets.get(0);
-        SmartDashboard.putNumber("Target X", target.getX());
-        SmartDashboard.putNumber("Target Y", target.getY());
-        SmartDashboard.putNumber("Target Z", target.getZ());
-        error = Optional.of(target.getZ());
+        data = Optional.of(new VisionData(target.getY(), target.getZ()));
+        data.ifPresent(visionData -> System.out.println(visionData.error));
       }
     });
   }
@@ -33,7 +31,23 @@ public class ChesDroid {
     return receivedPacket;
   }
 
-  public Optional<Double> getError() {
-    return error;
+  public boolean isConnected() {
+    return server.isConnected();
+  }
+
+  public Optional<VisionData> getData() {
+    return data;
+  }
+
+  public class VisionData {
+    public final double error;
+    public final double distance;
+
+    private VisionData(double error, double distance) {
+      this.error = error * 59;
+      this.distance = distance;
+      SmartDashboard.putNumber("Boiler Error", this.error);
+      SmartDashboard.putNumber("Boiler Distance", this.distance);
+    }
   }
 }

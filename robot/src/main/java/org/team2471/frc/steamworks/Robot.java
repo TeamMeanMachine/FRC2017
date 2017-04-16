@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.DoNothingAuto;
 import org.team2471.frc.steamworks.autonomousroutines.*;
 import org.team2471.frc.steamworks.commands.AimCommand;
+import org.team2471.frc.steamworks.commands.TurnInPlaceCommand;
 import org.team2471.frc.steamworks.commands.ZeroGyroCommand;
 import org.team2471.frc.steamworks.subsystems.*;
 import org.team2471.frc.util.net.ClockServer;
@@ -86,6 +87,7 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Gear plus ten fuel", new GearTenAuto());
     autoChooser.addObject("Middle Lift + 10", new CenterLiftPlusTen());
     autoChooser.addObject("Feeder Lift + 10", new FeederLiftPlusTen());
+    autoChooser.addObject("Turn in place auto (don't run this)", new TurnInPlaceCommand(100.0, false));
 
     SmartDashboard.putData("AutoChooser", autoChooser);
     SmartDashboard.putData(new ZeroGyroCommand());
@@ -122,10 +124,6 @@ public class Robot extends IterativeRobot {
     SmartDashboard.putNumber("Gyro", HardwareMap.gyro.getAngle());
 
 
-//    OptionalDouble error = coProcessor.getError();
-//    OptionalDouble distance = coProcessor.getDistance();
-//    SmartDashboard.putString("Boiler Error", error.isPresent() ? Double.toString(error.getAsDouble()) : "NONE"); // don't use this number for real stuff
-//    SmartDashboard.putString("Boiler Distance", distance.isPresent() ? Double.toString(distance.getAsDouble()) : "NONE");
     SmartDashboard.putNumber("Gear Intake Current", gearIntake.getCurrentDraw());
     Scheduler.getInstance().run();
 
@@ -133,13 +131,13 @@ public class Robot extends IterativeRobot {
 //    SmartDashboard.putNumber("Shooter Right Speed", HardwareMap.TwinShooterMap.masterRight.getSpeed());
     double endTime = Timer.getFPGATimestamp();
     double dt = endTime - startTime;
-    SmartDashboard.putBoolean("Coprocessor Connected", cheezDroid.hasReceivedPacket());
+    SmartDashboard.putBoolean("Coprocessor Connected", cheezDroid.isConnected());
+    SmartDashboard.putBoolean("Coprocessor Received Packet", cheezDroid.hasReceivedPacket());
     SmartDashboard.putNumber("Latency Quotient", 1 / 20 / dt * 100);
   }
 
   @Override
   public void testInit() {
-    HardwareMap.gyro.calibrate();
   }
 
   @Override

@@ -40,7 +40,7 @@ public class NativePart {
         public final Target[] targets;
 
         public TargetsInfo() {
-            targets = new Target[3];
+            targets = new Target[100];
             for (int i = 0; i < targets.length; i++) {
                 targets[i] = new Target();
             }

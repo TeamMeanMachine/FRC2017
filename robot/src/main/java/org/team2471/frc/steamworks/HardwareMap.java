@@ -5,14 +5,16 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import org.team2471.frc.lib.control.CANController;
+import org.team2471.frc.util.InvertedGyro;
 import org.team2471.frc.util.control.PDPDrawSensor;
 
 public class HardwareMap {
   public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
   //  public static final AHRS gyro = new AHRS(SPI.Port.kMXP);
 //  public static final Gyro gyro = new FakeGyro();
-  public static final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+  public static final Gyro gyro = new InvertedGyro(new ADXRS450_Gyro());
 //  public static final AnalogGyro gyro = new AnalogGyro(0);
 
   public static void init() {
@@ -33,7 +35,7 @@ public class HardwareMap {
     public static final CANTalon ballFeeder = new CANTalon(6);
     public static final CANTalon cycloneMotor = new CANTalon(12);
     public static final Solenoid hoodSolenoid = new Solenoid(4);
-    public static final CANTalon flashlight = new CANTalon(9);
+    public static final CANTalon ringLight = new CANTalon(9);
   }
 
   public static final class DriveMap {
