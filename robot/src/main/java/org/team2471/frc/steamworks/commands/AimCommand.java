@@ -104,18 +104,20 @@ public class AimCommand extends PIDCommand {
     if (autoAim || autonomous) {
 
 
-      Optional<ChesDroid.VisionData> dataOptional = Robot.cheezDroid.getData();
-      if (dataOptional.isPresent()) {
-        ChesDroid.VisionData data = dataOptional.get();
-        angle -= data.error * 0.7;
-        targetFound = true;
+      if (Robot.cheezDroid.isConnected()) {
+        Optional<ChesDroid.VisionData> optionalData = Robot.cheezDroid.getData();
+        if(optionalData.isPresent()) {
+          ChesDroid.VisionData data = optionalData.get();
+          angle -= data.error * 0.7;
+          targetFound = true;
 
-        if (Robot.shooter.isHoodUp()) {
-          rpm = curveDistanceToRPM.getValue(data.distance);
-          rpm += SmartDashboard.getNumber("Shooter Offset", 0.0);
-        } else {
-          angle += IOMap.aimAxis.get() * 7.5;
-          rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
+          if (Robot.shooter.isHoodUp()) {
+            rpm = curveDistanceToRPM.getValue(data.distance);
+            rpm += SmartDashboard.getNumber("Shooter Offset", 0.0);
+          } else {
+            angle += IOMap.aimAxis.get() * 7.5;
+            rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
+          }
         }
       }
     } else {
