@@ -13,8 +13,12 @@ public class DriveDistanceCommand extends FollowPathTankDriveCommand {
 
   Path2D m_path;
 
-  public DriveDistanceCommand(double distance, double time) {
+  public DriveDistanceCommand(double distance, double time, boolean useGyro) {
     requires(drive);
+
+    if(useGyro) {
+      setGyro(HardwareMap.gyro);
+    }
 
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
@@ -28,6 +32,10 @@ public class DriveDistanceCommand extends FollowPathTankDriveCommand {
     m_path.addEasePoint(time, 1.0);
 
     setPath(m_path);
+  }
+
+  public DriveDistanceCommand(double distance, double time) {
+    this(distance, time, false);
   }
 
   @Override

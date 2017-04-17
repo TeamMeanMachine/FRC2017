@@ -21,8 +21,8 @@ public class CenterLiftPlusTen extends CommandGroup {
     addSequential(new FollowPathTankDriveCommandBuilder(Robot.drive.tankDriveProfile)
         .withMirrored(mirrored)
         .withReversed(true)
-        .withPointAndTangent(0, 0, 0, -2.0)
-        .withPointAndTangent(3.5, -3.5, 2.0, 0.0)
+        .withPointAndTangent(0, 0, 0, -4.0)
+        .withPointAndTangent(5.0, -3.0, 4.0, 0.0)
         .withEasePoint(0, 0)
         .withEasePoint(2.5, 1.0)
         .build());

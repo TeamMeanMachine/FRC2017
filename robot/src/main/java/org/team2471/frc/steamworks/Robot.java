@@ -118,6 +118,8 @@ public class Robot extends IterativeRobot {
     startTime = Timer.getFPGATimestamp();
 
     SmartDashboard.putString("Auto Setpoints", drive.getLeftMotor1().getSetpoint() + ":" + drive.getRightMotor1().getSetpoint());
+    SmartDashboard.putString("Auto Errors", drive.getLeftMotor1().getError() + ":" + drive.getRightMotor1().getError()
+      + ":" + drive.getLeftMotor1().getPosition() + ":" + drive.getRightMotor1().getPosition());
   }
 
   @Override
