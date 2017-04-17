@@ -1,5 +1,6 @@
 package org.team2471.frc.steamworks;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -8,7 +9,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import javafx.scene.Camera;
 import org.team2471.frc.steamworks.autonomouscommands.DoNothingAuto;
+import org.team2471.frc.steamworks.autonomouscommands.DriveDistanceCommand;
 import org.team2471.frc.steamworks.autonomousroutines.*;
 import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.TurnInPlaceCommand;
@@ -87,12 +90,11 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Gear plus ten fuel", new GearTenAuto());
     autoChooser.addObject("Middle Lift + 10", new CenterLiftPlusTen());
     autoChooser.addObject("Feeder Lift + 10", new FeederLiftPlusTen());
-    autoChooser.addObject("Turn in place auto (don't run this)", new TurnInPlaceCommand(100.0, false));
+    autoChooser.addObject("Test Auto (don't run this drive team)", new DriveDistanceCommand(6.5, 2.2));
 
     SmartDashboard.putData("AutoChooser", autoChooser);
     SmartDashboard.putData(new ZeroGyroCommand());
     drive.disableClimbing();
-    ClockServer.spawnClockServer(5802);
   }
 
   @Override
@@ -114,6 +116,8 @@ public class Robot extends IterativeRobot {
   @Override
   public void autonomousPeriodic() {
     startTime = Timer.getFPGATimestamp();
+
+    SmartDashboard.putString("Auto Setpoints", drive.getLeftMotor1().getSetpoint() + ":" + drive.getRightMotor1().getSetpoint());
   }
 
   @Override

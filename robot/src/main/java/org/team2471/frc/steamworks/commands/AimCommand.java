@@ -102,8 +102,6 @@ public class AimCommand extends PIDCommand {
     double angle = autonomous && !targetFound ? gyroAngle : returnPIDInput();
     boolean autoAim = SmartDashboard.getBoolean("Auto Aim", false);
     if (autoAim || autonomous) {
-
-
       if (Robot.cheezDroid.isConnected()) {
         Optional<ChesDroid.VisionData> optionalData = Robot.cheezDroid.getData();
         if(optionalData.isPresent()) {

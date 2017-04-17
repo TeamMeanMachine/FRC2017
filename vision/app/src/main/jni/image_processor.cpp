@@ -29,9 +29,14 @@ struct TargetInfo {
 std::vector<TargetInfo> processImpl(int w, int h, int texOut, DisplayMode mode,
                                     int h_min, int h_max, int s_min, int s_max,
                                     int v_min, int v_max) {
+  // our threshold overrides because I have no idea how their preferences work
+  h_min = 60;
+  h_max = 90;
+
   LOGD("Image is %d x %d", w, h);
   LOGD("H %d-%d S %d-%d V %d-%d", h_min, h_max, s_min, s_max, v_min, v_max);
   int64_t t;
+
 
   static cv::Mat input;
   input.create(h, w, CV_8UC4);
@@ -90,6 +95,9 @@ std::vector<TargetInfo> processImpl(int w, int h, int texOut, DisplayMode mode,
     /* LOGD("Found target at %.2lf, %.2lf...size %.2lf, %.2lf",
          target.centroid_x, target.centroid_y, target.width, target.height);
     targets.push_back(std::move(target)); */
+
+    cv::Vec3b centroid_color = hsv.at<cv::Vec3b>(cv::Point(target.centroid_x, target.centroid_y));
+    LOGD("Target HSV is H: %d, S: %d, V: %d", centroid_color.val[0], centroid_color.val[1], centroid_color.val[2]);
 
     LOGD("Found target");
     targets.push_back(std::move(target));

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.control.CANController;
 import org.team2471.frc.lib.io.log.Logger;
+import org.team2471.frc.lib.motion_profiling.util.TankDriveProfile;
 import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.defaultcommands.DriveDefaultCommand;
 
@@ -29,6 +30,8 @@ public class Drive extends Subsystem {
   private final Logger logger = new Logger("Drive");
   private final SendableChooser<ShiftState> shiftStateChooser = new SendableChooser<>();
   private CheesyDriveHelper cheesyDriveHelper;
+
+  public final TankDriveProfile tankDriveProfile = new TankDriveProfile(leftMotor1, rightMotor1);
 
   public Drive() {
     leftMotor1.changeControlMode(CANTalon.TalonControlMode.PercentVbus);

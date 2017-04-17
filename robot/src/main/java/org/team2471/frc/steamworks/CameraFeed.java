@@ -11,9 +11,9 @@ import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 @SuppressWarnings("InfiniteLoopStatement")
 public class CameraFeed {
   public CameraFeed() {
-    final int width = 320;
-    final int height = 240;
-    final int fps = 30;
+    final int width = 640;
+    final int height = 480;
+    final int fps = 15;
 
     final UsbCamera camera = new UsbCamera("Camera", 0);
     final MjpegServer server = new MjpegServer("Camera Feed", 5805);
