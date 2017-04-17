@@ -17,6 +17,7 @@ import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.TurnInPlaceCommand;
 import org.team2471.frc.steamworks.commands.ZeroGyroCommand;
 import org.team2471.frc.steamworks.subsystems.*;
+import org.team2471.frc.util.commands.RunCommand;
 import org.team2471.frc.util.net.ClockServer;
 
 public class Robot extends IterativeRobot {
@@ -42,6 +43,8 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void robotInit() {
+    cheezDroid = new ChesDroid();
+
     System.out.println("Calibrating Gyro...");
     HardwareMap.gyro.calibrate();
     System.out.println("Gyro calibrated");
@@ -68,8 +71,6 @@ public class Robot extends IterativeRobot {
     flap = new FuelFlap();
     walls = new HopperWalls();
 
-    cheezDroid = new ChesDroid();
-
     HardwareMap.init();
 
     feed = new CameraFeed();
@@ -77,7 +78,7 @@ public class Robot extends IterativeRobot {
     IOMap.init();
 
     autoChooser = new SendableChooser<>();
-    autoChooser.addObject("Don't Move", new DoNothingAuto());
+    autoChooser.addObject("Hitler's Auto", new DoNothingAuto());
     autoChooser.addObject("40 KPA Forward", new ForwardFortyKPAAuto());
     autoChooser.addObject("40 KPA Backwards", new BackwardFortyKPAAuto2());
     autoChooser.addObject("Drive Eight Feet", new DriveEightFeet());
@@ -94,6 +95,7 @@ public class Robot extends IterativeRobot {
 
     SmartDashboard.putData("AutoChooser", autoChooser);
     SmartDashboard.putData(new ZeroGyroCommand());
+    SmartDashboard.putData("Restart ADB", new RunCommand(cheezDroid::restartAdb));
     drive.disableClimbing();
   }
 

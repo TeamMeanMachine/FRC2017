@@ -42,6 +42,10 @@ public class ChesDroid {
     return data;
   }
 
+  public void restartAdb() {
+    server.restartAdb();
+  }
+
   public class VisionData {
     public final double error;
     public final double distance;
