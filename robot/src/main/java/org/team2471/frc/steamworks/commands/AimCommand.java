@@ -97,7 +97,7 @@ public class AimCommand extends PIDCommand {
     turnController.setPID(SmartDashboard.getNumber("Aim P", 0.07), 0, SmartDashboard.getNumber("Aim D", 0.1));
     double outputRange = SmartDashboard.getNumber("Aim Output Range", 0.5);
     turnController.setOutputRange(-outputRange, outputRange);
-    double rpm = autonomous ? startRpm : 0;
+    double rpm = autonomous ? startRpm : SmartDashboard.getNumber("Shooter Setpoint");
 
     double angle = autonomous && !targetFound ? gyroAngle : returnPIDInput();
     boolean autoAim = SmartDashboard.getBoolean("Auto Aim", false);
