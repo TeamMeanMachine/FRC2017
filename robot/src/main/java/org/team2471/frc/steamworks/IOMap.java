@@ -52,7 +52,6 @@ public class IOMap {
   public static ControllerAxis shootAxis = coDriverController.getAxis(3);
 
   public static final ControllerButton toggleIntakeButton = coDriverController.getButton(XboxMap.Buttons.B);
-  public static final ControllerButton useIntakeButton = coDriverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
   public static final ControllerAxis spitAxis = coDriverController.getAxis(XboxMap.Axes.LEFT_TRIGGER);
   public static final ControllerButton spitButton = () -> spitAxis.get() > 0.2;
   public static final ControllerButton fuelFeedButton = coDriverController.getButton(XboxMap.Buttons.A);
@@ -75,30 +74,32 @@ public class IOMap {
       .withLinearScaling(0.6);
 
   public static void init() {
-    CommandTrigger fuelIntakeTrigger = new CommandTrigger(toggleIntakeButton::get);
-    fuelIntakeTrigger.toggleWhenActive(new FuelIntakeCommand());
+    CommandTrigger disableFuelIntakeTrigger = toggleIntakeButton.asTrigger();
+    disableFuelIntakeTrigger.toggleWhenActive(new DisableFuelIntakeCommand());
 
+    CommandTrigger spitFuelTrigger = spitButton.asTrigger();
+    spitFuelTrigger.whileActive(new SpitFuelCommand());
 
-    CommandTrigger feedFuelTrigger = new CommandTrigger(fuelFeedButton::get);
+    CommandTrigger feedFuelTrigger = fuelFeedButton.asTrigger();
     feedFuelTrigger.toggleWhenActive(new ExtendFuelFlapCommand());
 
-    CommandTrigger pickupGearTrigger = new CommandTrigger(pickupGearButton::get);
+    CommandTrigger pickupGearTrigger = pickupGearButton.asTrigger();
     pickupGearTrigger.whileActive(new PickupGearCommandGroup());
     pickupGearTrigger.whenInactive(new DelayedCommand(new CenterGearCommand(), 0.5, 0.8));
 
-    CommandTrigger placeGearTrigger = new CommandTrigger(placeGearButton::get);
+    CommandTrigger placeGearTrigger = placeGearButton.asTrigger();
     placeGearTrigger.whileActive(new PlaceGearCommand());
 
-    CommandTrigger climbTrigger = new CommandTrigger(climbButton::get);
+    CommandTrigger climbTrigger = climbButton.asTrigger();
     climbTrigger.toggleWhenActive(new ManualClimbCommandGroup());
 
-    CommandTrigger aimTrigger = new CommandTrigger(aimButton::get);
+    CommandTrigger aimTrigger = aimButton.asTrigger();
     aimTrigger.toggleWhenActive(new AimCommand());
 
-    CommandTrigger signalDriverTrigger = new CommandTrigger(signalDriverButton::get);
+    CommandTrigger signalDriverTrigger = signalDriverButton.asTrigger();
     signalDriverTrigger.whileActive(new RumbleCommand(driverController, 1, RumbleCommand.StickSide.RIGHT));
 
-    CommandTrigger signalCoDriverTrigger = new CommandTrigger(signalCoDriverButton::get);
+    CommandTrigger signalCoDriverTrigger = signalCoDriverButton.asTrigger();
     signalCoDriverTrigger.whileActive(new RumbleCommand(coDriverController, 1, RumbleCommand.StickSide.LEFT));
 
     CommandTrigger extendHoodTrigger = new CommandTrigger(shooterDPad::isUp);
@@ -113,7 +114,7 @@ public class IOMap {
     CommandTrigger decrementRPMTrigger = new CommandTrigger(shooterDPad::isLeft);
     decrementRPMTrigger.whenActive(new UpdateRPMCommand(-10));
 
-    CommandTrigger activateWallsTrigger = new CommandTrigger(wallButton::get);
+    CommandTrigger activateWallsTrigger = wallButton.asTrigger();
     activateWallsTrigger.toggleWhenActive(new ExtendHopperWallsCommand());
   }
 

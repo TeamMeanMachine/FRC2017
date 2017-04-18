@@ -39,7 +39,6 @@ public class AimCommand extends PIDCommand {
   public AimCommand(double gyroAngle, double rpm, double autoSpeed, boolean mirrored) {
     super(0.09, 0, 0.1);
     requires(Robot.drive);
-    requires(Robot.fuelIntake);
     requires(Robot.shooter);
     requires(Robot.flap);
     requires(Robot.walls);
@@ -159,13 +158,11 @@ public class AimCommand extends PIDCommand {
       }
 
       Robot.shooter.intake(speed);
-      Robot.fuelIntake.rollIn();
     } else {
       Robot.shooter.setRampRate(32);
       Robot.walls.extend();
       if (shootingTimer.get() < 0.2) {
         Robot.shooter.intake(0);
-        Robot.fuelIntake.stopRoll();
       }
     }
 
