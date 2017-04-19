@@ -24,8 +24,8 @@ public class FaceBoilerFromHopper extends FollowPathTankDriveCommand {
     m_path = new Path2D();
     m_path.setTravelDirection(-1.0);
 
-    m_path.addPointAndTangent(-2, 7, 4.0, 0.0);
-    m_path.addPointAndTangent(3.0, 3.0, 1.5, 0.5);
+    m_path.addPointAndTangent(-2, 7, 2.0, 0.0);
+    m_path.addPointAndTangent(0, 4.0, 1.5, 0);
 
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(1.5, 1.0);
