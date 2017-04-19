@@ -64,6 +64,7 @@ std::vector<TargetInfo> processImpl(int w, int h, int texOut, DisplayMode mode,
   static cv::Mat contour_input;
   contour_input = thresh.clone();
   std::vector<std::vector<cv::Point>> contours;
+  std::vector<TargetInfo> blobs;
   std::vector<TargetInfo> targets;
   std::vector<TargetInfo> rejected_targets;
   cv::findContours(contour_input, contours, cv::RETR_EXTERNAL,
@@ -73,7 +74,7 @@ std::vector<TargetInfo> processImpl(int w, int h, int texOut, DisplayMode mode,
 
   for (auto &contour : contours) {
     auto rect = cv::boundingRect(contour);
-    const double minTargetWidth = 20;
+    const double minTargetWidth = 40;
     const double maxTargetWidth = 250;
     const double minTargetHeight = 5;
     const double maxTargetHeight = 60;
@@ -92,16 +93,55 @@ std::vector<TargetInfo> processImpl(int w, int h, int texOut, DisplayMode mode,
     target.points = contour;
 
     // We found a target
-    /* LOGD("Found target at %.2lf, %.2lf...size %.2lf, %.2lf",
-         target.centroid_x, target.centroid_y, target.width, target.height);
-    targets.push_back(std::move(target)); */
+    targets.push_back(std::move(target));
 
     cv::Vec3b centroid_color = hsv.at<cv::Vec3b>(cv::Point(target.centroid_x, target.centroid_y));
     LOGD("Target HSV is H: %d, S: %d, V: %d", centroid_color.val[0], centroid_color.val[1], centroid_color.val[2]);
 
-    LOGD("Found target");
-    targets.push_back(std::move(target));
+    LOGD("Found potential target");
+    blobs.push_back(std::move(target));
   }
+
+  bool found = false;
+
+  if(blobs.size() >= 2) {
+    for(int i = 0; i < blobs.size() - 1; i++) {
+      if(found) break;
+
+      LOGD("First blob is index %d", i);
+      // maybe we should use references instead of copies
+      TargetInfo first_blob = blobs.at(i);
+
+      for(int j = i + 1; j < blobs.size(); j++) {
+        if(found) break;
+
+        TargetInfo second_blob = blobs.at(j);
+
+        if(fabs(first_blob.centroid_x - second_blob.centroid_x) > 6) {
+          LOGD("Rejecting due to centroid alignment");
+          continue;
+        }
+        if(fabs(first_blob.width - second_blob.width) > 8) { // things are roughly the same width
+          LOGD("Rejecting due to width differences");
+          continue;
+        }
+        found = true;
+
+        TargetInfo target;
+        if(first_blob.centroid_y < second_blob.centroid_y) {
+          target = first_blob;
+        } else {
+          target = second_blob;
+        }
+
+        LOGD("Found target at %.2lf, %.2lf...size %.2lf, %.2lf",
+             target.centroid_x, target.centroid_y, target.width, target.height);
+        targets.push_back(target);
+      }
+    }
+  }
+
+
   LOGD("Contour analysis costs %d ms", getTimeInterval(t));
 
   // write back
@@ -114,7 +154,7 @@ std::vector<TargetInfo> processImpl(int w, int h, int texOut, DisplayMode mode,
   } else {
     vis = input;
     // Render the targets
-    for (auto &target : targets) {
+    for (auto &target : blobs) {
       cv::polylines(vis, target.points, true, cv::Scalar(0, 112, 255), 3);
       cv::circle(vis, cv::Point(target.centroid_x, target.centroid_y), 5,
                  cv::Scalar(0, 112, 255), 3);
