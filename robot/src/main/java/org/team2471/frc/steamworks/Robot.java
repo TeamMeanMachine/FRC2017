@@ -22,6 +22,7 @@ import org.team2471.frc.util.net.ClockServer;
 
 public class Robot extends IterativeRobot {
   public static final boolean COMPETITION = false;
+  public static final boolean TESTING_AUTO = true;
 
   public static DriverStation.Alliance alliance;
 
@@ -45,9 +46,11 @@ public class Robot extends IterativeRobot {
   public void robotInit() {
     cheezDroid = new ChesDroid();
 
-    System.out.println("Calibrating Gyro...");
-    HardwareMap.gyro.calibrate();
-    System.out.println("Gyro calibrated");
+    if(!TESTING_AUTO) {
+//    System.out.println("Calibrating Gyro...");
+//    HardwareMap.gyro.calibrate();
+//    System.out.println("Gyro calibrated");
+    }
 
     // wait for alliance color
     DriverStation ds = DriverStation.getInstance();

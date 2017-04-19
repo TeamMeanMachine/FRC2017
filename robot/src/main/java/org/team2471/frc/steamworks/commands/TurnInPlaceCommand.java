@@ -11,7 +11,7 @@ public class TurnInPlaceCommand extends PIDCommand {
 
   public TurnInPlaceCommand(double angle, boolean mirrored) {
     super(SmartDashboard.getNumber("Aim P", 0.17), 0, SmartDashboard.getNumber("Aim D", 0.15));
-    getPIDController().setOutputRange(-0.7, 0.7);
+    getPIDController().setOutputRange(-0.5, 0.5);
 
     if (mirrored) {
       angle = -angle;

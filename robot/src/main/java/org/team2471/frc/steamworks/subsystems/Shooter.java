@@ -84,7 +84,6 @@ public class Shooter extends Subsystem {
     leftSlaveMotor.reverseOutput(false);
     leftSlaveMotor.enableBrakeMode(false);
 
-
     cycloneMotor.setInverted(false);
     elevatorMotor.setInverted(true);
 
