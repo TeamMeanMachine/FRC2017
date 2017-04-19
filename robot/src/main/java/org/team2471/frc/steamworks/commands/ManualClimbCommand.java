@@ -11,6 +11,7 @@ public class ManualClimbCommand extends Command {
 
   private boolean intakePressed;
   private boolean automaticIntake;
+  private double startDistance;
 
 
   public ManualClimbCommand() {
@@ -24,6 +25,8 @@ public class ManualClimbCommand extends Command {
     rightMotor.changeControlMode(CANTalon.TalonControlMode.Position);
     Robot.drive.enableClimbing();
     automaticIntake = false;
+
+    startDistance = Math.abs(leftMotor.getPosition() + rightMotor.getPosition()) / 2;
   }
 
   @Override
@@ -48,7 +51,7 @@ public class ManualClimbCommand extends Command {
 
     double distance = Math.abs(leftDistance + rightDistance) / 2;
     if (automaticIntake) {
-      if (distance > 18) {
+      if (distance > 14) {
         Robot.gearIntake.extend();
       } else {
         Robot.gearIntake.retract();
