@@ -32,9 +32,11 @@ public class ManualClimbCommand extends Command {
 
     double throttle = IOMap.throttleAxis.get();
 
-    Robot.drive.lowGear();
+    Robot.drive.hiGear();
 
-    throttle *= 16;
+    throttle *= 12;
+    SmartDashboard.putNumber("Climb Throttle", throttle);
+
 
     leftMotor.setSetpoint(leftDistance + throttle);
     rightMotor.setSetpoint(rightDistance + throttle);
