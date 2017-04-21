@@ -38,6 +38,7 @@ public class IOMap {
   public static final ControllerButton placeGearButton = driverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
 
   public static final ControllerButton climbButton = driverController.getButton(XboxMap.Buttons.Y);
+  public static final ControllerButton exitClimbButton = driverController.getButton(XboxMap.Buttons.B);
 
 
   public static final ControllerButton signalCoDriverButton = driverController.getButton(XboxMap.Buttons.RIGHT_THUMBSTICK);
@@ -45,16 +46,17 @@ public class IOMap {
 
   public static final ControllerButton climbIntakeOverrideButton = driverController.getButton(XboxMap.Buttons.BACK);
 
+  public static final ControllerButton fuelFlapButton = driverController.getButton(XboxMap.Buttons.X);
+
   //Co-Driver controls
   public static final ControllerButton signalDriverButton = coDriverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
 
 
   public static ControllerAxis shootAxis = coDriverController.getAxis(3);
 
-  public static final ControllerButton toggleIntakeButton = coDriverController.getButton(XboxMap.Buttons.B);
+  public static final ControllerButton toggleAutomaticIntakeButton = coDriverController.getButton(XboxMap.Buttons.B);
   public static final ControllerAxis spitAxis = coDriverController.getAxis(XboxMap.Axes.LEFT_TRIGGER);
   public static final ControllerButton spitButton = () -> spitAxis.get() > 0.2;
-  public static final ControllerButton fuelFeedButton = coDriverController.getButton(XboxMap.Buttons.A);
   public static final ControllerButton aimButton = coDriverController.getButton(XboxMap.Buttons.X);
   public static final ControllerButton wallButton = coDriverController.getButton(XboxMap.Buttons.Y);
 
@@ -74,14 +76,14 @@ public class IOMap {
       .withLinearScaling(0.6);
 
   public static void init() {
-    CommandTrigger disableFuelIntakeTrigger = toggleIntakeButton.asTrigger();
-    disableFuelIntakeTrigger.toggleWhenActive(new DisableFuelIntakeCommand());
+    CommandTrigger toggleAutomaticIntakeTrigger = toggleAutomaticIntakeButton.asTrigger();
+    toggleAutomaticIntakeTrigger.whenActive(new ToggleAutomaticFuelIntakeCommand());
 
     CommandTrigger spitFuelTrigger = spitButton.asTrigger();
     spitFuelTrigger.whileActive(new SpitFuelCommand());
 
-    CommandTrigger feedFuelTrigger = fuelFeedButton.asTrigger();
-    feedFuelTrigger.toggleWhenActive(new ExtendFuelFlapCommand());
+    CommandTrigger fuelFlapTrigger = fuelFlapButton.asTrigger();
+    fuelFlapTrigger.toggleWhenActive(new ExtendFuelFlapCommand());
 
     CommandTrigger pickupGearTrigger = pickupGearButton.asTrigger();
     pickupGearTrigger.whileActive(new PickupGearCommandGroup());
@@ -91,7 +93,7 @@ public class IOMap {
     placeGearTrigger.whileActive(new PlaceGearCommand());
 
     CommandTrigger climbTrigger = climbButton.asTrigger();
-    climbTrigger.toggleWhenActive(new ManualClimbCommandGroup());
+    climbTrigger.whenActive(new ManualClimbCommandGroup());
 
     CommandTrigger aimTrigger = aimButton.asTrigger();
     aimTrigger.toggleWhenActive(new AimCommand());

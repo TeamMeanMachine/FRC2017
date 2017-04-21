@@ -1,15 +1,17 @@
 package org.team2471.frc.steamworks.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team2471.frc.lib.io.log.Logger;
+import org.team2471.frc.lib.io.ControllerAxis;
 import org.team2471.frc.steamworks.IOMap;
 import org.team2471.frc.steamworks.Robot;
+import org.team2471.frc.steamworks.subsystems.Drive;
 
 
 public class FindRopeCommand extends Command {
   public static final int CURRENT_THRESHOLD = 50;
-  private final Logger logger = new Logger("FindRopeCommand");
+
+  private final ControllerAxis throttleAxis = IOMap.throttleAxis;
+//      .map(value -> value > 0.35 ? 0.35 : value);
 
   public FindRopeCommand() {
     requires(Robot.drive);
@@ -18,14 +20,14 @@ public class FindRopeCommand extends Command {
 
   @Override
   protected void execute() {
-    Robot.drive.drive(IOMap.throttleAxis.get(), IOMap.turnAxis.get(), IOMap.leftAxis.get(), IOMap.rightAxis.get());
-    SmartDashboard.putNumber("Climber Current", Robot.fuelIntake.getCurrent());
+    Robot.drive.drive(throttleAxis.get(), IOMap.turnAxis.get(), IOMap.leftAxis.get(), IOMap.rightAxis.get(),
+        Drive.ShiftState.FORCE_LOW);
     Robot.fuelIntake.rollOut();
   }
 
   @Override
   protected boolean isFinished() {
-    return Robot.fuelIntake.getCurrent() > CURRENT_THRESHOLD;
+    return Robot.fuelIntake.getCurrent() > CURRENT_THRESHOLD || IOMap.exitClimbButton.get();
   }
 
   @Override

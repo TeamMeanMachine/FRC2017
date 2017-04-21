@@ -29,10 +29,6 @@ struct TargetInfo {
 std::vector<TargetInfo> processImpl(int w, int h, int texOut, DisplayMode mode,
                                     int h_min, int h_max, int s_min, int s_max,
                                     int v_min, int v_max) {
-  // our threshold overrides because I have no idea how their preferences work
-  h_min = 60;
-  h_max = 90;
-
   LOGD("Image is %d x %d", w, h);
   LOGD("H %d-%d S %d-%d V %d-%d", h_min, h_max, s_min, s_max, v_min, v_max);
   int64_t t;
@@ -160,11 +156,13 @@ std::vector<TargetInfo> processImpl(int w, int h, int texOut, DisplayMode mode,
                  cv::Scalar(0, 112, 255), 3);
     }
   }
+  /*
   if (mode == DISP_MODE_TARGETS_PLUS) {
     for (auto &target : rejected_targets) {
       cv::polylines(vis, target.points, true, cv::Scalar(255, 0, 0), 3);
     }
   }
+  */
   LOGD("Creating vis costs %d ms", getTimeInterval(t));
 
   glActiveTexture(GL_TEXTURE0);

@@ -103,23 +103,29 @@ public class Drive extends Subsystem {
     setDefaultCommand(new DriveDefaultCommand());
   }
 
-  public void drive(double throttle, double turn, double turnLeft, double turnRight) {
+  public void drive(double throttle, double turn, double turnLeft, double turnRight, ShiftState shiftState) {
     // WE CANNOT TURN WHILE PTO IS ENGAGED. Use driveStraight() while climbing.
     if (isClimbing()) {
-      //logger.error("Robot attempted to use drive() while climber is engaged!");
+      logger.error("Robot attempted to use drive() while climber is engaged!");
       return;
     }
 
     DriveSignal signal = cheesyDriveHelper.cheesyDrive(throttle, turn, false);
 
-    double averageSpeed = getSpeed();
-    if (averageSpeed > HIGH_SHIFTPOINT) {
+    if(shiftState == ShiftState.AUTO) {
+      double averageSpeed = getSpeed();
+      if (averageSpeed > HIGH_SHIFTPOINT) {
+        hiGear();
+      } else if (averageSpeed < LOW_SHIFTPOINT) {
+        lowGear();
+      }
+      SmartDashboard.putNumber("Speed", averageSpeed);
+    } else if(shiftState == ShiftState.FORCE_HIGH) {
       hiGear();
-    } else if (averageSpeed < LOW_SHIFTPOINT) {
+    } else {
       lowGear();
     }
 
-    SmartDashboard.putNumber("Speed", averageSpeed);
     double leftPower = signal.leftMotor - turnLeft + turnRight;
     double rightPower = signal.rightMotor - turnRight + turnLeft;
 
@@ -139,6 +145,10 @@ public class Drive extends Subsystem {
     SmartDashboard.putNumber("Distance", getDistance());
   }
 
+
+  public void drive(double throttle, double turn, double turnLeft, double turnRight) {
+    drive(throttle, turn, turnLeft, turnRight, ShiftState.AUTO);
+  }
   public void turnInPlace(double turn) {
     drive(0, 0, 0, turn);
   }
@@ -217,7 +227,7 @@ public class Drive extends Subsystem {
     shift(false);
   }
 
-  private enum ShiftState {
+  public enum ShiftState {
     AUTO,
     FORCE_HIGH,
     FORCE_LOW

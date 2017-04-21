@@ -3,7 +3,6 @@ package org.team2471.frc.steamworks.subsystems;
 import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.team2471.frc.lib.io.log.Logger;
 import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.defaultcommands.FuelIntakeDefaultCommand;
@@ -21,10 +20,9 @@ public class FuelIntake extends Subsystem {
     intakeMotor.enableBrakeMode(false);
     intakeMotor.setInverted(true);
 
+    intakeMotor.setVoltageRampRate(96);
+
     amperageTimer.start();
-    LiveWindow.addActuator("FuelIntake", "Intake Motor", intakeMotor);
-    LiveWindow.addActuator("FuelIntake", "Left Windshield Motor", intakeMotor);
-    LiveWindow.addActuator("FuelIntake", "Right Windshield Motor", intakeMotor);
   }
 
   public double getCurrent() {

@@ -11,9 +11,9 @@ import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 @SuppressWarnings("InfiniteLoopStatement")
 public class CameraFeed {
   public CameraFeed() {
-    final int width = 640;
-    final int height = 480;
-    final int fps = 15;
+    final int width = 320;
+    final int height = 240;
+    final int fps = 30;
 
     final UsbCamera camera = new UsbCamera("Camera", 0);
     final MjpegServer server = new MjpegServer("Camera Feed", 5805);
@@ -40,7 +40,7 @@ public class CameraFeed {
           continue;
         }
 
-        Imgproc.line(image, new Point(width / 2, 0), new Point(width / 2, height), new Scalar(0, 255, 255), 2);
+        Imgproc.line(image, new Point(width / 2, 0), new Point(width / 2, height), new Scalar(0x48, 0x00, 0xDD), 2);
         processedSource.putFrame(image);
 
         if(i % 30 == 0) {

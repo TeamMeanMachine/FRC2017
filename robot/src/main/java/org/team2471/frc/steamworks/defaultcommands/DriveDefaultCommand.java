@@ -26,10 +26,6 @@ public class DriveDefaultCommand extends Command {
     double rightDistance = Robot.drive.getRightMotor1().getPosition();
     SmartDashboard.putString("Drive Distances", leftDistance + ":" + rightDistance);
 
-    if (throttle > 0.3 && Robot.fuelIntake.getCurrentCommand() == null) {
-      Robot.fuelIntake.rollIn();
-    }
-
     // temporary test for shooter
 /*
     HardwareMap.TwinShooterMap.masterLeft.changeControlMode( CANTalon.TalonControlMode.PercentVbus );

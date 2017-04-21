@@ -8,6 +8,8 @@ import org.team2471.frc.steamworks.commands.RumbleCommand;
 
 public class ManualClimbCommandGroup extends CommandGroup {
   public ManualClimbCommandGroup() {
+    setInterruptible(false);
+
     addSequential(new FindRopeCommand());
     addParallel(new RumbleCommand(IOMap.getDriverController(), 1, RumbleCommand.StickSide.BOTH), 1);
 

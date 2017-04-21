@@ -28,7 +28,7 @@ public class PickupGearCommand extends Command {
     }
 
     double current = Robot.gearIntake.getCurrentDraw();
-    if (current < 15.0) {
+    if (current < 8.5) {
       ampTimer.reset();
     }
 
