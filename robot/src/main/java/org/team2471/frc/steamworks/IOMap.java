@@ -46,8 +46,6 @@ public class IOMap {
 
   public static final ControllerButton climbIntakeOverrideButton = driverController.getButton(XboxMap.Buttons.BACK);
 
-  public static final ControllerButton fuelFlapButton = driverController.getButton(XboxMap.Buttons.X);
-
   //Co-Driver controls
   public static final ControllerButton signalDriverButton = coDriverController.getButton(XboxMap.Buttons.RIGHT_BUMPER);
 
@@ -68,6 +66,8 @@ public class IOMap {
       .withExponentialScaling(2);
 
   public static final ControllerDPad shooterDPad = coDriverController.getDPad();
+
+  public static final ControllerButton fuelFlapButton = coDriverController.getButton(XboxMap.Buttons.A);
 
   public static final ControllerAxis coDriverThrottleAxis = coDriverController.getAxis(XboxMap.Axes.LEFT_THUMBSTICK_Y)
       .withDeadband(.2)

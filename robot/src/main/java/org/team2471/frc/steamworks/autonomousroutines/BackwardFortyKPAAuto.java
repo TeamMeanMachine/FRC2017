@@ -4,7 +4,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.autonomouscommands.BackwardsAuto2A;
-import org.team2471.frc.steamworks.autonomouscommands.BackwardsAuto2B;
+import org.team2471.frc.steamworks.autonomouscommands.BackwardsAuto2BBlue;
+import org.team2471.frc.steamworks.autonomouscommands.BackwardsAuto2BRed;
 import org.team2471.frc.steamworks.commands.AimCommand;
 import org.team2471.frc.steamworks.commands.ExtendHoodCommand;
 import org.team2471.frc.steamworks.commands.ExtendHopperWallsCommand;
@@ -23,7 +24,9 @@ public class BackwardFortyKPAAuto extends CommandGroup {
     addParallel(new DelayedCommand(new ExtendHopperWallsCommand(), 1));
     addParallel(new ExtendHoodCommand());
     addParallel(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM1", 2550)));
-    addSequential(new BackwardsAuto2B(1.0, mirrored));
+    addSequential(mirrored ?
+        new BackwardsAuto2BRed(1.0, true) :
+        new BackwardsAuto2BBlue(1.0, false));
     addSequential(new AimCommand(13, SmartDashboard.getNumber("RPM1", 2550), 1.0, true));
   }
 }

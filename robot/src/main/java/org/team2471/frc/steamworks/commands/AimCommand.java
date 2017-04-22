@@ -17,7 +17,7 @@ import java.util.Optional;
 public class AimCommand extends PIDCommand {
   private final double AUTO_SHOOT_DELAY = 1.25;
 
-  private final double AGITATOR_DELAY = 3;
+  private final double AGITATOR_DELAY = 2.0;
   private final double AGITATOR_DURATION = 0.6;
 
   private final Timer shootingTimer = new Timer();
@@ -41,6 +41,7 @@ public class AimCommand extends PIDCommand {
     requires(Robot.drive);
     requires(Robot.shooter);
     requires(Robot.flap);
+
     requires(Robot.walls);
 
     this.autoSpeed = autoSpeed;
@@ -89,7 +90,6 @@ public class AimCommand extends PIDCommand {
 
   protected void execute() {
     boolean autonomous = DriverStation.getInstance().isAutonomous();
-    // PNW DCMP: shooter not working
     Robot.shooter.enableRingLight();
 
     // update PID
@@ -150,16 +150,19 @@ public class AimCommand extends PIDCommand {
 
       // agitator stuff
       if (agitatorTimer.get() < AGITATOR_DURATION) {
+        Robot.flap.extend();
         Robot.walls.retract();
       } else if (agitatorTimer.get() > AGITATOR_DELAY + AGITATOR_DURATION) {
         agitatorTimer.reset();
       } else {
+        Robot.flap.retract();
         Robot.walls.extend();
       }
 
       Robot.shooter.intake(speed);
     } else {
       Robot.shooter.setRampRate(32);
+      Robot.flap.retract();
       Robot.walls.extend();
       if (shootingTimer.get() < 0.2) {
         Robot.shooter.intake(0);
@@ -202,6 +205,7 @@ public class AimCommand extends PIDCommand {
     Robot.shooter.reset();
     Robot.shooter.disableRingLight();
     Robot.walls.retract();
+    Robot.flap.retract();
 
     IOMap.getGunnerController().rumbleLeft(0.0f);
     IOMap.getGunnerController().rumbleRight(0.0f);

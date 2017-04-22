@@ -29,7 +29,7 @@ public class OneHundredPointAuto extends CommandGroup {
 //    addParallel(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM1", 2550)));
 //    addParallel(new ExtendHopperWallsCommand()); // no movable walls on practice bot
 
-//    addSequential(new BackwardsAuto2B(1.0, mirrored));
+//    addSequential(new BackwardsAuto2BBlue(1.0, mirrored));
 //
     addSequential(new OneHundredAutoC(1.0, mirrored));
 //    addSequential(new AimCommand(mirrored ? -188.5 : 184.2, SmartDashboard.getNumber("RPM1", 2550)));

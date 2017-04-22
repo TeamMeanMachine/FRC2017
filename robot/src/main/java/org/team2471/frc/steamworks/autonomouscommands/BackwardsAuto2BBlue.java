@@ -7,10 +7,10 @@ import org.team2471.frc.steamworks.Robot;
 
 import static org.team2471.frc.steamworks.Robot.drive;
 
-public class BackwardsAuto2B extends FollowPathTankDriveCommand {
+public class BackwardsAuto2BBlue extends FollowPathTankDriveCommand {
   private Path2D path;
 
-  public BackwardsAuto2B(double speed, boolean mirror) {
+  public BackwardsAuto2BBlue(double speed, boolean mirror) {
     requires(drive);
 
     setSpeed(speed);

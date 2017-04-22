@@ -21,7 +21,7 @@ public class CenterLiftPlusTen extends CommandGroup {
     DriverStation.Alliance alliance = driverStation.getAlliance();
     boolean mirrored = alliance == DriverStation.Alliance.Red;
 
-    addSequential(new DriveDistanceCommand(6.0, 2.0));
+    addSequential(new DriveDistanceCommand(6.35, 2.0));
     addParallel(new PlaceGearCommand(), 2.0);
     addSequential(new FollowPathTankDriveCommandBuilder(Robot.drive.tankDriveProfile)
         .withMirrored(mirrored)
