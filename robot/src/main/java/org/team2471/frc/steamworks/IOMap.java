@@ -58,6 +58,7 @@ public class IOMap {
   public static final ControllerButton aimButton = coDriverController.getButton(XboxMap.Buttons.X);
   public static final ControllerButton wallButton = coDriverController.getButton(XboxMap.Buttons.Y);
 
+  public static final ControllerButton enableRingLightButton = coDriverController.getButton(XboxMap.Buttons.START);
 
   public static ControllerButton shootButton = () -> shootAxis.get() > 0.15;
 
@@ -118,6 +119,9 @@ public class IOMap {
 
     CommandTrigger activateWallsTrigger = wallButton.asTrigger();
     activateWallsTrigger.toggleWhenActive(new ExtendHopperWallsCommand());
+
+    CommandTrigger enableRingLightTrigger = enableRingLightButton.asTrigger();
+    enableRingLightTrigger.whileActive(new EnableRingLightCommand());
   }
 
   public static Controller getDriverController() {

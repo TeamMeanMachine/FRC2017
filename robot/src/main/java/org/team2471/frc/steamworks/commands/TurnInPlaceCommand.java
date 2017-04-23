@@ -1,11 +1,14 @@
 package org.team2471.frc.steamworks.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.steamworks.Robot;
 
 public class TurnInPlaceCommand extends PIDCommand {
   private final double angle;
+
+  private final Timer timer = new Timer();
 
   public TurnInPlaceCommand(double angle, boolean mirrored) {
     super(SmartDashboard.getNumber("Aim P", 0.17), 0, SmartDashboard.getNumber("Aim D", 0.15));
@@ -21,12 +24,18 @@ public class TurnInPlaceCommand extends PIDCommand {
 
   @Override
   protected void initialize() {
+    timer.start();
     setSetpoint(returnPIDInput() + angle);
   }
 
   @Override
   protected boolean isFinished() {
-    return getPIDController().getError() < 2.0 || isTimedOut();
+    return getPIDController().getError() < 2.0 && timer.get() > 0.15 || isTimedOut();
+  }
+
+  @Override
+  protected void end() {
+    timer.stop();
   }
 
   @Override

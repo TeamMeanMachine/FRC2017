@@ -185,8 +185,12 @@ public class Shooter extends Subsystem {
     hoodSolenoid.set(false);
   }
 
+  public void enableRingLight(double intensity) {
+    ringLight.set(MeanUtils.range(intensity, 0.8, 1.0));
+  }
+
   public void enableRingLight() {
-    ringLight.set(MeanUtils.range(SmartDashboard.getNumber("Ring Light Power", 0.8), 0.0, 1.0));
+    enableRingLight(SmartDashboard.getNumber("Ring Light Power", 0.8));
   }
 
   public void disableRingLight() {

@@ -12,6 +12,7 @@ public class PickupGearCommand extends Command {
 
   public PickupGearCommand() {
     requires(Robot.gearIntake);
+    requires(Robot.shooter);
   }
 
   @Override
@@ -32,9 +33,15 @@ public class PickupGearCommand extends Command {
       ampTimer.reset();
     }
 
-    if(ampTimer.get() > 0.5) {
+    if(ampTimer.get() > 0.3) {
       IOMap.getDriverController().rumbleLeft(0.8f);
       IOMap.getDriverController().rumbleRight(0.8f);
+
+      if((ampTimer.get() + 0.3) % 1 < 0.5) {
+        Robot.shooter.enableRingLight(0.5);
+      } else {
+        Robot.shooter.disableRingLight();
+      }
     }
   }
 
@@ -48,6 +55,7 @@ public class PickupGearCommand extends Command {
     Robot.gearIntake.retract();
     Robot.gearIntake.rollStop();
     ampTimer.stop();
+    Robot.shooter.disableRingLight();
     IOMap.getDriverController().rumbleLeft(0.0f);
     IOMap.getDriverController().rumbleRight(0.0f);
   }
