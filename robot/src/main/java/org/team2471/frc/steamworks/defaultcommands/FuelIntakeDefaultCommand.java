@@ -10,7 +10,7 @@ import org.team2471.frc.steamworks.Robot;
 public class FuelIntakeDefaultCommand extends Command {
   public FuelIntakeDefaultCommand() {
     requires(Robot.fuelIntake);
-    SmartDashboard.putBoolean("Automatic Intake", true);
+    SmartDashboard.putBoolean("Automatic Intake", !Robot.DEMO);
   }
 
   @Override

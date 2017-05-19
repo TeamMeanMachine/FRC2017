@@ -87,6 +87,11 @@ public class Shooter extends Subsystem {
     cycloneMotor.setInverted(false);
     elevatorMotor.setInverted(true);
 
+    leftMasterMotor.configPeakOutputVoltage(12, 0);
+    leftSlaveMotor.configPeakOutputVoltage(12, 0);
+    rightMasterMotor.configPeakOutputVoltage(0, -12);
+    rightSlaveMotor.configPeakOutputVoltage(0, -12);
+
     // Velocity filtering
     HardwareMap.TwinShooterMap.masterLeft.SetVelocityMeasurementPeriod(CANTalon.VelocityMeasurementPeriod.Period_25Ms);  // default 100
     HardwareMap.TwinShooterMap.masterLeft.SetVelocityMeasurementWindow(32);  // default 64

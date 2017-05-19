@@ -60,7 +60,9 @@ public class IOMap {
 
   public static final ControllerButton enableRingLightButton = coDriverController.getButton(XboxMap.Buttons.START);
 
-  public static ControllerButton shootButton = () -> shootAxis.get() > 0.15;
+  public static final ControllerButton shootButton = () -> shootAxis.get() > 0.15;
+
+  public static final ControllerButton intakeButton = coDriverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
 
   public static final ControllerAxis aimAxis = coDriverController.getAxis(XboxMap.Axes.RIGHT_THUMBSTICK_X)
       .withDeadband(0.2)
@@ -93,8 +95,10 @@ public class IOMap {
     CommandTrigger placeGearTrigger = placeGearButton.asTrigger();
     placeGearTrigger.whileActive(new PlaceGearCommand());
 
-    CommandTrigger climbTrigger = climbButton.asTrigger();
-    climbTrigger.whenActive(new ManualClimbCommandGroup());
+    if(!Robot.DEMO) {
+      CommandTrigger climbTrigger = climbButton.asTrigger();
+      climbTrigger.whenActive(new ManualClimbCommandGroup());
+    }
 
     CommandTrigger aimTrigger = aimButton.asTrigger();
     aimTrigger.toggleWhenActive(new AimCommand());
@@ -122,6 +126,8 @@ public class IOMap {
 
     CommandTrigger enableRingLightTrigger = enableRingLightButton.asTrigger();
     enableRingLightTrigger.whileActive(new EnableRingLightCommand());
+
+    intakeButton.asTrigger().whileActive(new IntakeFuelCommand());
   }
 
   public static Controller getDriverController() {

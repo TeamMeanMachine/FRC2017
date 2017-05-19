@@ -9,9 +9,11 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.control.CANController;
+import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.lib.io.log.Logger;
 import org.team2471.frc.lib.motion_profiling.util.TankDriveProfile;
 import org.team2471.frc.steamworks.HardwareMap;
+import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.defaultcommands.DriveDefaultCommand;
 
 public class Drive extends Subsystem {
@@ -34,6 +36,8 @@ public class Drive extends Subsystem {
   public final TankDriveProfile tankDriveProfile = new TankDriveProfile(leftMotor1, rightMotor1);
 
   public Drive() {
+    DashboardUtils.putPersistentNumber("Demo Drive Cap", 0.4);
+
     leftMotor1.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
     leftMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
     leftMotor2.changeControlMode(CANTalon.TalonControlMode.Follower);
@@ -108,6 +112,10 @@ public class Drive extends Subsystem {
     if (isClimbing()) {
       logger.error("Robot attempted to use drive() while climber is engaged!");
       return;
+    }
+
+    if(Robot.DEMO) {
+      throttle *= SmartDashboard.getNumber("Demo Drive Cap", 1.0);
     }
 
     DriveSignal signal = cheesyDriveHelper.cheesyDrive(throttle, turn, false);
