@@ -25,19 +25,6 @@ public class DriveDefaultCommand extends Command {
     double leftDistance = Robot.drive.getLeftMotor1().getPosition();
     double rightDistance = Robot.drive.getRightMotor1().getPosition();
     SmartDashboard.putString("Drive Distances", leftDistance + ":" + rightDistance);
-
-    // temporary test for shooter
-/*
-    HardwareMap.TwinShooterMap.masterLeft.changeControlMode( CANTalon.TalonControlMode.PercentVbus );
-    HardwareMap.TwinShooterMap.masterRight.changeControlMode( CANTalon.TalonControlMode.PercentVbus );
-
-    double shooterPower = IOMap.coDriverThrottleAxis.get();
-    HardwareMap.TwinShooterMap.masterLeft.set( shooterPower );
-    HardwareMap.TwinShooterMap.masterRight.set( shooterPower );
-
-    SmartDashboard.putNumber("Shooter Right Speed", Robot.shooter.getRightSpeed());
-    SmartDashboard.putNumber("Shooter Left Speed", Robot.shooter.getLeftSpeed());
-*/
   }
 
   @Override
