@@ -91,6 +91,7 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Gear plus ten fuel", new GearTenAuto());
     autoChooser.addObject("Middle Lift + 10", new CenterLiftPlusTen());
     autoChooser.addObject("Feeder Lift + 10", new FeederLiftPlusTen());
+    autoChooser.addObject("Turn Sharp- TEST!", new TurnSharp());
     autoChooser.addObject("Test Auto (don't run this drive team)", new DriveDistanceCommand(6.5, 2.2));
 
     SmartDashboard.putData("AutoChooser", autoChooser);
