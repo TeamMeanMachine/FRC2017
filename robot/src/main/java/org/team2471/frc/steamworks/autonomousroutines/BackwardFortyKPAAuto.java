@@ -3,9 +3,13 @@ package org.team2471.frc.steamworks.autonomousroutines;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team2471.frc.steamworks.autonomouscommands.DriveForwardCommand;
-import org.team2471.frc.steamworks.autonomouscommands.FortyKPA;
-import org.team2471.frc.steamworks.commands.*;
+import org.team2471.frc.steamworks.autonomouscommands.BackwardsAuto2A;
+import org.team2471.frc.steamworks.autonomouscommands.BackwardsAuto2BBlue;
+import org.team2471.frc.steamworks.autonomouscommands.BackwardsAuto2BRed;
+import org.team2471.frc.steamworks.commands.AimCommand;
+import org.team2471.frc.steamworks.commands.ExtendHoodCommand;
+import org.team2471.frc.steamworks.commands.ExtendHopperWallsCommand;
+import org.team2471.frc.steamworks.commands.SpinUpShooterCommand;
 import org.team2471.frc.util.DelayedCommand;
 
 public class BackwardFortyKPAAuto extends CommandGroup {
@@ -16,14 +20,13 @@ public class BackwardFortyKPAAuto extends CommandGroup {
 
     boolean mirrored = alliance == DriverStation.Alliance.Red;
 
-    addParallel(new DelayedCommand(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM1", 2550)), 3));
-    addSequential(new FortyKPA(1.0, mirrored));
-    addParallel(new ExtendHopperWallsCommand());
-    addSequential(new TurnInPlaceCommand(30, mirrored), 1);
-    addSequential(new DriveForwardCommand(2, 1.0));
-//    addSequential(new TurnInPlaceCommand(7, mirrored), 1);
+    addSequential(new BackwardsAuto2A(1.0, mirrored));
+    addParallel(new DelayedCommand(new ExtendHopperWallsCommand(), 1));
     addParallel(new ExtendHoodCommand());
-//    addSequential(new ForwardForFortyKPA(1.0, mirrored));
+    addParallel(new SpinUpShooterCommand(SmartDashboard.getNumber("RPM1", 2550)));
+    addSequential(mirrored ?
+        new BackwardsAuto2BRed(1.0, true) :
+        new BackwardsAuto2BBlue(1.0, false));
     addSequential(new AimCommand(13, SmartDashboard.getNumber("RPM1", 2550), 1.0, true));
   }
 }

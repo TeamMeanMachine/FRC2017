@@ -3,9 +3,10 @@ package org.team2471.frc.steamworks.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.team2471.frc.steamworks.Robot;
 
-public class DisableFuelIntakeCommand extends Command {
-  public DisableFuelIntakeCommand() {
-    requires(Robot.fuelIntake);
+public class EnableRingLightCommand extends Command {
+  @Override
+  protected void execute() {
+    Robot.shooter.enableRingLight(0.2);
   }
 
   @Override
@@ -15,6 +16,6 @@ public class DisableFuelIntakeCommand extends Command {
 
   @Override
   protected void end() {
-    Robot.fuelIntake.stopRoll();
+    Robot.shooter.disableRingLight();
   }
 }

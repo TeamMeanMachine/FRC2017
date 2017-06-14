@@ -26,6 +26,5 @@ public class GearTenAuto extends CommandGroup {
     addSequential(new DriveDistanceCommandOld(-6.0, 2.0));
     addSequential(new TurnInPlaceCommand(140, mirrored));
     addSequential(new AimCommand(mirrored ? -211 : 220.0, SmartDashboard.getNumber("RPM1", 0), 0.45, true));
-    addSequential(new PrintCommand((String.valueOf(mirrored ? -211 : 211))));
   }
 }

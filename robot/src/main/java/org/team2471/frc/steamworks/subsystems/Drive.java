@@ -9,9 +9,11 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2471.frc.lib.control.CANController;
+import org.team2471.frc.lib.io.dashboard.DashboardUtils;
 import org.team2471.frc.lib.io.log.Logger;
 import org.team2471.frc.lib.motion_profiling.util.TankDriveProfile;
 import org.team2471.frc.steamworks.HardwareMap;
+import org.team2471.frc.steamworks.Robot;
 import org.team2471.frc.steamworks.defaultcommands.DriveDefaultCommand;
 
 public class Drive extends Subsystem {
@@ -34,6 +36,8 @@ public class Drive extends Subsystem {
   public final TankDriveProfile tankDriveProfile = new TankDriveProfile(leftMotor1, rightMotor1);
 
   public Drive() {
+    DashboardUtils.putPersistentNumber("Demo Drive Cap", 0.4);
+
     leftMotor1.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
     leftMotor1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
     leftMotor2.changeControlMode(CANTalon.TalonControlMode.Follower);
@@ -103,23 +107,33 @@ public class Drive extends Subsystem {
     setDefaultCommand(new DriveDefaultCommand());
   }
 
-  public void drive(double throttle, double turn, double turnLeft, double turnRight) {
+  public void drive(double throttle, double turn, double turnLeft, double turnRight, ShiftState shiftState) {
     // WE CANNOT TURN WHILE PTO IS ENGAGED. Use driveStraight() while climbing.
     if (isClimbing()) {
-      //logger.error("Robot attempted to use drive() while climber is engaged!");
+      logger.error("Robot attempted to use drive() while climber is engaged!");
       return;
+    }
+
+    if(Robot.DEMO) {
+      throttle *= SmartDashboard.getNumber("Demo Drive Cap", 1.0);
     }
 
     DriveSignal signal = cheesyDriveHelper.cheesyDrive(throttle, turn, false);
 
-    double averageSpeed = getSpeed();
-    if (averageSpeed > HIGH_SHIFTPOINT) {
+    if(shiftState == ShiftState.AUTO) {
+      double averageSpeed = getSpeed();
+      if (averageSpeed > HIGH_SHIFTPOINT) {
+        hiGear();
+      } else if (averageSpeed < LOW_SHIFTPOINT) {
+        lowGear();
+      }
+      SmartDashboard.putNumber("Speed", averageSpeed);
+    } else if(shiftState == ShiftState.FORCE_HIGH) {
       hiGear();
-    } else if (averageSpeed < LOW_SHIFTPOINT) {
+    } else {
       lowGear();
     }
 
-    SmartDashboard.putNumber("Speed", averageSpeed);
     double leftPower = signal.leftMotor - turnLeft + turnRight;
     double rightPower = signal.rightMotor - turnRight + turnLeft;
 
@@ -139,6 +153,10 @@ public class Drive extends Subsystem {
     SmartDashboard.putNumber("Distance", getDistance());
   }
 
+
+  public void drive(double throttle, double turn, double turnLeft, double turnRight) {
+    drive(throttle, turn, turnLeft, turnRight, ShiftState.AUTO);
+  }
   public void turnInPlace(double turn) {
     drive(0, 0, 0, turn);
   }
@@ -217,7 +235,7 @@ public class Drive extends Subsystem {
     shift(false);
   }
 
-  private enum ShiftState {
+  public enum ShiftState {
     AUTO,
     FORCE_HIGH,
     FORCE_LOW

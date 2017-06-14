@@ -1,6 +1,5 @@
 package org.team2471.frc.steamworks;
 
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -9,19 +8,18 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import javafx.scene.Camera;
 import org.team2471.frc.steamworks.autonomouscommands.DoNothingAuto;
 import org.team2471.frc.steamworks.autonomouscommands.DriveDistanceCommand;
 import org.team2471.frc.steamworks.autonomousroutines.*;
 import org.team2471.frc.steamworks.commands.AimCommand;
-import org.team2471.frc.steamworks.commands.TurnInPlaceCommand;
 import org.team2471.frc.steamworks.commands.ZeroGyroCommand;
 import org.team2471.frc.steamworks.subsystems.*;
 import org.team2471.frc.util.commands.RunCommand;
-import org.team2471.frc.util.net.ClockServer;
 
 public class Robot extends IterativeRobot {
-  public static final boolean COMPETITION = false;
+  public static final boolean COMPETITION = true;
+  public static final boolean DEMO = true;
+  public static final boolean SKIP_GYRO_CALIBRATION = false;
 
   public static DriverStation.Alliance alliance;
 
@@ -45,9 +43,11 @@ public class Robot extends IterativeRobot {
   public void robotInit() {
     cheezDroid = new ChesDroid();
 
-    System.out.println("Calibrating Gyro...");
-    HardwareMap.gyro.calibrate();
-    System.out.println("Gyro calibrated");
+    if(!SKIP_GYRO_CALIBRATION) {
+      System.out.println("Calibrating Gyro...");
+      HardwareMap.gyro.calibrate();
+      System.out.println("Gyro calibrated");
+    }
 
     // wait for alliance color
     DriverStation ds = DriverStation.getInstance();
@@ -80,7 +80,7 @@ public class Robot extends IterativeRobot {
     autoChooser = new SendableChooser<>();
     autoChooser.addObject("Hitler's Auto", new DoNothingAuto());
     autoChooser.addObject("40 KPA Forward", new ForwardFortyKPAAuto());
-    autoChooser.addObject("40 KPA Backwards", new BackwardFortyKPAAuto2());
+    autoChooser.addObject("40 KPA Backwards", new BackwardFortyKPAAuto());
     autoChooser.addObject("Drive Eight Feet", new DriveEightFeet());
     autoChooser.addObject("Feeder Lift", new FeederLiftAuto());
     autoChooser.addObject("Boiler Lift", new BoilerLiftAuto());
@@ -127,6 +127,7 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Climber Current", Robot.fuelIntake.getCurrent());
     SmartDashboard.putNumber("Drive Speed", drive.getSpeed());
     SmartDashboard.putNumber("Gear Sensor", HardwareMap.GearIntakeMap.gearSensor.getValue());
 

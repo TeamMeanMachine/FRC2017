@@ -84,9 +84,13 @@ public class Shooter extends Subsystem {
     leftSlaveMotor.reverseOutput(false);
     leftSlaveMotor.enableBrakeMode(false);
 
-
     cycloneMotor.setInverted(false);
     elevatorMotor.setInverted(true);
+
+    leftMasterMotor.configPeakOutputVoltage(12, 0);
+    leftSlaveMotor.configPeakOutputVoltage(12, 0);
+    rightMasterMotor.configPeakOutputVoltage(0, -12);
+    rightSlaveMotor.configPeakOutputVoltage(0, -12);
 
     // Velocity filtering
     HardwareMap.TwinShooterMap.masterLeft.SetVelocityMeasurementPeriod(CANTalon.VelocityMeasurementPeriod.Period_25Ms);  // default 100
@@ -186,8 +190,12 @@ public class Shooter extends Subsystem {
     hoodSolenoid.set(false);
   }
 
+  public void enableRingLight(double intensity) {
+    ringLight.set(MeanUtils.range(intensity, 0.8, 1.0));
+  }
+
   public void enableRingLight() {
-    ringLight.set(MeanUtils.range(SmartDashboard.getNumber("Ring Light Power", 0.8), 0.0, 1.0));
+    enableRingLight(SmartDashboard.getNumber("Ring Light Power", 0.8));
   }
 
   public void disableRingLight() {

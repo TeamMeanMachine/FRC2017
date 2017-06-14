@@ -38,6 +38,7 @@ public class IOMap {
   public static final ControllerButton placeGearButton = driverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
 
   public static final ControllerButton climbButton = driverController.getButton(XboxMap.Buttons.Y);
+  public static final ControllerButton exitClimbButton = driverController.getButton(XboxMap.Buttons.B);
 
 
   public static final ControllerButton signalCoDriverButton = driverController.getButton(XboxMap.Buttons.RIGHT_THUMBSTICK);
@@ -51,21 +52,25 @@ public class IOMap {
 
   public static ControllerAxis shootAxis = coDriverController.getAxis(3);
 
-  public static final ControllerButton toggleIntakeButton = coDriverController.getButton(XboxMap.Buttons.B);
+  public static final ControllerButton toggleAutomaticIntakeButton = coDriverController.getButton(XboxMap.Buttons.B);
   public static final ControllerAxis spitAxis = coDriverController.getAxis(XboxMap.Axes.LEFT_TRIGGER);
   public static final ControllerButton spitButton = () -> spitAxis.get() > 0.2;
-  public static final ControllerButton fuelFeedButton = coDriverController.getButton(XboxMap.Buttons.A);
   public static final ControllerButton aimButton = coDriverController.getButton(XboxMap.Buttons.X);
   public static final ControllerButton wallButton = coDriverController.getButton(XboxMap.Buttons.Y);
 
+  public static final ControllerButton enableRingLightButton = coDriverController.getButton(XboxMap.Buttons.START);
 
-  public static ControllerButton shootButton = () -> shootAxis.get() > 0.15;
+  public static final ControllerButton shootButton = () -> shootAxis.get() > 0.15;
+
+  public static final ControllerButton intakeButton = coDriverController.getButton(XboxMap.Buttons.LEFT_BUMPER);
 
   public static final ControllerAxis aimAxis = coDriverController.getAxis(XboxMap.Axes.RIGHT_THUMBSTICK_X)
       .withDeadband(0.2)
       .withExponentialScaling(2);
 
   public static final ControllerDPad shooterDPad = coDriverController.getDPad();
+
+  public static final ControllerButton fuelFlapButton = coDriverController.getButton(XboxMap.Buttons.A);
 
   public static final ControllerAxis coDriverThrottleAxis = coDriverController.getAxis(XboxMap.Axes.LEFT_THUMBSTICK_Y)
       .withDeadband(.2)
@@ -74,14 +79,14 @@ public class IOMap {
       .withLinearScaling(0.6);
 
   public static void init() {
-    CommandTrigger disableFuelIntakeTrigger = toggleIntakeButton.asTrigger();
-    disableFuelIntakeTrigger.toggleWhenActive(new DisableFuelIntakeCommand());
+    CommandTrigger toggleAutomaticIntakeTrigger = toggleAutomaticIntakeButton.asTrigger();
+    toggleAutomaticIntakeTrigger.whenActive(new ToggleAutomaticFuelIntakeCommand());
 
     CommandTrigger spitFuelTrigger = spitButton.asTrigger();
     spitFuelTrigger.whileActive(new SpitFuelCommand());
 
-    CommandTrigger feedFuelTrigger = fuelFeedButton.asTrigger();
-    feedFuelTrigger.toggleWhenActive(new ExtendFuelFlapCommand());
+    CommandTrigger fuelFlapTrigger = fuelFlapButton.asTrigger();
+    fuelFlapTrigger.toggleWhenActive(new ExtendFuelFlapCommand());
 
     CommandTrigger pickupGearTrigger = pickupGearButton.asTrigger();
     pickupGearTrigger.whileActive(new PickupGearCommandGroup());
@@ -90,8 +95,10 @@ public class IOMap {
     CommandTrigger placeGearTrigger = placeGearButton.asTrigger();
     placeGearTrigger.whileActive(new PlaceGearCommand());
 
-    CommandTrigger climbTrigger = climbButton.asTrigger();
-    climbTrigger.toggleWhenActive(new ManualClimbCommandGroup());
+    if(!Robot.DEMO) {
+      CommandTrigger climbTrigger = climbButton.asTrigger();
+      climbTrigger.whenActive(new ManualClimbCommandGroup());
+    }
 
     CommandTrigger aimTrigger = aimButton.asTrigger();
     aimTrigger.toggleWhenActive(new AimCommand());
@@ -116,6 +123,11 @@ public class IOMap {
 
     CommandTrigger activateWallsTrigger = wallButton.asTrigger();
     activateWallsTrigger.toggleWhenActive(new ExtendHopperWallsCommand());
+
+    CommandTrigger enableRingLightTrigger = enableRingLightButton.asTrigger();
+    enableRingLightTrigger.whileActive(new EnableRingLightCommand());
+
+    intakeButton.asTrigger().whileActive(new IntakeFuelCommand());
   }
 
   public static Controller getDriverController() {

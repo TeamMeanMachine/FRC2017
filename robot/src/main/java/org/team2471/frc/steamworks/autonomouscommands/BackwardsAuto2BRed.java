@@ -1,18 +1,16 @@
 package org.team2471.frc.steamworks.autonomouscommands;
 
-
 import org.team2471.frc.lib.motion_profiling.FollowPathTankDriveCommand;
 import org.team2471.frc.lib.motion_profiling.Path2D;
 import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.Robot;
 
-import static org.team2471.frc.steamworks.HardwareMap.DriveMap.shiftPTO;
 import static org.team2471.frc.steamworks.Robot.drive;
 
-public class DriveToHopperAutoBlue extends FollowPathTankDriveCommand {
-  Path2D m_path;
+public class BackwardsAuto2BRed extends FollowPathTankDriveCommand {
+  private Path2D path;
 
-  public DriveToHopperAutoBlue(double speed, boolean mirror) {
+  public BackwardsAuto2BRed(double speed, boolean mirror) {
     requires(drive);
 
     setSpeed(speed);
@@ -20,15 +18,16 @@ public class DriveToHopperAutoBlue extends FollowPathTankDriveCommand {
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
 
-    m_path = new Path2D();
+    path = new Path2D();
+    path.setTravelDirection(1.0);
 
-    m_path.addPointAndTangent(0.0, 0.0, 0.0, 6.0);
-    m_path.addPointAndTangent(-5.0, 5.9, -8.0, -0.1);
+    path.addPointAndTangent(-1.65, 11.0, 0.0, -1.0);
+    path.addPointAndTangent(-3.0, 6.0, 0.0, -2.0);
 
-    m_path.addEasePoint(0.0, 0.0);
-    m_path.addEasePoint(2.0, 1.0);
+    path.addEasePoint(0.0, 0.0);
+    path.addEasePoint(1.5, 1.0);
 
-    setPath(m_path);
+    setPath(path);
   }
 
   @Override

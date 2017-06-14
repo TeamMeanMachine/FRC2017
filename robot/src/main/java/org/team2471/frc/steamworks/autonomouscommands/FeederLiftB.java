@@ -24,7 +24,7 @@ public class FeederLiftB extends FollowPathTankDriveCommand {
     m_path.setTravelDirection(-1.0);
 
     m_path.addPointAndTangent(0.0, 0.0, 9.0, -4.5);
-    m_path.addPointAndTangent(2.0, -4.0, 0.0, -3.0);
+    m_path.addPointAndTangent(2.0, -4.0, 0.0, -2.0);
 
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(2.0, 1.0);
