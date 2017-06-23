@@ -14,6 +14,8 @@ public class DriveEightFeet extends FollowPathTankDriveCommand {
   public DriveEightFeet() {
     requires(drive);
 
+    setGyro(HardwareMap.gyro);
+
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
 
