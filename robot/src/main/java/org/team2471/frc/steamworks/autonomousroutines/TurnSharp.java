@@ -18,16 +18,20 @@ public class TurnSharp extends FollowPathTankDriveCommand {
     setRightController(HardwareMap.DriveMap.rightMotor1);
 
     m_path = new Path2D();
-
-    double size = 4.0;
-    m_path.addPointAndTangent(0.0, 0.0, 0.0, size);
-    m_path.addPointAndTangent(size, size, size, 0.0);
-
-//    m_path.addPoint(0.0, 0.0);
-//    m_path.addPoint(0.0, 2.0);
+    double size = 2.0;
+    double tangent = 4.0;
+    m_path.addPointAndTangent(0.0, 0.0, 0.0, tangent);
+    m_path.addPointAndTangent(size, size, tangent, 0.0);
 
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(8.0, 1.0);
+
+//    double size = 0.5;
+//    m_path.addPointAndTangent(0.0, 0.0, 0.0, size);
+//    m_path.addPointAndTangent(size, size, size, 0.0);
+//
+//    m_path.addEasePoint(0.0, 0.0);
+//    m_path.addEasePoint(2.0, 1.0);
 
     setPath(m_path);
   }
