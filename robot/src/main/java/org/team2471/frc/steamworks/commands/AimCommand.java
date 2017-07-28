@@ -54,6 +54,7 @@ public class AimCommand extends PIDCommand {
     DashboardUtils.putPersistentNumber("Aim D", 0.15);
     DashboardUtils.putPersistentNumber("Aim Output Range", 0.27);
     DashboardUtils.putPersistentBoolean("Auto Aim", true);
+    DashboardUtils.putPersistentNumber("Aim Horizontal Offset", 0);
 
     turnController.setAbsoluteTolerance(6);
     turnController.setToleranceBuffer(10);
@@ -99,6 +100,7 @@ public class AimCommand extends PIDCommand {
     double rpm = autonomous ? startRpm : SmartDashboard.getNumber("Shooter Setpoint");
 
     double angle = autonomous && !targetFound ? gyroAngle : returnPIDInput();
+    angle += SmartDashboard.getNumber("Aim Horizontal Offset", 0);
     boolean autoAim = SmartDashboard.getBoolean("Auto Aim", false);
     if (autoAim || autonomous) {
       if (Robot.cheezDroid.isConnected()) {
