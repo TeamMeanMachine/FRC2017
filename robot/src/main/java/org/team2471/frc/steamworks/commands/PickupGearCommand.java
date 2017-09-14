@@ -37,7 +37,9 @@ public class PickupGearCommand extends Command {
       IOMap.getDriverController().rumbleLeft(0.8f);
       IOMap.getDriverController().rumbleRight(0.8f);
 
-      if((ampTimer.get() + 0.3) % 1 < 0.5) {
+      final double intervalDuration = 0.15;
+
+      if((ampTimer.get() - 0.3) * intervalDuration * 2 % 1 < 0.5) {
         Robot.shooter.enableRingLight(0.5);
       } else {
         Robot.shooter.disableRingLight();

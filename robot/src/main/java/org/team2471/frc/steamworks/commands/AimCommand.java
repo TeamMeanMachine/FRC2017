@@ -207,7 +207,7 @@ public class AimCommand extends PIDCommand {
     Robot.shooter.reset();
     Robot.shooter.disableRingLight();
     Robot.walls.retract();
-    Robot.flap.retract();
+    Robot.flap.extend();
 
     IOMap.getGunnerController().rumbleLeft(0.0f);
     IOMap.getGunnerController().rumbleRight(0.0f);

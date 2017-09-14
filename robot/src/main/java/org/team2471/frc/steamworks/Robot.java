@@ -18,7 +18,7 @@ import org.team2471.frc.util.commands.RunCommand;
 
 public class Robot extends IterativeRobot {
   public static final boolean COMPETITION = true;
-  public static final boolean DEMO = true;
+  public static final boolean DEMO = false;
   public static final boolean SKIP_GYRO_CALIBRATION = false;
 
   public static DriverStation.Alliance alliance;
