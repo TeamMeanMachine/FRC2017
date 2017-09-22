@@ -15,13 +15,14 @@ public class FaceBoilerFromHopper extends FollowPathTankDriveCommand {
   public FaceBoilerFromHopper(double speed, boolean mirror) {
 
     requires(drive);
-
+    m_path = new Path2D();
+    setPath(m_path);
     setSpeed(speed);
     setMirrorPath(mirror);
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
 
-    m_path = new Path2D();
+
     m_path.setTravelDirection(-1.0);
 
     m_path.addPointAndTangent(-2, 5.7, 2.0, 0.0);
@@ -30,7 +31,6 @@ public class FaceBoilerFromHopper extends FollowPathTankDriveCommand {
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(1.5, 1.0);
 
-    setPath(m_path);
 
   }
 

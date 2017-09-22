@@ -16,12 +16,13 @@ public class DriveToMiddleLiftInner extends FollowPathTankDriveCommand {
   public DriveToMiddleLiftInner(double speed) {
 
     requires(drive);
-
+    m_path = new Path2D();
+    setPath(m_path);
     setSpeed(speed);
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
 
-    m_path = new Path2D();
+
     m_path.setTravelDirection(1.0);
 
     m_path.addPoint(0.0, 0.0);
@@ -32,7 +33,6 @@ public class DriveToMiddleLiftInner extends FollowPathTankDriveCommand {
     m_path.addEasePoint(3.0, 1.0);
 
 
-    setPath(m_path);
   }
 
   @Override

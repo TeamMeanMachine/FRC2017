@@ -13,12 +13,14 @@ public class BackwardsAuto2BRed extends FollowPathTankDriveCommand {
   public BackwardsAuto2BRed(double speed, boolean mirror) {
     requires(drive);
 
+    path = new Path2D();
+    setPath(path);
+
     setSpeed(speed);
     setMirrorPath(mirror);
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
 
-    path = new Path2D();
     path.setTravelDirection(1.0);
 
     path.addPointAndTangent(-1.65, 11.0, 0.0, -1.0);
@@ -27,7 +29,6 @@ public class BackwardsAuto2BRed extends FollowPathTankDriveCommand {
     path.addEasePoint(0.0, 0.0);
     path.addEasePoint(1.5, 1.0);
 
-    setPath(path);
   }
 
   @Override

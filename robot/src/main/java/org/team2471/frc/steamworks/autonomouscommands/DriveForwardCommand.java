@@ -12,11 +12,12 @@ public class DriveForwardCommand extends FollowPathTankDriveCommand {
 
   public DriveForwardCommand(double distance, double time) {
     requires(drive);
-
+    m_path = new Path2D();
+    setPath(m_path);
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
 
-    m_path = new Path2D();
+
 
     m_path.addPoint(0.0, 0.0);
     m_path.addPoint(0.0, distance);
@@ -24,7 +25,6 @@ public class DriveForwardCommand extends FollowPathTankDriveCommand {
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(time, 1.0);
 
-    setPath(m_path);
   }
 
   @Override

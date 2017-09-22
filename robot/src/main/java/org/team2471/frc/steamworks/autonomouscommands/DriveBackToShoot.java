@@ -14,11 +14,13 @@ public class DriveBackToShoot extends FollowPathTankDriveCommand {
   public DriveBackToShoot(double speed, boolean mirror) {
     requires(drive);
 
+    m_path = new Path2D();
+    setPath(m_path);
     setSpeed(speed);
     setLeftController(HardwareMap.DriveMap.leftMotor1);
     setRightController(HardwareMap.DriveMap.rightMotor1);
 
-    m_path = new Path2D();
+
     m_path.setTravelDirection(-1.0);
 
     m_path.addPointAndTangent(0.0, 0.0, 0.0, 1.0);
@@ -27,7 +29,6 @@ public class DriveBackToShoot extends FollowPathTankDriveCommand {
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(1.0, 1.0);
 
-    setPath(m_path);
   }
 
   @Override
