@@ -64,6 +64,8 @@ public class AimCommand extends PIDCommand {
   }
 
   protected void initialize() {
+
+    DashboardUtils.putPersistentNumber("Auto RPM", startRpm);
     Robot.drive.lowGear();
     Robot.shooter.enable();
     shootingTimer.start();
@@ -109,8 +111,15 @@ public class AimCommand extends PIDCommand {
           targetFound = true;
 
           if (Robot.shooter.isHoodUp()) {
-            rpm = curveDistanceToRPM.getValue(data.distance);
-            rpm += SmartDashboard.getNumber("Shooter Offset", 0.0);
+            if (autonomous) {
+              rpm = SmartDashboard.getNumber("Auto RPM", startRpm);
+            }
+
+            else{
+              rpm = curveDistanceToRPM.getValue(data.distance);
+              rpm += SmartDashboard.getNumber("Shooter Offset", 0.0);
+            }
+
           } else {
             angle += IOMap.aimAxis.get() * 7.5;
             rpm = SmartDashboard.getNumber("Shooter Setpoint", 0.0);
