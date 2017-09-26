@@ -44,14 +44,25 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void robotInit() {
-    cheezDroid = new ChesDroid();
+    if(COMPETITION) {
+      System.out.println("Competition Bot Configuration");
+    } else {
+      System.out.println("Practice Bot Configuration");
+    }
 
-    if(!SKIP_GYRO_CALIBRATION) {
+    if(DEMO) {
+      System.out.println("Demo mode");
+    }
+
+    if(SKIP_GYRO_CALIBRATION) {
+      System.out.println("Skipping gyro calibration");
+    } else {
       System.out.println("Calibrating Gyro...");
       HardwareMap.gyro.calibrate();
       System.out.println("Gyro calibrated");
     }
 
+    cheezDroid = new ChesDroid();
     // wait for alliance color
     DriverStation ds = DriverStation.getInstance();
     while (true) {

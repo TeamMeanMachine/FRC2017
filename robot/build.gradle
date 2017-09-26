@@ -18,6 +18,10 @@ repositories {
   mavenCentral()
 }
 
+wpi {
+  opencvVersion = "3.1.0"
+}
+
 dependencies {
   compile wpilib()
   compile talonSrx()
