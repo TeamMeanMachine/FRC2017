@@ -22,7 +22,7 @@ public class DriveToHopperAutoBlue extends FollowPathTankDriveCommand {
     setRightController(HardwareMap.DriveMap.rightMotor1);
 
     m_path.addPointAndTangent(0.0, 0.0, 0.0, 6.0);
-    m_path.addPointAndTangent(-5.0, 5.9, -8.0, -0.1);
+    m_path.addPointAndTangent(-5.6, 5.6, -8.0, -0.1);
 
     m_path.addEasePoint(0.0, 0.0);
     m_path.addEasePoint(2.0, 1.0);

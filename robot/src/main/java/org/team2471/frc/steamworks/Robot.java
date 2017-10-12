@@ -12,6 +12,7 @@ import org.team2471.frc.steamworks.autonomouscommands.DoNothingAuto;
 import org.team2471.frc.steamworks.autonomouscommands.DriveDistanceCommand;
 import org.team2471.frc.steamworks.autonomousroutines.*;
 import org.team2471.frc.steamworks.commands.AimCommand;
+import org.team2471.frc.steamworks.commands.TurnInPlaceCommand;
 import org.team2471.frc.steamworks.commands.ZeroGyroCommand;
 import org.team2471.frc.steamworks.subsystems.*;
 import org.team2471.frc.util.commands.RunCommand;
@@ -36,6 +37,8 @@ public class Robot extends IterativeRobot {
   public static ChesDroid cheezDroid;
 
   public static SendableChooser<Command> autoChooser;
+
+  private static Command defaultAutoCommand;
 
   private double startTime = Timer.getFPGATimestamp();
 
@@ -82,6 +85,8 @@ public class Robot extends IterativeRobot {
     flap = new FuelFlap();
     walls = new HopperWalls();
 
+    defaultAutoCommand = new ForwardFortyKPAAuto();
+
     HardwareMap.init();
 
     feed = new CameraFeed();
@@ -89,8 +94,8 @@ public class Robot extends IterativeRobot {
     IOMap.init();
 
     autoChooser = new SendableChooser<>();
+    autoChooser.addDefault("40 KPA Forward", defaultAutoCommand);
     autoChooser.addObject("Hitler's Auto", new DoNothingAuto());
-    autoChooser.addObject("40 KPA Forward", new ForwardFortyKPAAuto());
     autoChooser.addObject("40 KPA Backwards", new BackwardFortyKPAAuto());
     autoChooser.addObject("Drive Eight Feet", new DriveEightFeet());
     autoChooser.addObject("Feeder Lift", new FeederLiftAuto());
@@ -103,7 +108,7 @@ public class Robot extends IterativeRobot {
     autoChooser.addObject("Middle Lift + 10", new CenterLiftPlusTen());
     autoChooser.addObject("Feeder Lift + 10", new FeederLiftPlusTen());
     autoChooser.addObject("Turn Sharp- TEST!", new TurnSharp());
-    autoChooser.addObject("Test Auto (don't run this drive team)", new DriveDistanceCommand(6.5, 2.2));
+    autoChooser.addObject("Test Auto (don't run this drive team)", new TurnInPlaceCommand(-50, false));
 
     SmartDashboard.putData("AutoChooser", autoChooser);
     SmartDashboard.putData(new ZeroGyroCommand());
@@ -117,7 +122,13 @@ public class Robot extends IterativeRobot {
       Command autonomousCommand = autoChooser.getSelected();
       if (autonomousCommand != null) {
         autonomousCommand.start();
+      } else {
+        System.out.println("Auto Null Warning #1");
+        defaultAutoCommand.start();
       }
+    } else {
+      System.out.println("Auto Null Warning #2");
+      defaultAutoCommand.start();
     }
     HardwareMap.gyro.reset();
   }

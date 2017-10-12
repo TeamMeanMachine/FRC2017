@@ -3,6 +3,7 @@ package org.team2471.frc.steamworks.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team2471.frc.steamworks.HardwareMap;
 import org.team2471.frc.steamworks.Robot;
 
 public class TurnInPlaceCommand extends PIDCommand {
@@ -30,7 +31,7 @@ public class TurnInPlaceCommand extends PIDCommand {
 
   @Override
   protected boolean isFinished() {
-    return getPIDController().getError() < 2.0 && timer.get() > 0.15 || isTimedOut();
+    return Math.abs( getPIDController().getSetpoint() - returnPIDInput()) < 2.0 && timer.get() > 0.15 || isTimedOut();
   }
 
   @Override
@@ -40,7 +41,7 @@ public class TurnInPlaceCommand extends PIDCommand {
 
   @Override
   protected double returnPIDInput() {
-    return Robot.drive.getAngle();
+    return HardwareMap.gyro.getAngle();
   }
 
   @Override
