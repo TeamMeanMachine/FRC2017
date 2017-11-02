@@ -3,6 +3,7 @@ package org.team2471.frc.carbonknight;
 import com.team254.frc2016.CheesyDriveHelper;
 import com.team254.lib.util.DriveSignal;
 
+import edu.wpi.first.wpilibj.Utility;
 import org.team2471.frc.lib.io.Controller;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -50,7 +51,9 @@ public class Robot extends IterativeRobot {
     boolean defualt = driverController.getRawButton(3);
     boolean shoot = driverController.getRawButton(4);
 
-    if (gearIn) {
+    boolean thing = Utility.getUserButton();
+
+    if (thing) {
       ledController.write("LoadGear");
     }else  if (fuelIn){
       ledController.write("LoadFuel");
