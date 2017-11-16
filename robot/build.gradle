@@ -7,9 +7,15 @@ plugins {
 
 frc {
   team = "2471"
-  robotClass = "org.team2471.frc.carbonknight"
+  robotClass = "org.team2471.frc.carbonknight.Robot"
 //  robotClass = "org.team2471.frc.TestRobot"
 }
+
+
+wpi {
+  opencvVersion = "3.1.0"
+}
+
 
 dependencies {
   compile wpilib()
